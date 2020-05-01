@@ -77,10 +77,8 @@ const Template = ({ data, pageContext }) => {
         >
           <span className="w-3/4">{post.frontmatter.title}</span>
         </header>
-        <div className="">
-        <span className="absolute bg-blog-header left-2 opacity-50 px-2 reading-time rounded text-white top-1">{post.frontmatter.published === false ? `Draft` : ''}</span>
-          <span className="reading-time absolute right-2 top-1 text-blog-lightgray text-blog-primary">{readingTime.text}</span>
-        </div>
+        <span className="absolute bg-blog-header left-2 opacity-50 px-2 reading-time rounded text-blog-bg top-1">{post.frontmatter.published === false ? `Draft` : ''}</span>
+        <span className="reading-time absolute right-2 top-1 text-blog-lightgray text-blog-primary">{readingTime.text}</span>
         <div className="blog-post-content">
           <div
             className="blog-post-text text-blog-primary text-lg leading-7 m-auto pb-6 sm:px-12 md:px-12 lg:px-12 xl:px-12"
