@@ -1,6 +1,6 @@
 ---
 path: "/optional-chaining"
-date: "2020-04-28"
+date: "2020-05-02"
 title: "⛓ The optional chaining operator in JavaScript"
 description: "The optional chaining operator ?. permits reading the value of a property located deep within a chain of connected objects."
 published: true
