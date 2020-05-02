@@ -75,7 +75,7 @@ header .light {
 .blog-post-container h1, 
 .blog-post-container h2 {
   color: var(--header-bg);
-  font-family: 'Sriracha', cursive;
+  font-family: 'Boogaloo';
 }
 
 .blog-post-container h2 {
@@ -152,7 +152,7 @@ header .light {
 }
 
 .blog-post-container .language-text {
-  background-color: #f6f6f6;
+  background-color: #ebf6ff;
 }
 
 .blog-post-content {

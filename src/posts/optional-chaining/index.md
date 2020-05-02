@@ -3,17 +3,17 @@ path: "/optional-chaining"
 date: "2020-04-28"
 title: "⛓ The optional chaining operator in JavaScript"
 description: "The optional chaining operator ?. permits reading the value of a property located deep within a chain of connected objects."
-published: false
+published: true
 ---
 ## Definition
 
 The optional chaining operator `?.` permits reading the value of a property located deep within a chain of connected objects.
 
-> The optional chaining was introduced part of the ES2020 standard.
+> The optional chaining was introduced as part of the ES2020 standard.
 
-## Why to use ?
+## Why this ?
 
-It changes the way we look or access the properties from the deep objects. The optional chaining makes your code look more cleaner 🧼 and crispy 🥔.
+It changes the way we access the properties from the deep objects. The optional chaining makes your code look cleaner 🧼 and crisp 🔥
 
  
 
@@ -30,9 +30,9 @@ const response = {
 }
 ```
 
-To access the `value`, you've to write a loooong conditional statement which is difficult to read and format also 😢
+To access the `value`, you have to write a loooong conditional statement which is difficult to read and format 😢
 
-```jsx
+```js
 let theValue;
 
 if(response &&
@@ -45,18 +45,18 @@ response.data.answer.value) {
 }
 ```
 
-But with optional chaining, you can the access the `value` easily 😃 and you don't have to worry about the null & undefined checks
+But with optional chaining, you can access the `value` easily 😃 and you don't have to worry about the null & undefined checks.
 
-```jsx
+```js
 response?.data?.answer?.value
 
 // Output
 JavaScript is 💛
 ```
 
-Wow, this code looks so clean 🧼 and crisp and if the `value` is not present, then we can assign a default value to it
+Wow, this code looks so clean 🧼 and crisp !! If the `value` is not present, we can assign a default value to it.
 
-```jsx
+```js
 response?.data?.answer?.key || 'JavaScript is BAE 💛❤️'
 
 // Output
@@ -65,7 +65,7 @@ JavaScript is BAE 💛❤️
 
 ## Babel Plugin
 
-Babel [7.8.0](https://babeljs.io/blog/2020/01/11/7.8.0) supports the new `ECMAScript 2020` features by default, no need of enabling individual plugin for optional chaining (`?.`).
+Babel [7.8.0](https://babeljs.io/blog/2020/01/11/7.8.0) supports the new `ECMAScript 2020` features by default. There is no need of enabling an individual plugin for optional chaining (`?.`).
 
 If you are using the latest Babel version which is above or equal to 7.8.0, then it's an easy setup
 
@@ -73,9 +73,9 @@ If you are using the latest Babel version which is above or equal to 7.8.0, then
 npm install --save-dev @babel/cli @babel/core @babel/preset-env
 ```
 
-then add the following block of code to the `.babelrc`
+Now add the following configuration to the `.babelrc`
 
-```json
+```json:title=.babelrc
 {
     "presets": [
         "@babel/preset-env"
@@ -83,23 +83,23 @@ then add the following block of code to the `.babelrc`
 }
 ```
 
-The necessary babel modules and the preset configurations are done, now it's time to do the babel magic ✨
+The necessary babel modules and the preset configurations are done. Now it's time to do the babel magic ✨
 
-Run this command to transpile the code to the supported version everywhere, this command will work if you have installed the `babel` module globally
+Run this command to transpile the code to the supported version everywhere. This command will work if you have installed the `babel` module globally.
 
 ```bash
 babel app.js --out-file script-transpiled.js
 ```
 
-All the optional chaining code should be placed in `app.js` and then the above command should be executed, this will produce the transpiled code which will work in major browsers and in `node.js` also.
+All the optional chaining code should be placed in `app.js` and then the above command should be executed. This produces the transpiled code which works in major browsers and in `node.js`.
 
-## Types of optional chaining or Things you can achieve from optional chaining
+## Different types of optional chaining
 
 ### 1. Optional chaining with function calls
 
-Optional chaining can be used when you trying to call a method which may not exist. Using optional chaining with function calls causes the expression to automatically return undefined instead of throwing an exception.
+Optional chaining can be used when you are trying to invoke a method which may not exist. Using optional chaining with function calls causes the expression to automatically return undefined instead of throwing an exception.
 
-```jsx
+```js
 class Operation {
   constructor(a, b) {
     this.a = a
@@ -114,55 +114,54 @@ class Operation {
 let o = new Operation(2, 3);
 o.getSum(); // 5
 
-// 
-o.getDiff(); // Uncaught TypeError: o.getDiff is not a function
-
-// 
-typeof o.getDiff != "undefined" && o.getDiff();
+o.getDiff(); // Output - Uncaught TypeError: o.getDiff is not a function
+ 
+// Check if the function exists
+typeof o.getDiff != "undefined" && o.getDiff(); 
 
 // With the use of optional chaining
-o.getDiff?.() // undefined
+o.getDiff?.() // Output - undefined
 ```
 
 ### 2. Optional chaining with expression
 
-Say the left operand is null or undefined, the expression after the optional chaining operator will be evaluated.
+If the left operand is null or undefined, the expression after the optional chaining operator will not be evaluated.
 
-```jsx
+```js{numberLines: true}
 let user = null;
 let age = 12;
 let isTeenage = user?.[value++];
-console.log('isTeenage :: ', isTeenage); 
+console.log('isTeenage :: ', isTeenage);
+```
+<br />
 
-// Output
-
+```js:title=Output
 isTeenage :: undefined
 ```
 
-The user was defined as null, While executing the line #3, the `isTeenage` didn't throw any error because if the left operand is null or undefined, the expression will not be evaluated.
+The user is defined as null, while executing the line #3, the `isTeenage` didn't throw any error because if the left operand is null or undefined, the expression will not be evaluated.
 
 ## 3. Combining with the nullish coalescing operator [which is another *ES2020* feature]
 
-```jsx
+```js
 let user = null;
 let age = 12;
-let isTeenage = user?.[value++] ?? 'not a teenager yet';
-console.log('isTeenage :: ', isTeenage); 
+let isTeenage = user?.[value++] ?? 'not a teenager !!';
+console.log('isTeenage :: ', isTeenage);
+```
+<br />
 
-// Output
-
-isTeenage ::  not a teenager yet
+```js:title=Output
+isTeenage :: not a teenager !!
 ```
 
 ## Things about optional chaining
 
 🚀Clean & Readable code
 
-🚀Don't worry about `null` or `undefined`, either on operands that is left or right
+🚀Don't worry about `null` or `undefined` in an object
 
-🚀
-🚀
-🚀
+🚀 Less error
 
 ## Browser Support
 
