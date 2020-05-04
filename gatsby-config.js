@@ -14,13 +14,6 @@ module.exports = {
       },
     },
     `gatsby-plugin-react-helmet`,
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `images`,
-        path: `${__dirname}/src/images`,
-      },
-    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
@@ -41,6 +34,10 @@ module.exports = {
       options: { path: `${__dirname}/src/posts`, name: 'posts' },
     },
     {
+      resolve: `gatsby-source-filesystem`,
+      options: { path: `${__dirname}/src/images`, name: `images` },
+    },
+    {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
@@ -59,14 +56,19 @@ module.exports = {
           },
           'gatsby-remark-unwrap-images',
           // Wrap images by pictures
-          'gatsby-remark-picture',
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 590,
+            },
+          },
           {
             resolve: `gatsby-remark-prismjs`,
             options: {
               classPrefix: 'language-',
               inlineCodeMarker: null,
               aliases: {},
-              showLineNumbers: false,
+              showLineNumbers: true,
               noInlineHighlight: false,
               languageExtensions: [
                 {

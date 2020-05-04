@@ -12,7 +12,7 @@ const PostLink = ({ post }) => {
     var interval = Math.floor(seconds / 31536000);
 
     interval = Math.floor(seconds / 86400);
-    if (interval > 1) {
+    if (interval >= 0) {
       return interval;
     }
   }

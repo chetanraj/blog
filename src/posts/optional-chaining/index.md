@@ -63,7 +63,7 @@ response?.data?.answer?.key || 'JavaScript is BAE 💛❤️'
 JavaScript is BAE 💛❤️
 ```
 
-## Babel Plugin
+## Setting up the Babel Plugin
 
 Babel [7.8.0](https://babeljs.io/blog/2020/01/11/7.8.0) supports the new `ECMAScript 2020` features by default. There is no need of enabling an individual plugin for optional chaining (`?.`).
 

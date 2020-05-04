@@ -4,6 +4,7 @@ date: "2020-03-28"
 title: "🤔 What is context path ?"
 description: "The context path is the prefix of a URL path that is used to select the context(s) to which an incoming request is passed."
 published: true
+hero_image: "./context-path.png"
 ---
 
 The context path is the prefix of a URL path that is used to select the context(s) to which an incoming request is passed.

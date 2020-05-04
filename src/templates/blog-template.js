@@ -13,6 +13,8 @@ const Template = ({ data, pageContext }) => {
 
   const { fields: {readingTime} } = data.markdownRemark;
 
+  const thumbnail = post.frontmatter.hero_image && post.frontmatter.hero_image.publicURL;
+
   const { previous, next } = pageContext
 
   const [shouldShowShadow, setShouldShowShadow] = useState(false);
@@ -69,7 +71,7 @@ const Template = ({ data, pageContext }) => {
           />
           <meta
             property="twitter:image"
-            content="https://chetanraj.in/blog/icons/icon-512x512.png"
+            content={thumbnail}
           />
         </Helmet>
         <header
@@ -159,6 +161,9 @@ export const pageQuery = graphql`
         title
         description
         published
+        hero_image {
+          publicURL
+        }
       }
       fields {
         readingTime {

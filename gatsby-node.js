@@ -17,6 +17,13 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
               title
               path
               published
+              hero_image {
+                childImageSharp {
+                  sizes(maxWidth: 600) {
+                    base64
+                  }
+                }
+              }
             }
           }
         }
