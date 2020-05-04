@@ -13,7 +13,7 @@ const Template = ({ data, pageContext }) => {
 
   const { fields: {readingTime} } = data.markdownRemark;
 
-  const thumbnail = post.frontmatter.hero_image && post.frontmatter.hero_image.publicURL;
+  const thumbnail = (post.frontmatter.hero_image && post.frontmatter.hero_image.publicURL) || 'https://chetanraj.in/blog/icons/icon-512x512.png';
 
   const { previous, next } = pageContext
 
