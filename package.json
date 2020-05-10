@@ -1,13 +1,14 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "blog-by-chetanraj",
   "private": true,
   "description": "A simple starter to get up and developing quickly with Gatsby",
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "framer-motion": "^1.10.3",
     "gatsby": "^2.20.12",
     "gatsby-image": "^2.3.1",
-    "gatsby-plugin-catch-links": "^2.2.1",
+    "gatsby-plugin-catch-links": "^2.3.1",
     "gatsby-plugin-google-analytics": "^2.2.4",
     "gatsby-plugin-manifest": "^2.3.3",
     "gatsby-plugin-offline": "^3.1.2",
@@ -20,6 +21,7 @@
     "gatsby-remark-picture": "^1.0.1",
     "gatsby-remark-prismjs": "^3.4.1",
     "gatsby-remark-reading-time": "^1.1.0",
+    "gatsby-remark-relative-images": "^0.3.0",
     "gatsby-remark-unwrap-images": "^1.0.2",
     "gatsby-source-filesystem": "^2.2.2",
     "gatsby-transformer-remark": "^2.7.1",
@@ -29,6 +31,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-helmet": "^5.2.1",
+    "terser": "^4.6.13",
     "use-sound": "^1.0.1"
   },
   "devDependencies": {
@@ -51,6 +54,11 @@
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
     "deploy": "gatsby build --prefix-paths && gh-pages -d public"
+  },
+  "ntl": {
+    "descriptions": {
+      "develop": "For development 👨‍💻👩‍💻🚀"
+    }
   },
   "repository": {
     "type": "git",

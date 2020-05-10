@@ -1,9 +1,7 @@
-const path = require(`path`)
+const path = require(`path`);
 
 exports.createPages = async ({ actions, graphql, reporter }) => {
-  const { createPage } = actions
-
-  const blogPostTemplate = path.resolve(`src/templates/blog-template.js`)
+  const { createPage } = actions;
 
   const result = await graphql(`
     {
@@ -16,33 +14,40 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             frontmatter {
               title
               path
+              tags
               published
-              hero_image {
-                childImageSharp {
-                  sizes(maxWidth: 600) {
-                    base64
-                  }
-                }
-              }
             }
           }
         }
       }
     }
-  `)
+  `);
 
   // Handle errors
   if (result.errors) {
-    reporter.panicOnBuild(`Error while running GraphQL query.`)
-    return
+    reporter.panicOnBuild(`Error while running GraphQL query.`);
+    return;
   }
 
+  const blogPostTemplate = path.resolve(`src/templates/blog-template.js`);
+  const tagTemplate = path.resolve(`src/templates/tag.js`);
+
+  //! Stuff
   const posts = result.data.allMarkdownRemark.edges;
+
+  const tagSet = new Set();
 
   posts.forEach((post, index) => {
     //* For previous & next
     const previous = index === 0 ? null : posts[index - 1].node;
     const next = index === posts.length - 1 ? null : posts[index + 1].node;
+
+    if (post.node.frontmatter.tags) {
+      const { tags } = post.node.frontmatter;
+      tags.forEach(tag => {
+        tagSet.add(tag);
+      });
+    }
 
     createPage({
       path: post.node.frontmatter.path,
@@ -50,7 +55,20 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       context: {
         previous,
         next,
-      }, // additional data can be passed via context
+      }, 
+    });
+  });
+
+  const tagList = Array.from(tagSet)
+
+  tagList.forEach(tag => {
+    createPage({
+      path: `/tags/${tag}/`,
+      component: tagTemplate,
+      context: {
+        tag,
+      },
     })
   })
-}
+
+};

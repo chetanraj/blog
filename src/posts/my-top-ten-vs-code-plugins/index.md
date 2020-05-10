@@ -3,6 +3,7 @@ path: "/my-top-ten-vs-code-plugins"
 date: "2020-01-23"
 title: "🎳 My Top Ten VS Code Plugins"
 published: true
+tags: ['VSCode']
 ---
 
 ## #1 — Peacock

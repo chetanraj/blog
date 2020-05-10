@@ -113,9 +113,20 @@ header .light {
   padding: 1rem;
   border-radius: 5px;
   margin-bottom: 1.25em;
+  position: relative;
   border: 1px solid var(--blockquote-border);
   transition-property: background-color, border-color, color;
   transition-duration: 500ms;
+}
+
+
+.blog-post-container blockquote:after {
+  content: "❝";
+  position: absolute;
+  font-size: 44px;
+  top: -12px;
+  left: -5px;
+  color: var(--primary-color);
 }
 
 .blog-post-container blockquote p {
@@ -212,4 +223,21 @@ header .light {
 .new {
   background: var(--yellow);
   color: var(--primary-text);
+  animation: zoom 1s infinite ;
+}
+
+.h-sc {
+  min-height: calc(100vh - 300px);
+}
+
+@keyframes zoom {
+  0% {
+      transform: scale(1, 1);
+  }
+  50% {
+      /* transform: scale(0.95, 1); */
+  }
+  100% {
+      transform: scale(1, 1);
+  }
 }

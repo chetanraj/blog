@@ -4,6 +4,7 @@ date: "2019-05-06"
 title: "💡 How Gridsome works with GitHub Pages"
 description: "Gridsome is Vue flavoured and a powerful static site generator. It’s the Gatsby alternative for..."
 published: true
+tags: ['gridsome', 'static-site']
 ---
 
 

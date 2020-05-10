@@ -1,16 +1,16 @@
-import React from "react"
-import { graphql } from "gatsby"
-import PostLink from "../components/post-link"
+import React from 'react';
+import { graphql } from 'gatsby';
 
 //* Components
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Layout from '../components/layout';
+import SEO from '../components/seo';
+import PostLink from '../components/post-link';
 
 const IndexPage = ({
   data: {
     allMarkdownRemark: { edges },
   },
-}) =>{
+}) => {
   let Posts = edges.filter(edge => edge.node.frontmatter.published);
   
   let latestPost = Posts[0];
@@ -21,13 +21,17 @@ const IndexPage = ({
   return (
     <Layout>
       <SEO title="Hi 👋" />
-      <div className="text-4xl font-light text-blog-lightgray mt-6 mb-4">Latest post</div>
+      <div className="text-4xl font-light text-blog-lightgray mt-6 mb-4">
+        Latest post
+      </div>
       <PostLink key={latestPost.node.id} post={latestPost.node} />
-      <div className="text-4xl font-light text-blog-lightgray mb-4">Other posts</div>
+      <div className="text-4xl font-light text-blog-lightgray mb-4">
+        Other posts
+      </div>
       <div className="posts mb-20">{OtherPosts}</div>
     </Layout>
-  )
-} 
+  );
+};
 
 export default IndexPage;
 
@@ -44,6 +48,7 @@ export const pageQuery = graphql`
             title
             description
             published
+            tags
           }
           fields {
             readingTime {
@@ -54,4 +59,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

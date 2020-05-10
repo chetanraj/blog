@@ -8,17 +8,37 @@ import boopSfx from '../../sounds/switch-on.mp3';
 const Header = props => {
   const { title } = props;
   const [play] = useSound(boopSfx);
-  const [theme, setTheme] = useState('light');
 
   const themeChangeIconPos = title ? 'fixed' : 'absolute';
+
+  const getInitialColorMode = () => {
+    const persistedColorPreference = typeof window !== 'undefined' ? window.localStorage.getItem('theme') : 'light';
+    const hasPersistedPreference = typeof persistedColorPreference === 'string';
+
+    if (hasPersistedPreference) {
+      return persistedColorPreference;
+    }
+
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+    if (hasMediaQueryPreference) {
+      return mql.matches ? 'dark' : 'light';
+    }
+
+    return 'light';
+  }
+
+  const [theme, setTheme] = useState(getInitialColorMode);
 
   const toggleTheme = () => {
     if (theme === 'light') {
       document.body.className = 'dark';
       setTheme('dark');
+      window.localStorage.setItem('theme', 'dark');
     } else {
       document.body.className = 'light';
       setTheme('light');
+      window.localStorage.setItem('theme', 'light');
     }
   };
 
@@ -60,7 +80,6 @@ const Header = props => {
               strokeLinejoin="round"
               className="feather feather-arrow-left"
             >
-              <line x1="19" y1="12" x2="5" y2="12" />
               <polyline points="12 19 5 12 12 5" />
             </svg>
           </Link>

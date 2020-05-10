@@ -13,7 +13,15 @@ const Template = ({ data, pageContext }) => {
 
   const { fields: {readingTime} } = data.markdownRemark;
 
-  const thumbnail = (post.frontmatter.hero_image && post.frontmatter.hero_image.publicURL) || 'https://chetanraj.in/blog/icons/icon-512x512.png';
+  const thumbnail = post.frontmatter.hero_image && post.frontmatter.hero_image.publicURL
+
+  let image = '';
+  if (thumbnail) {
+    image = `https://chetanraj.in/blog${thumbnail}`;
+  } else {
+    image = 'https://chetanraj.in/blog/icons/icon-512x512.png'
+  }
+
 
   const { previous, next } = pageContext
 
@@ -40,6 +48,8 @@ const Template = ({ data, pageContext }) => {
           />
 
           {/* Open Graph / Facebook */}
+          <meta property="og:image:width" content="1280" />
+          <meta property="og:image:height" content="675" />
           <meta property="og:type" content="website" />
           <meta property="og:title" content={`${post.frontmatter.title}`} />
           <meta
@@ -52,11 +62,12 @@ const Template = ({ data, pageContext }) => {
           />
           <meta
             property="og:image"
-            content="https://chetanraj.in/blog/icons/icon-512x512.png"
+            content={image}
           />
 
           {/* Twitter */}
           <meta property="twitter:card" content="summary_large_image" />
+          <meta name="twitter:creator" content="@chetan_raj"></meta>
           <meta
             property="twitter:url"
             content={`https://chetanraj.in/blog${post.frontmatter.path}/`}
@@ -71,7 +82,7 @@ const Template = ({ data, pageContext }) => {
           />
           <meta
             property="twitter:image"
-            content={thumbnail}
+            content={image}
           />
         </Helmet>
         <header
@@ -86,6 +97,11 @@ const Template = ({ data, pageContext }) => {
             className="blog-post-text text-blog-primary text-lg leading-7 m-auto pb-6 sm:px-12 md:px-12 lg:px-12 xl:px-12"
             dangerouslySetInnerHTML={{ __html: post.html }}
           />
+          <div className="sm:px-12 md:px-12 lg:px-12 xl:px-12">
+            {post.frontmatter.tags.map(tag => (
+              <Link key={tag} to={`/tags/${tag}`} className="bg-blog-header mr-4 p-2 rounded text-base text-blog-bg transition duration-500">{tag}</Link>
+            ))}
+          </div>
           <nav className="m-auto pb-6 sm:px-12 text-blog-primary">
             <ul className="flex">
               <li className="flex-grow-0">
@@ -154,6 +170,7 @@ export default Template;
 export const pageQuery = graphql`
   query BlogPostByPath($path: String!) {
     markdownRemark(frontmatter: { path: { eq: $path } }) {
+      id
       html
       frontmatter {
         date(formatString: "MMMM DD, YYYY")
@@ -164,6 +181,7 @@ export const pageQuery = graphql`
         hero_image {
           publicURL
         }
+        tags
       }
       fields {
         readingTime {
