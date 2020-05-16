@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 import { Link, graphql } from "gatsby";
+import { MDXRenderer } from "gatsby-plugin-mdx";
 
 //* Components
 import Header from '../components/header';
@@ -9,19 +10,14 @@ import "../components/layout.css";
 import useDocumentScrollThrottled from '../components/useDocumentScrollThrottled';
 
 const Template = ({ data, pageContext }) => {
-  const post = data.markdownRemark;
-
-  const { fields: {readingTime} } = data.markdownRemark;
+  const { fields: {readingTime} } = data.mdx;
+  const post = data.mdx;
 
   const thumbnail = post.frontmatter.hero_image && post.frontmatter.hero_image.publicURL
 
-  let image = '';
-  if (thumbnail) {
-    image = `https://chetanraj.in/blog${thumbnail}`;
-  } else {
-    image = 'https://chetanraj.in/blog/icons/icon-512x512.png'
-  }
+  const image = thumbnail ? `https://chetanraj.in/${thumbnail}` : 'https://chetanraj.in/blog/icons/icon-512x512.png';
 
+  const twitterShare = `http://twitter.com/share?text=${encodeURIComponent(post.frontmatter.title)} - &url=https://chetanraj.in/blog${post.frontmatter.path}/&via=chetan_raj`;
 
   const { previous, next } = pageContext
 
@@ -90,14 +86,14 @@ const Template = ({ data, pageContext }) => {
         >
           <span className="w-3/4">{post.frontmatter.title}</span>
         </header>
-        <span className="absolute bg-blog-header left-2 opacity-50 px-2 reading-time rounded text-blog-bg top-1">{post.frontmatter.published === false ? `Draft` : ''}</span>
+        <div className="absolute left-2 top-1">
+          <a target="_blank" rel="noopener noreferrer" href={twitterShare}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="color"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+        </div>
+        <span className="absolute bg-blog-header draft opacity-50 px-2 rounded text-blog-bg top-1">{post.frontmatter.published === false ? `Draft` : ''}</span>
         <span className="reading-time absolute right-2 top-1 text-blog-lightgray text-blog-primary">{readingTime.text}</span>
         <div className="blog-post-content">
-          <div
-            className="blog-post-text text-blog-primary text-lg leading-7 m-auto pb-6 sm:px-12 md:px-12 lg:px-12 xl:px-12"
-            dangerouslySetInnerHTML={{ __html: post.html }}
-          />
-          <div className="sm:px-12 md:px-12 lg:px-12 xl:px-12">
+          <MDXRenderer className="blog-post-text text-blog-primary text-lg leading-7 m-auto pb-6 sm:px-12 md:px-12 lg:px-12 xl:px-12">{post.body}</MDXRenderer>
+          <div className="tags py-10">
             {post.frontmatter.tags.map(tag => (
               <Link key={tag} to={`/tags/${tag}`} className="bg-blog-header mr-4 p-2 rounded text-base text-blog-bg transition duration-500">{tag}</Link>
             ))}
@@ -169,9 +165,9 @@ export default Template;
 
 export const pageQuery = graphql`
   query BlogPostByPath($path: String!) {
-    markdownRemark(frontmatter: { path: { eq: $path } }) {
+    mdx(frontmatter: { path: { eq: $path } }) {
       id
-      html
+      body
       frontmatter {
         date(formatString: "MMMM DD, YYYY")
         path

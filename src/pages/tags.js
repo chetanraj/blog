@@ -7,7 +7,7 @@ import SEO from '../components/seo';
 import PostLink from '../components/post-link';
 
 const Tags = ({ data }) => {
-  const sorted = [...data.allMarkdownRemark.group]
+  const sorted = [...data.allMdx.group]
     .sort((a, b) => {
       if (a.totalCount <= b.totalCount) {
         return 1;
@@ -51,7 +51,7 @@ export default Tags;
 
 export const pageQuery = graphql`
   query getGroupedTagsQuery {
-    allMarkdownRemark(filter: { frontmatter: { published: { eq: true } } }) {
+    allMdx(filter: { frontmatter: { published: { eq: true } } }) {
       group(field: frontmatter___tags) {
         fieldValue
         totalCount

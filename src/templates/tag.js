@@ -9,7 +9,7 @@ import PostLink from '../components/post-link';
 
 const TagTemplate = ({ data, pageContext }) => {
   let { tag } = pageContext;
-  const { edges, totalCount } = data.allMarkdownRemark;
+  const { edges, totalCount } = data.allMdx;
 
   const Posts = edges.map(edge => (
     <PostLink key={edge.node.id} post={edge.node} />
@@ -36,7 +36,7 @@ export default TagTemplate;
 
 export const pageQuery = graphql`
   query TagPage($tag: String) {
-    allMarkdownRemark(
+    allMdx(
       limit: 1000
       sort: { order: DESC, fields: [frontmatter___date] }
       filter: { frontmatter: { tags: { in: [$tag] } } }
