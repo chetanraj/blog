@@ -38,28 +38,18 @@ module.exports = {
       options: { path: `${__dirname}/src/images`, name: `images` },
     },
     {
-      resolve: `gatsby-transformer-remark`,
+      resolve: `gatsby-plugin-mdx`,
       options: {
-        plugins: [
-          `gatsby-remark-reading-time`,
+        extensions: [`.mdx`, `.md`],
+        gatsbyRemarkPlugins: [
           `gatsby-remark-code-titles`,
-          {
-            resolve: `gatsby-remark-autolink-headers`,
-            options: {
-              offsetY: `100`,
-              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="color"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>`,
-              className: `anchor-class`,
-              maintainCase: true,
-              removeAccents: true,
-              elements: [`h1`, `h2`],
-            },
-          },
           'gatsby-remark-unwrap-images',
           // Wrap images by pictures
           {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 590,
+              backgroundColor: 'transparent'
             },
           },
           {
@@ -68,7 +58,7 @@ module.exports = {
               classPrefix: 'language-',
               inlineCodeMarker: null,
               aliases: {},
-              showLineNumbers: true,
+              showLineNumbers: false,
               noInlineHighlight: false,
               languageExtensions: [
                 {
@@ -95,6 +85,7 @@ module.exports = {
         ],
       },
     },
+    `gatsby-remark-reading-time`,
     `gatsby-plugin-postcss`,
     {
       resolve: 'gatsby-plugin-web-font-loader',

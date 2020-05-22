@@ -106,6 +106,10 @@ header .light {
   text-rendering: optimizeLegibility;
 }
 
+.blog-post-container .gridify h3 {
+  margin-top: 0;
+}
+
 .blog-post-container blockquote {
   background: var(--blockquote-color);
   color: var(--primary-text);
@@ -117,16 +121,6 @@ header .light {
   border: 1px solid var(--blockquote-border);
   transition-property: background-color, border-color, color;
   transition-duration: 500ms;
-}
-
-
-.blog-post-container blockquote:after {
-  content: "❝";
-  position: absolute;
-  font-size: 44px;
-  top: -12px;
-  left: -5px;
-  color: var(--primary-color);
 }
 
 .blog-post-container blockquote p {
@@ -240,4 +234,8 @@ header .light {
   100% {
       transform: scale(1, 1);
   }
+}
+
+.draft {
+  right: 8em;
 }

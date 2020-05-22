@@ -1,24 +1,38 @@
 ---
 path: '/nifty-npm-tips'
 date: '2020-05-09'
-title: '📝 Nifty npm tips'
-description: 'Interactive cli tool that lists and run package.json scripts.'
+title: '💻 nifty npm tips'
+description: 'Useful npm tips which will make you developer life on CLI 💻 easy.'
 published: false
 tags: ['tips', 'npm']
 ---
 
+## npkill
+
+It will list all the `node_modules` in your system and the space it occupies and you can select and delete them 😇
+
 ### How to install
 
-```bash:small=bash
+```bash
+  $ npm install -g ntl
+```
+
+## ntl - Node Task List
+
+Interactive interface that lists all package.json scripts, you can select any item in the list and execute the task, You can also run multiple tasks at once 😍
+
+### How to install
+
+```bash
   $ npm install -g ntl
 ```
 
 ### Usage
 
-cd into a folder containing `package.json` or you can point the project folder containing a `package.json` file and then enter the command
+cd into a folder containing `package.json` or you can point the project folder containing a `package.json` file and then enter the below command 👇🏻
 
-```js live=true
-ntl;
+```js
+ntl
 ```
 
 When specifying a project folder, the `ntl` command takes an additional path parameter
@@ -31,4 +45,11 @@ ntl /path-to-your/blog/
 
 ![](./ntl-demo.png)
 
-### Features are
+### To run multiple tasks
+
+```bash
+ntl -m
+```
+
+
+## npm outdated
