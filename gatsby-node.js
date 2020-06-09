@@ -6,6 +6,11 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   const result = await graphql(`
     {
       allMdx(
+        filter: {
+          frontmatter: {
+            published: { eq: true }
+          }
+        }
         sort: { order: DESC, fields: [frontmatter___date] }
         limit: 1000
       ) {

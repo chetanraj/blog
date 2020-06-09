@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Helmet from 'react-helmet';
+import {Helmet} from 'react-helmet';
 import { Link, graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 
@@ -90,15 +90,16 @@ const Template = ({ data, pageContext }) => {
           <a target="_blank" rel="noopener noreferrer" href={twitterShare}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="color"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
         </div>
         <span className="absolute bg-blog-header draft opacity-50 px-2 rounded text-blog-bg top-1">{post.frontmatter.published === false ? `Draft` : ''}</span>
-        <span className="reading-time absolute right-2 top-1 text-blog-lightgray text-blog-primary">{readingTime.text}</span>
-        <div className="blog-post-content">
+        <span className="reading-time absolute right-2 top-1 text-blog-lightgray text-blog-primary"><span className="mr-2" role="img" aria-label="hourglass">⏳</span>
+        {readingTime.text}</span>
+        <div className="blog-post-content text-blog-primary">
           <MDXRenderer className="blog-post-text text-blog-primary text-lg leading-7 m-auto pb-6 sm:px-12 md:px-12 lg:px-12 xl:px-12">{post.body}</MDXRenderer>
           <div className="tags py-10">
             {post.frontmatter.tags.map(tag => (
               <Link key={tag} to={`/tags/${tag}`} className="bg-blog-header mr-4 p-2 rounded text-base text-blog-bg transition duration-500">{tag}</Link>
             ))}
           </div>
-          <nav className="m-auto pb-6 sm:px-12 text-blog-primary">
+          <nav className="m-auto pb-6 text-blog-primary">
             <ul className="flex">
               <li className="flex-grow-0">
                 {previous && previous.frontmatter.published && (
@@ -183,6 +184,10 @@ export const pageQuery = graphql`
         readingTime {
           text
         }
+      }
+      headings {
+        depth
+        value
       }
     }
   }

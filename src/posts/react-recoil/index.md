@@ -114,9 +114,4 @@ function NameDisplay() {
 
 
 
-### Talk about Recoil in React Europe
-<div align="center">
-    <div class="mt-6"></div>
-    <iframe  width="560" height="315" src="https://www.youtube.com/embed/_ISAA_Jt9kI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    <div class="mb-6"></div>
-</div>
+### Talk about [Recoil](https://www.youtube.com/watch?v=_ISAA_Jt9kI) in React Europe

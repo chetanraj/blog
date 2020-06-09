@@ -20,7 +20,7 @@ const TagTemplate = ({ data, pageContext }) => {
       <Header title={tag} />
       <SEO title={`${tag} posts`} />
       <div className="blog-post-container relative mb-20 h-sc">
-        <div className="blog-post-content">
+        <div className="blog-post-content text-blog-primary">
           <div className="text-2xl mt-3 font-boogaloo text-blog-primary transition-colors duration-500">
             {totalCount} Posts tagged - <span>{tag}</span>
           </div>

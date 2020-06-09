@@ -239,3 +239,19 @@ header .light {
 .draft {
   right: 8em;
 }
+
+.anchor-class {
+  position: relative;
+}
+
+.anchor-class svg {
+  position: absolute;
+  top: 6px;
+  left: -30px;
+  opacity: 0;
+}
+
+h2:hover .anchor-class svg,
+.anchor-class svg:hover {
+  opacity: 1;
+}

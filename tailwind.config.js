@@ -16,7 +16,7 @@ module.exports = {
         bg: 'var(--bg-color)',
         header: 'var(--header-bg)',
         primary: 'var(--primary-color)',
-        secondary: '#666',
+        secondary: 'var(--secondary-color)',
         lightgray: '#999'
       },
     },

@@ -5,6 +5,8 @@ title: '💻 nifty npm tips'
 description: 'Useful npm tips which will make you developer life on CLI 💻 easy.'
 published: false
 tags: ['tips', 'npm']
+toc: true
+toc-depth: 2
 ---
 
 ## npkill
@@ -17,7 +19,7 @@ It will list all the `node_modules` in your system and the space it occupies and
   $ npm install -g ntl
 ```
 
-## ntl - Node Task List
+## ntl
 
 Interactive interface that lists all package.json scripts, you can select any item in the list and execute the task, You can also run multiple tasks at once 😍
 

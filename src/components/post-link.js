@@ -25,16 +25,16 @@ const PostLink = ({ post }) => {
         <div className="text-2xl text-blog-primary transition-colors duration-500">
           {title}
         </div>
-        <div className="text-blog-secondary text-base font-normal mt-3">
+        <div className="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500">
           {description}
         </div>
-        <div className="text-blog-lightgray text-base font-light mt-3 mb-5 italic">
-          wrote on {date} &#183; <span>{readingTime.text}</span>{' '}
+        <div className="text-blog-lightgray text-base font-light mt-3 mb-5">
+          wrote on {date} &#183; <span><span className="mr-2" role="img" aria-label="hourglass">⏳</span>{readingTime.text}</span>{' '}
           {since < 35 ? (
             <span className="hidden sm:inline-block">
               &#183;&nbsp;
               <span
-                className="new not-italic bg-blog-header px-2 rounded opacity-50 inline-block"
+                className="new not-italic bg-blog-header px-2 rounded inline-block"
               >
                 New
               </span>
