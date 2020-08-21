@@ -61,7 +61,8 @@
   },
   "ntl": {
     "descriptions": {
-      "develop": "For development 👨‍💻👩‍💻🚀"
+      "develop": "👨‍💻👩‍💻",
+      "deploy": "🚀"
     }
   },
   "repository": {

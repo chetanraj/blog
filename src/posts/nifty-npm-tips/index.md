@@ -1,6 +1,6 @@
 ---
 path: '/nifty-npm-tips'
-date: '2020-05-09'
+date: '2020-06-09'
 title: '💻 nifty npm tips'
 description: 'Useful npm tips which will make you developer life on CLI 💻 easy.'
 published: false
@@ -9,7 +9,7 @@ toc: true
 toc-depth: 2
 ---
 
-## npkill
+## 1. npkill
 
 It will list all the `node_modules` in your system and the space it occupies and you can select and delete them 😇
 
@@ -19,7 +19,7 @@ It will list all the `node_modules` in your system and the space it occupies and
   $ npm install -g ntl
 ```
 
-## ntl
+## 2. ntl
 
 Interactive interface that lists all package.json scripts, you can select any item in the list and execute the task, You can also run multiple tasks at once 😍
 
@@ -54,4 +54,4 @@ ntl -m
 ```
 
 
-## npm outdated
+## 3. npm outdated

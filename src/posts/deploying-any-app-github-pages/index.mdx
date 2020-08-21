@@ -1,0 +1,97 @@
+---
+path: "/deploying-any-app-to-github-pages"
+date: "2020-08-21"
+update: "2020-08-21"
+title: "🚀 Deploying any app to GitHub Pages"
+description: "GitHub Pages is a website holder for you & your projects. You can host your code directly from your GitHub repo."
+published: true
+tags: ['hosting', 'static-site']
+---
+
+[GitHub Pages](https://pages.github.com/) is a website holder for you & your projects. You can host your code directly from your GitHub repo. This article will help you how to manage your app in the `master` branch and deploy the code in the `gh-pages` branch easily.
+
+You can choose any front-end framework like [React](https://reactjs.org/), [Vue](https://vuejs.org/), [Gatsby](http://gatsbyjs.com/), [Next](https://nextjs.org/), [Nuxt](https://nuxtjs.org/), [Gridsome](https://gridsome.org/), and build the app in the master branch and build the code using the `npm run build` command and host directly using the `gh-pages` branch.
+
+The quickest way to put your app to GitHub Pages is by using a package - [gh-pages](https://github.com/tschaub/gh-pages).
+
+```js
+npm i gh-pages -D
+```
+
+or you can install it in global
+
+```js
+npm i gh-pages -g
+```
+
+Add a simple script to your package.json
+
+```json:title=package.json
+{
+  "scripts": {
+    "deploy": "npm run build && gh-pages -d dist"
+  }
+}
+```
+
+When you run `npm run deploy` all the contents of the build folder will be pushed to your repository’s gh-pages branch. 
+
+## If your creating a **User page in GitHub**
+
+Create a repository with your username like `username.github.io`, Create a branch called `code` or you can name the branch anything. Build the app in this branch and when it comes to deploying the app use the `gh-pages` command to push the build folder contents to the gh-pages branch
+
+**Note**: In this case, you need to push your build directory to `master` branch, use the following command
+
+```json:title=package.json
+{
+	"scripts": {
+		"deploy": "npm build && gh-pages -d dist -b master",
+  }
+}
+```
+
+After running `npm run deploy` you should see your website at `http://username.github.io`
+
+> Run _**gh-pages --help**_ to list all the supported options of the gh-pages package
+
+## Useful npm scripts of gh-pages
+
+If your source code of the app is in a private repository, create a public repository named about, the source code will reside in the private repository and the static content generated from the build will go into the public repository
+
+```json:title=package.json
+{
+  "scripts": {
+    "deploy": "npm run build && gh-pages -d dist --repo <url>",
+  }
+}
+```
+
+Deploy to another branch [which is not gh-pages]
+
+```json
+{
+  "scripts": {
+    "deploy": "gridsome build && gh-pages -d dist -b master",
+  }
+}
+```
+
+To include dotfiles while pushing the changes to the branch
+
+```json:title=package.json
+{
+  "scripts": {
+    "deploy": "npm run build && gh-pages -d dist -t"
+  }
+}
+```
+
+Change the commit message when publishing the change
+
+```json:title=package.json
+{
+  "scripts": {
+    "deploy": "npm run build && gh-pages -d dist -m Build 21082020v1"
+  }
+}
+```

@@ -1,0 +1,159 @@
+---
+path: "/how-i-structure-react-app"
+date: "2020-08-03"
+title: "🏢 How I structure React app"
+published: false
+tags: ['React']
+---
+
+Structuring an app is like building a house, many decisions 🤯 many views, many perspectives, it can be a personal choice or teams vote. Folder structure also plays a vital role. The questions in mind always are where should this go or which folder this file should go, what should I name the folder, component, hook, context 🤔
+
+> It's the developer way of life
+
+Normally, I would choose the [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) to create an app from the base, as it's easy & we can start running that app as quickly as possible.  Starting with package.json
+
+## package.json
+
+```json
+{
+  "name": "app-name",
+  "version": "0.0.1",
+  "dependencies": { },
+  "devDependencies": { }
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",		
+    "📦": "bundlesize",
+    "prettification": "prettier --write \"**/*.js\""
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "npm run prettification",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": [
+        "lint-staged"
+      ]
+    }
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  }
+}
+```
+
+## scripts
+
+Here is where the magic 🎩 lies, all the good things happen here
+
+- build the app
+- style the app
+- check the app
+- test the app
+- prettify the app 🥳
+- and many more
+
+The script name should be easy to remember and small, I don't tend to use large names like 
+
+```json
+"scripts": {
+	"build:then:check:what:happened": "react-scripts build",
+	"are:we:building:then:check:what:happened": "react-scripts build",
+}
+```
+
+My choice: using emoji 😉 as a script name where you like, duplicate it again for the non-emoji script name.
+
+When I use Tailwind CSS, I tend to name the script as `build:style`
+
+```jsx
+"scripts": {
+  "build:style": "tailwind build index.css -o app.css"
+}
+
+```
+
+Use `:` instead of `-` for script name, this will make it look neat & crisp and also read better 👍
+
+## Folder structure
+
+I follow the Atomic Design Methodology, I follow `Atoms` strictly and then bring them together in `Organisms`, then directly to Pages. 
+
+![](./Atomic_Design.jpg)
+
+### Atoms
+
+Atoms are the smallest components, like Buttons, Heading, Input, Icon, Tags.
+
+### Organisms
+
+### Pages
+
+### Detailed folder structure of the components
+
+```markdown
+📦src
+ ┣ 📂components
+ ┃ ┣ 📂atoms
+ ┃ ┃ ┣ Heading.js
+ ┃ ┃ ┣ Input.js
+ ┃ ┃ ┣ Icon.js
+ ┃ ┃ ┣ Tag.js
+ ┃ ┃ ┗ TextArea.js
+ ┃ ┣ 📂organisms
+ ┃ ┃ ┣ Tag.js
+ ┃ ┃ ┣ Card.js
+ ┃ ┃ ┣ Search.js
+ ┃ ┃ ┣ Upload.js
+ ┃ ┣ 📂hooks
+ ┃ ┃ ┣ useIntersectionObserver.js
+ ┃ ┃ ┗ useKeyPress.js
+ ┃ ┣ 📂logics
+ ┃ ┃ ┣ Name.js
+ ┃ ┃ ┗ Status.js
+ ┃ ┣ 📂pages
+ ┃ ┃ ┣ 📂Create
+ ┃ ┃ ┃ ┗ index.js
+ ┃ ┃ ┣ 📂List
+ ┃ ┃ ┃ ┗ index.js
+ ┃ ┃ ┣ 📂Onboarding
+ ┃ ┃ ┃ ┗ index.js
+ ┃ ┃ ┗ index.js
+ ┣ 📂context
+ ┣ 📂images
+ ┣ 📂styled-elements
+ ┣ 📂styles
+ ┣ 📂tests
+ ┣ 📂utils
+ ┣ App.js
+ ┣ constants.js
+ ┣ index.js
+ ┣ serviceWorker.js
+ ┣ setupTests.js
+ ┗ theme.js
+```
+
+## Styling
+
+Normally i shuffle between [Tailwind CSS](https://tailwindcss.com/) or < 💅> [styled-components](https://styled-components.com/) based on the project.
+
+### Tailwind CSS
+
+If I choose Tailwind CSS I tend to choose only the needed options in `tailwind.config.js` and  nmae the npm script as `build:style` to build the styles. Naming the script `build:style` will help in identifying that it's a build method for styling purpose 😃
+
+### < 💅> styled-components
+
+ 
+
+## References
+
+[https://bradfrost.com/blog/post/atomic-web-design](https://bradfrost.com/blog/post/atomic-web-design/)
+
+[https://danilowoz.com/blog/atomic-design-with-react](https://danilowoz.com/blog/atomic-design-with-react)
+
+[https://cheesecakelabs.com/blog/css-architecture-reactjs/](https://cheesecakelabs.com/blog/css-architecture-reactjs/)
