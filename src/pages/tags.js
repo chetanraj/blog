@@ -15,10 +15,10 @@ const Tags = ({ data }) => {
 
       return -1;
     })
-    .map(post => ({
+    .map((post) => ({
       title: post.fieldValue,
       content: post.nodes,
-      length: post.nodes.length
+      length: post.nodes.length,
     }));
 
   return (
@@ -28,16 +28,20 @@ const Tags = ({ data }) => {
         Tags
       </div>
 
-      {sorted.map(section => {
+      {sorted.map((section) => {
         const { title, content, length } = section;
-        const posts = content.map(node => (
+        const posts = content.map((node) => (
           <PostLink key={node.id} post={node} />
         ));
         return (
           <>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-light text-blog-lightgray mb-4">{title}</div>
-              <div className="text-base font-light text-blog-lightgray mb-4">{length > 1 ? `${length} posts` : `${length} post`}</div>
+              <div className="text-2xl font-light text-blog-lightgray mb-4">
+                {title}
+              </div>
+              <div className="text-base font-light text-blog-lightgray mb-4">
+                {length > 1 ? `${length} posts` : `${length} post`}
+              </div>
             </div>
             <div className="posts mb-10">{posts}</div>
           </>

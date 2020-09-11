@@ -16,7 +16,7 @@ const setTheme = () => {
   }
 
   document.body.className = colorMode;
-}
+};
 
 const MagicScriptTag = () => {
   const boundFn = String(setTheme);

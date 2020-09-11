@@ -5,12 +5,13 @@ title: "🏢 How I structure React app"
 published: false
 tags: ['React']
 ---
+### Description:
 
-Structuring an app is like building a house, many decisions 🤯 many views, many perspectives, it can be a personal choice or teams vote. Folder structure also plays a vital role. The questions in mind always are where should this go or which folder this file should go, what should I name the folder, component, hook, context 🤔
+Structuring an app is like building a house 🏡, many decisions 🤯 many views, many perspectives 🧐, it can be a personal choice or teams vote. Folder structure also plays a vital role. The questions in mind always are where should this file reside or which folder this file should go, what should I name the folder, component, hook, context 🤔
 
-> It's the developer way of life
+It's the developer way of life
 
-Normally, I would choose the [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) to create an app from the base, as it's easy & we can start running that app as quickly as possible.  Starting with package.json
+Normally, I would choose the [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) to create an app from the base, as it's easy & we can start running that app as quickly as possible. Starting with package.json
 
 ## package.json
 
@@ -19,30 +20,31 @@ Normally, I would choose the [create-react-app](https://reactjs.org/docs/create-
   "name": "app-name",
   "version": "0.0.1",
   "dependencies": { },
-  "devDependencies": { }
+	"devDependencies": { }
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",		
-    "📦": "bundlesize",
-    "prettification": "prettier --write \"**/*.js\""
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+    "eject": "react-scripts eject",
+		"lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "stylelint": "stylelint src/**/index.css",
+    "stylelint:fix": "stylelint src/**/index.css --fix",		
+		"📦": "bundlesize",
+		"prettification": "prettier --write \"**/*.js\""
   },
-  "lint-staged": {
+	"lint-staged": {
     "*.{js,jsx}": [
       "npm run prettification",
       "git add"
     ]
   },
-  "husky": {
+	"husky": {
     "hooks": {
       "pre-commit": [
         "lint-staged"
       ]
     }
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   }
 }
 ```
@@ -53,23 +55,25 @@ Here is where the magic 🎩 lies, all the good things happen here
 
 - build the app
 - style the app
-- check the app
 - test the app
 - prettify the app 🥳
+- lint the app 😖
 - and many more
 
-The script name should be easy to remember and small, I don't tend to use large names like 
+### Some tips for `scripts` in pacakge.json
+
+The script name should be easy to remember and small, Avoid using large names like `build:then:check:what:happened`
 
 ```json
 "scripts": {
 	"build:then:check:what:happened": "react-scripts build",
-	"are:we:building:then:check:what:happened": "react-scripts build",
+	"are:we:building:then:check:what:happened": "react-scripts build"
 }
 ```
 
-My choice: using emoji 😉 as a script name where you like, duplicate it again for the non-emoji script name.
+My choice: using emoji 😉 as a script name. Let me know if you're favorite emoji for deploying the code.
 
-When I use Tailwind CSS, I tend to name the script as `build:style`
+When I use Tailwind CSS, I tend to name the script as `build:style`, so it's easy to identify that it's a style related task, you can also name it to be specific to the framework/library like `build:tailwind` and that would even easier
 
 ```jsx
 "scripts": {
@@ -78,21 +82,37 @@ When I use Tailwind CSS, I tend to name the script as `build:style`
 
 ```
 
-Use `:` instead of `-` for script name, this will make it look neat & crisp and also read better 👍
+Use `:` instead of `-` for script name, this will make the script name neat & crisp and also readable 👍 The `-` is for package names & `:` is for script names 😉
+
+### Other or main stuff in `scripts`
+
+Linting, Prettifying, Testing your app & Checking the bundle size is the part & parcel of app developing. To avoid code formatting issues, I have enabled the pre-commit hook with the leverage of prettier. I use `eslint` for linting JS, JSX and I use `stylelint` for linting the styles and `prettier` to format the code and to keep a tab on the bundle size, I use `bundlesize`.
+
+Code splitting using React Lazy, Suspense & React Router and I try to keep each *.js in the build to be less than 500kb 😱 which sometime is not possible 🤯
 
 ## Folder structure
 
-I follow the Atomic Design Methodology, I follow `Atoms` strictly and then bring them together in `Organisms`, then directly to Pages. 
+I follow the Atomic Design Methodology, I follow `Atoms` strictly and then bring them together in `Organisms`, then directly to `Pages`. Following the Atomic Design methodology will help you in many things while developing the project.
 
-![](./Atomic_Design.jpg)
+- Less repeated code in components, this reduces the inconsistency between the components
+- The time to build an Organism or a Page will be faster 🚀
+- The style guide for the project will reside in `theme.js`, The color palette, spacing, font families, font sizes, line heights, margin, padding, flex, grid and many more
+
+![How%20I%20structure%20React%20apps%20903518a3d3044c7e924fbee98da8b89e/Atomic_Design.jpg](How%20I%20structure%20React%20apps%20903518a3d3044c7e924fbee98da8b89e/Atomic_Design.jpg)
 
 ### Atoms
 
-Atoms are the smallest components, like Buttons, Heading, Input, Icon, Tags.
+Atoms are the smallest components, like Buttons, Heading, Input, Dropdown, Icon, Tags. This plays an important role in any app. The whole state of the app mainly starts from here.
 
 ### Organisms
 
+Organisms are a combination of Atoms like Header, Card, Search Box with Icon, List Item,  and many more. Once you spend planning, designing the `Atoms`, the amount you spend on Organisms will be lesser. 
+
 ### Pages
+
+Pages can be a combination of Atoms, Organisms or only Organisms depends on the UX design. It can be many cards with a header having a search box and some buttons.
+
+If the components are designed in the above methodology, the  time taken to build a Component will be lesser and this is not a one time process where everything will done at one go, this will get better in time ⏰, with multiple design iterations, discussions and different approaches by different people 😉
 
 ### Detailed folder structure of the components
 
@@ -106,7 +126,6 @@ Atoms are the smallest components, like Buttons, Heading, Input, Icon, Tags.
  ┃ ┃ ┣ Tag.js
  ┃ ┃ ┗ TextArea.js
  ┃ ┣ 📂organisms
- ┃ ┃ ┣ Tag.js
  ┃ ┃ ┣ Card.js
  ┃ ┃ ┣ Search.js
  ┃ ┃ ┣ Upload.js
@@ -127,7 +146,6 @@ Atoms are the smallest components, like Buttons, Heading, Input, Icon, Tags.
  ┣ 📂context
  ┣ 📂images
  ┣ 📂styled-elements
- ┣ 📂styles
  ┣ 📂tests
  ┣ 📂utils
  ┣ App.js
@@ -140,7 +158,7 @@ Atoms are the smallest components, like Buttons, Heading, Input, Icon, Tags.
 
 ## Styling
 
-Normally i shuffle between [Tailwind CSS](https://tailwindcss.com/) or < 💅> [styled-components](https://styled-components.com/) based on the project.
+Normally i shuffle between [Tailwind CSS](https://tailwindcss.com/) or < 💅> [styled-components](https://styled-components.com/) based on the project requirements.
 
 ### Tailwind CSS
 
@@ -148,12 +166,47 @@ If I choose Tailwind CSS I tend to choose only the needed options in `tailwind.c
 
 ### < 💅> styled-components
 
- 
+### theme.js
+
+```json
+export const theme = {
+	breakpoints: [32, 48, 64],
+	space: [0, 4, 8, 16, 24, 32, 48, 64, 128, 256, 512],
+	fontSizes: [12, 14, 16, 18, 20, 24, 36, 48, 80, 96],
+	fontWeights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+	lineHeights: {
+		normal: 1,
+		title: 1.25,
+		paragraph: 1.5
+	},
+	letterSpacings: {
+		normal: 'normal'
+	},
+	colors: {
+		black: '#000',
+		white: '#fff',
+		transparent: 'transparent',
+		background: '',
+		blue: '',
+		lightblue: '',
+		lighterblue: '',
+		lightestblue: '',
+		gray: '',
+		darkgray: '',
+		red: ''
+	},
+	radii: ['0px', '2px', '4px', '8px', '16px', '48px']
+	// ... and many things
+};
+```
+
+## Hosting
+
+I choose [Netlify](https://www.netlify.com/) to host all the apps, Netlify is easy and make things easy around deployment 🚀
 
 ## References
 
-[https://bradfrost.com/blog/post/atomic-web-design](https://bradfrost.com/blog/post/atomic-web-design/)
-
-[https://danilowoz.com/blog/atomic-design-with-react](https://danilowoz.com/blog/atomic-design-with-react)
-
-[https://cheesecakelabs.com/blog/css-architecture-reactjs/](https://cheesecakelabs.com/blog/css-architecture-reactjs/)
+- [https://bradfrost.com/blog/post/atomic-web-design](https://bradfrost.com/blog/post/atomic-web-design/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [< 💅> styled-components](https://styled-components.com/)
+- [Component Based Design System With Styled-System](https://varun.ca/styled-system/) by [Varun Vachhar](https://varun.ca/)

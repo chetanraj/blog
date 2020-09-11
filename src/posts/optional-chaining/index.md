@@ -1,10 +1,10 @@
 ---
-path: "/optional-chaining"
-date: "2020-05-02"
-title: "⛓ The optional chaining operator in JavaScript"
-description: "The optional chaining operator ?. permits reading the value of a property located deep within a chain of connected objects."
+path: '/optional-chaining'
+date: '2020-05-02'
+title: '⛓ The optional chaining operator in JavaScript'
+description: 'The optional chaining operator ?. permits reading the value of a property located deep within a chain of connected objects.'
 published: true
-hero_image: "./optional-chaining.png"
+hero_image: './optional-chaining.png'
 tags: ['javascript 💛', 'es2020']
 ---
 
@@ -17,8 +17,6 @@ The optional chaining operator `?.` permits reading the value of a property loca
 ## Why this ?
 
 It changes the way we access the properties from the deep objects. The optional chaining makes your code look cleaner 🧼 and crisp 🔥
-
- 
 
 Consider this piece of code, where the data object has a query and an answer to the query.
 
@@ -38,13 +36,15 @@ To access the `value`, you have to write a loooong conditional statement which i
 ```js
 let theValue;
 
-if(response &&
-response.data &&
-response.data.answer &&
-response.data.answer.value) {
-	theValue = response.data.answer.value;
+if (
+  response &&
+  response.data &&
+  response.data.answer &&
+  response.data.answer.value
+) {
+  theValue = response.data.answer.value;
 } else {
-	theValue = 'JavaScript is BAE 💛❤️';
+  theValue = 'JavaScript is BAE 💛❤️';
 }
 ```
 
@@ -80,9 +80,7 @@ Now add the following configuration to the `.babelrc`
 
 ```json:title=.babelrc
 {
-    "presets": [
-        "@babel/preset-env"
-    ]
+  "presets": ["@babel/preset-env"]
 }
 ```
 
@@ -105,12 +103,12 @@ Optional chaining can be used when you are trying to invoke a method which may n
 ```js
 class Operation {
   constructor(a, b) {
-    this.a = a
-    this.b = b
+    this.a = a;
+    this.b = b;
   }
 
   getSum() {
-    return this.a + this.b
+    return this.a + this.b;
   }
 }
 
@@ -118,12 +116,12 @@ let o = new Operation(2, 3);
 o.getSum(); // 5
 
 o.getDiff(); // Output - Uncaught TypeError: o.getDiff is not a function
- 
+
 // Check if the function exists
-typeof o.getDiff != "undefined" && o.getDiff(); 
+typeof o.getDiff != 'undefined' && o.getDiff();
 
 // With the use of optional chaining
-o.getDiff?.() // Output - undefined
+o.getDiff?.(); // Output - undefined
 ```
 
 ### 2. Optional chaining with expression
@@ -136,10 +134,11 @@ let age = 12;
 let isTeenage = user?.[value++];
 console.log('isTeenage :: ', isTeenage);
 ```
+
 <br />
 
 ```js:title=Output
-isTeenage :: undefined
+isTeenage::undefined;
 ```
 
 The user is defined as null, while executing the line #3, the `isTeenage` didn't throw any error because if the left operand is null or undefined, the expression will not be evaluated.
@@ -152,6 +151,7 @@ let age = 12;
 let isTeenage = user?.[value++] ?? 'not a teenager !!';
 console.log('isTeenage :: ', isTeenage);
 ```
+
 <br />
 
 ```js:title=Output

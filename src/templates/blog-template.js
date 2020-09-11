@@ -1,36 +1,42 @@
 import React, { useState } from 'react';
-import {Helmet} from 'react-helmet';
-import { Link, graphql } from "gatsby";
-import { MDXRenderer } from "gatsby-plugin-mdx";
+import { Helmet } from 'react-helmet';
+import { Link, graphql } from 'gatsby';
+import { MDXRenderer } from 'gatsby-plugin-mdx';
 
 //* Components
 import Header from '../components/header';
 import Footer from '../components/footer';
-import "../components/layout.css";
+import '../components/layout.css';
 import useDocumentScrollThrottled from '../components/useDocumentScrollThrottled';
 
 const Template = ({ data, pageContext }) => {
-  const { fields: {readingTime} } = data.mdx;
+  const {
+    fields: { readingTime },
+  } = data.mdx;
   const post = data.mdx;
 
-  const thumbnail = post.frontmatter.hero_image && post.frontmatter.hero_image.publicURL
+  const thumbnail =
+    post.frontmatter.hero_image && post.frontmatter.hero_image.publicURL;
 
-  const image = thumbnail ? `https://chetanraj.in/${thumbnail}` : 'https://chetanraj.in/blog/icons/icon-512x512.png';
+  const image = thumbnail
+    ? `https://chetanraj.in/${thumbnail}`
+    : 'https://chetanraj.in/blog/icons/icon-512x512.png';
 
-  const twitterShare = `http://twitter.com/share?text=${encodeURIComponent(post.frontmatter.title)} - &url=https://chetanraj.in/blog${post.frontmatter.path}/&via=chetan_raj`;
+  const twitterShare = `http://twitter.com/share?text=${encodeURIComponent(
+    post.frontmatter.title
+  )} - &url=https://chetanraj.in/blog${post.frontmatter.path}/&via=chetan_raj`;
 
-  const { previous, next } = pageContext
+  const { previous, next } = pageContext;
 
   const [shouldShowShadow, setShouldShowShadow] = useState(false);
 
-  useDocumentScrollThrottled(callbackData => {
+  useDocumentScrollThrottled((callbackData) => {
     const { currentScrollTop } = callbackData;
 
     setShouldShowShadow(currentScrollTop > 256);
   });
 
   const shadowStyle = shouldShowShadow ? 'sticky opacity-100' : 'opacity-0';
-
 
   return (
     <>
@@ -56,10 +62,7 @@ const Template = ({ data, pageContext }) => {
             property="og:description"
             content={`${post.frontmatter.description}`}
           />
-          <meta
-            property="og:image"
-            content={image}
-          />
+          <meta property="og:image" content={image} />
 
           {/* Twitter */}
           <meta property="twitter:card" content="summary_large_image" />
@@ -76,10 +79,7 @@ const Template = ({ data, pageContext }) => {
             property="twitter:description"
             content={`${post.frontmatter.description}`}
           />
-          <meta
-            property="twitter:image"
-            content={image}
-          />
+          <meta property="twitter:image" content={image} />
         </Helmet>
         <header
           className={`sticky-header h-16 ${shadowStyle} text-center text-xl top-0 w-full bg-blog-header text-blog-bg flex items-center justify-center transition duration-1000 z-10`}
@@ -87,16 +87,45 @@ const Template = ({ data, pageContext }) => {
           <span className="w-3/4">{post.frontmatter.title}</span>
         </header>
         <div className="absolute left-2 top-1">
-          <a target="_blank" rel="noopener noreferrer" href={twitterShare}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="color"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+          <a target="_blank" rel="noopener noreferrer" href={twitterShare}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="color"
+            >
+              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+            </svg>
+          </a>
         </div>
-        <span className="absolute bg-blog-header draft opacity-50 px-2 rounded text-blog-bg top-1">{post.frontmatter.published === false ? `Draft` : ''}</span>
-        <span className="reading-time absolute right-2 top-1 text-blog-lightgray text-blog-primary"><span className="mr-2" role="img" aria-label="hourglass">⏳</span>
-        {readingTime.text}</span>
+        <span className="absolute bg-blog-header draft opacity-50 px-2 rounded text-blog-bg top-1 mr-2">
+          {post.frontmatter.published === false ? `Draft` : ''}
+        </span>
+        <span className="reading-time absolute right-2 top-1 text-blog-lightgray text-blog-primary">
+          <span className="mr-2" role="img" aria-label="hourglass">
+            ⏳
+          </span>
+          {readingTime.text}
+        </span>
         <div className="blog-post-content text-blog-primary">
-          <MDXRenderer className="blog-post-text text-blog-primary text-lg leading-7 m-auto pb-6 sm:px-12 md:px-12 lg:px-12 xl:px-12">{post.body}</MDXRenderer>
+          <MDXRenderer className="blog-post-text text-blog-primary text-lg leading-7 m-auto pb-6 sm:px-12 md:px-12 lg:px-12 xl:px-12">
+            {post.body}
+          </MDXRenderer>
           <div className="tags py-10">
-            {post.frontmatter.tags.map(tag => (
-              <Link key={tag} to={`/tags/${tag}`} className="bg-blog-header mr-4 p-2 rounded text-base text-blog-bg transition duration-500">{tag}</Link>
+            {post.frontmatter.tags.map((tag) => (
+              <Link
+                key={tag}
+                to={`/tags/${tag}`}
+                className="bg-blog-header mr-4 p-2 rounded text-base text-blog-bg transition duration-500"
+              >
+                {tag}
+              </Link>
             ))}
           </div>
           <nav className="m-auto pb-6 text-blog-primary">
@@ -160,7 +189,7 @@ const Template = ({ data, pageContext }) => {
       <Footer />
     </>
   );
-}
+};
 
 export default Template;
 

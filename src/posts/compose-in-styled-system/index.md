@@ -1,14 +1,15 @@
 ---
-path: "/compose-in-styled-system"
-date: "2019-08-01"
-update: "2020-04-30"
-title: "🧐 What is compose-in-styled-system ?"
-description: "The compose utility in the styled-system is used to combine multiple style functions together into one"
+path: '/compose-in-styled-system'
+date: '2019-08-01'
+update: '2020-04-30'
+title: '🧐 What is compose-in-styled-system ?'
+description: 'The compose utility in the styled-system is used to combine multiple style functions together into one'
 published: true
 tags: ['styled-system']
 ---
 
 ### As per the [official document](https://styled-system.com/api/#compose) of styled system
+
 > The compose utility is used to combine multiple style functions together into one. This utility can help improve performance when using multiple style props functions on the same component.
 
 In this post let us build a Button component using the styled-components and styled-system as shown below. Let us build this component using **border, color, shadow, space & typography** functions from the styled-system.
@@ -28,17 +29,16 @@ Here comes the compose function to the rescue 🚀 which is the super hero 💠 
 
 ```js
 import styled from 'styled-components';
-import { compose, border, color, shadow, space, typography } from 'styled-system';
+import {
+  compose,
+  border,
+  color,
+  shadow,
+  space,
+  typography,
+} from 'styled-system';
 
-const Buttons = styled.div(
-  compose(
-    border,
-    color,
-    shadow,
-    space,
-    typography
-  )
-);
+const Buttons = styled.div(compose(border, color, shadow, space, typography));
 
 export default Buttons;
 ```

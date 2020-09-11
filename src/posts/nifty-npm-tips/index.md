@@ -34,7 +34,7 @@ Interactive interface that lists all package.json scripts, you can select any it
 cd into a folder containing `package.json` or you can point the project folder containing a `package.json` file and then enter the below command 👇🏻
 
 ```js
-ntl
+ntl;
 ```
 
 When specifying a project folder, the `ntl` command takes an additional path parameter
@@ -52,6 +52,5 @@ ntl /path-to-your/blog/
 ```bash
 ntl -m
 ```
-
 
 ## 3. npm outdated

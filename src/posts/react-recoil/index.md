@@ -4,7 +4,7 @@ date: '2020-05-16'
 title: '💫 Understanding Recoil - The state management system for React.'
 description: 'Recoil is an experimental state management system for React by Facebook'
 published: true
-hero_image: "./react-recoil.png"
+hero_image: './react-recoil.png'
 tags: ['react', 'recoil']
 ---
 
@@ -22,8 +22,8 @@ Atoms are units of state, which can be subscribed individually unlike many state
 
 ```js
 export const nameStateAtom = atom({
-  key: "nameStateAtom", // an unique id
-  default: "", // default value
+  key: 'nameStateAtom', // an unique id
+  default: '', // default value
 });
 ```
 
@@ -43,9 +43,15 @@ function Input() {
 
   return (
     <div className="input">
-      <input placeholder="Enter name" type="text" value={name} onChange={onChange} /><br />
+      <input
+        placeholder="Enter name"
+        type="text"
+        value={name}
+        onChange={onChange}
+      />
+      <br />
       <div className="comment">
-          The state is shared using <a href="https://recoiljs.org/">recoil</a>
+        The state is shared using <a href="https://recoiljs.org/">recoil</a>
       </div>
     </div>
   );
@@ -56,11 +62,11 @@ When we enter any value in the input box above, the value of the input in the `I
 
 ### Selectors
 
-A **selector** is a pure function which accepts atom as an input. When an atom is updated which is subscribed by the selector, the selector function will be re-evaluated.  Components can also subscribe to selectors just like atoms, and will then be re-rendered when the selectors change.
+A **selector** is a pure function which accepts atom as an input. When an atom is updated which is subscribed by the selector, the selector function will be re-evaluated. Components can also subscribe to selectors just like atoms, and will then be re-rendered when the selectors change.
 
 ```js
 export const nameStateSelector = selector({
-  key: "nameStateSelector", // unique ID
+  key: 'nameStateSelector', // unique ID
   get: ({ get }) => {
     const text = get(nameStateAtom);
     return text;
@@ -74,7 +80,6 @@ In the above snippet of code, the `nameStateSelector` has one dependency, that i
 
 The Selectors can be reading the `useRecoilValue()`, which takes an atom or selector as an argument.
 
-
 ### useRecoilValue(state)
 
 This is one of the important hooks in the Recoil API. This hook will just subscribe the component to the given Recoil state, it is used to return the value of the given Recoil state.
@@ -82,16 +87,16 @@ This is one of the important hooks in the Recoil API. This hook will just subscr
 This is the recommended hook to use when a component intends to read the state.
 
 ```js
-import {atom, selector, useRecoilValue} from 'recoil';
+import { atom, selector, useRecoilValue } from 'recoil';
 
 const nameStateAtom = atom({
   key: 'nameStateAtom',
-  default: ''
+  default: '',
 });
 
 const nameStateSelector = selector({
   key: 'nameStateSelector',
-  get: ({get}) => get(nameStateAtom)
+  get: ({ get }) => get(nameStateAtom),
 });
 
 function NameDisplay() {
@@ -111,7 +116,5 @@ function NameDisplay() {
 > If the value has to be accessed directly in the component, then use atom inside the `useRecoilValue()`. If any computation is required for the value, then use the selector.
 
 ### A sample project is available on <a target="_blank" href="https://github.com/chetanraj/react-recoil-example/">GitHub</a>.
-
-
 
 ### Talk about [Recoil](https://www.youtube.com/watch?v=_ISAA_Jt9kI) in React Europe

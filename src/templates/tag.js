@@ -11,7 +11,7 @@ const TagTemplate = ({ data, pageContext }) => {
   let { tag } = pageContext;
   const { edges, totalCount } = data.allMdx;
 
-  const Posts = edges.map(edge => (
+  const Posts = edges.map((edge) => (
     <PostLink key={edge.node.id} post={edge.node} />
   ));
 

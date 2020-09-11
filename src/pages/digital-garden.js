@@ -6,36 +6,28 @@ import Layout from '../components/layout';
 import SEO from '../components/seo';
 import PostLink from '../components/post-link';
 
-const IndexPage = ({
+const DigitalGarden = ({
   data: {
     allMdx: { edges },
   },
 }) => {
-  let Posts = edges.filter((edge) => edge.node.frontmatter.published);
-
-  let latestPost = Posts[0];
-  //*
-  Posts.shift();
-  const OtherPosts = Posts.map((edge) => (
+  let post = edges.filter((edge) => edge.node.frontmatter.published === false);
+  const Posts = post.map((edge) => (
     <PostLink key={edge.node.id} post={edge.node} />
   ));
 
   return (
-    <Layout>
-      <SEO title="Hi 👋" />
+    <Layout page="digitalgarden">
+      <SEO title="🌱 Digital Garden of Chetan Raj" />
       <div className="text-4xl font-light text-blog-lightgray mt-6 mb-4">
-        Latest post
+        Posts
       </div>
-      <PostLink key={latestPost.node.id} post={latestPost.node} />
-      <div className="text-4xl font-light text-blog-lightgray mb-4">
-        Other posts
-      </div>
-      <div className="posts mb-20">{OtherPosts}</div>
+      <div className="posts mb-20">{Posts}</div>
     </Layout>
   );
 };
 
-export default IndexPage;
+export default DigitalGarden;
 
 export const pageQuery = graphql`
   query {

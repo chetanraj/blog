@@ -20,6 +20,11 @@
   --header-bg: #dfebf6;
 }
 
+::selection {
+  background: var(--header-bg);
+  color: var(--bg-color);
+}
+
 body {
   background-color: var(--bg-color);
   transition: color .6s,background-color .6s;

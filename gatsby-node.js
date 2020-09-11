@@ -5,15 +5,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 
   const result = await graphql(`
     {
-      allMdx(
-        filter: {
-          frontmatter: {
-            published: { eq: true }
-          }
-        }
-        sort: { order: DESC, fields: [frontmatter___date] }
-        limit: 1000
-      ) {
+      allMdx(sort: { order: DESC, fields: [frontmatter___date] }, limit: 1000) {
         edges {
           node {
             frontmatter {
@@ -49,7 +41,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 
     if (post.node.frontmatter.tags) {
       const { tags } = post.node.frontmatter;
-      tags.forEach(tag => {
+      tags.forEach((tag) => {
         tagSet.add(tag);
       });
     }
@@ -60,20 +52,19 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       context: {
         previous,
         next,
-      }, 
+      },
     });
   });
 
-  const tagList = Array.from(tagSet)
+  const tagList = Array.from(tagSet);
 
-  tagList.forEach(tag => {
+  tagList.forEach((tag) => {
     createPage({
       path: `/tags/${tag}/`,
       component: tagTemplate,
       context: {
         tag,
       },
-    })
-  })
-
+    });
+  });
 };

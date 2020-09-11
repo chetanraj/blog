@@ -18,13 +18,13 @@ The quickest way to put your app to GitHub Pages is by using a package - [gh-pag
 npm i gh-pages -D
 ```
 
-or you can install it in global
+or you can install the package globally
 
 ```js
 npm i gh-pages -g
 ```
 
-Add a simple script to your package.json
+Add this simple script to your package.json
 
 ```json:title=package.json
 {
@@ -33,10 +33,11 @@ Add a simple script to your package.json
   }
 }
 ```
+**Note**: Assuming the build folder to be `dist`
 
 When you run `npm run deploy` all the contents of the build folder will be pushed to your repository’s gh-pages branch. 
 
-## If your creating a **User page in GitHub**
+## If you are creating a **User page in GitHub**
 
 Create a repository with your username like `username.github.io`, Create a branch called `code` or you can name the branch anything. Build the app in this branch and when it comes to deploying the app use the `gh-pages` command to push the build folder contents to the gh-pages branch
 
@@ -86,7 +87,7 @@ To include dotfiles while pushing the changes to the branch
 }
 ```
 
-Change the commit message when publishing the change
+To change the commit message when publishing the change
 
 ```json:title=package.json
 {
