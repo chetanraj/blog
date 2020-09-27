@@ -96,7 +96,7 @@ const Header = (props) => {
       <div
         className={`flex ${theme} cursor-pointer z-20 ${themeChangeIconPos}`}
       >
-        <a className="mx-4" href="/blog/rss.xml" title="RSS">
+        <a className="mx-4 hidden md:block" href="/blog/rss.xml" title="RSS">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -104,9 +104,9 @@ const Header = (props) => {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="theme"
           >
             <path d="M4 11a9 9 0 0 1 9 9" />

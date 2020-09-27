@@ -1,9 +1,9 @@
 {
   "name": "blog-by-chetanraj",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "description": "Blog by Chetan Raj",
   "version": "1.0.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "Chetan Raj <chetan.narian@gmail.com>",
   "dependencies": {
     "@mdx-js/mdx": "^1.6.4",
     "@mdx-js/react": "^1.6.4",
@@ -63,14 +63,14 @@
   "ntl": {
     "descriptions": {
       "develop": "💻",
-    "build": "gatsby build --prefix-paths",
-    "build:simple": "gatsby build",
-"format": "💄",
-    "start": "npm run develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
-    "deploy": "🚀"
+      "build": "gatsby build --prefix-paths",
+      "build:simple": "gatsby build",
+      "format": "💄",
+      "start": "💻",
+      "serve": "gatsby serve",
+      "clean": "gatsby clean",
+      "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+      "deploy": "🚀"
     }
   },
   "repository": {

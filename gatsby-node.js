@@ -52,6 +52,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       context: {
         previous,
         next,
+        posts
       },
     });
   });

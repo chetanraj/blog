@@ -50,27 +50,27 @@ export default function footer() {
                 className="text-blog-bg pointer transition-colors duration-500"
                 href="https://snpt.netlify.app/"
               >
-                <span role="img" aria-label="laptop">
+                <span className="mr-2" role="img" aria-label="laptop">
                   💻
-                </span>{' '}
+                </span>
                 Snpt
               </a>
               <a
                 className="text-blog-bg pointer transition-colors duration-500 pt-2"
                 href="https://esexplorer.netlify.app/"
               >
-                <span role="img" aria-label="magnifying glass">
+                <span className="mr-2" role="img" aria-label="magnifying glass">
                   🔍
-                </span>{' '}
+                </span>
                 ES Explorer
               </a>
               <a
                 className="text-blog-bg pointer transition-colors duration-500 pt-2"
                 href="https://www.instagram.com/javascriptessentials/"
               >
-                <span role="img" aria-label="globe">
+                <span className="mr-2" role="img" aria-label="globe">
                   🌏
-                </span>{' '}
+                </span>
                 JavaScript Essentials
               </a>
             </div>
