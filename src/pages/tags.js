@@ -28,13 +28,13 @@ const Tags = ({ data }) => {
         Tags
       </div>
 
-      {sorted.map((section) => {
+      {sorted.map((section, index) => {
         const { title, content, length } = section;
         const posts = content.map((node) => (
           <PostLink key={node.id} post={node} />
         ));
         return (
-          <>
+          <div key={index}>
             <div className="flex items-center justify-between">
               <div className="text-2xl font-light text-blog-lightgray mb-4">
                 {title}
@@ -44,7 +44,7 @@ const Tags = ({ data }) => {
               </div>
             </div>
             <div className="posts mb-10">{posts}</div>
-          </>
+          </div>
         );
       })}
     </Layout>
