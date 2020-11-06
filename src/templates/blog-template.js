@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, graphql } from 'gatsby';
+import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 
 //* Components
@@ -25,8 +25,6 @@ const Template = ({ data, pageContext }) => {
   const twitterShare = `http://twitter.com/share?text=${encodeURIComponent(
     post.frontmatter.title
   )} - &url=https://chetanraj.in/blog${post.frontmatter.path}/&via=chetan_raj`;
-
-  const { posts, previous, next } = pageContext;
 
   const [shouldShowShadow, setShouldShowShadow] = useState(false);
 

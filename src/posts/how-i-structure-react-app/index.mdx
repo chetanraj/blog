@@ -1,17 +1,20 @@
 ---
 path: "/how-i-structure-react-app"
-date: "2020-08-03"
-title: "🏢 How I structure React app"
+date: "2020-10-08"
+title: "🏢  How I structure React app"
 published: false
 tags: ['React']
 ---
-### Description:
 
-Structuring an app is like building a house 🏡, many decisions 🤯 many views, many perspectives 🧐, it can be a personal choice or teams vote. Folder structure also plays a vital role. The questions in mind always are where should this file reside or which folder this file should go, what should I name the folder, component, hook, context 🤔
+# Structuring an app is like building a house 🏡, many decisions 🤯  many views, many perspectives 🧐
 
-It's the developer way of life
+Folder structure also plays a vital role. The mind is flooded with questions like where this folder/file should reside? Which place it should go to? What should be the name of the folder, file, component, hook or context 🤔
 
-Normally, I would choose the [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) to create an app from the base, as it's easy & we can start running that app as quickly as possible. Starting with package.json
+> 💻 &nbsp;&nbsp;It's the developer way of life
+
+I normally choose the [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) to create a react app as it's easy to kick-start development in no time & all the tools 🛠  like basic css file, build scripts, basic testing framework & PWA are included by default.
+
+## Starting with package.json
 
 ## package.json
 
@@ -23,15 +26,13 @@ Normally, I would choose the [create-react-app](https://reactjs.org/docs/create-
 	"devDependencies": { }
   "scripts": {
     "start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
+	"build": "react-scripts build",
+	"test": "react-scripts test",
     "eject": "react-scripts eject",
-		"lint": "eslint src/**/*.js",
-    "lint:fix": "eslint src/**/*.js --fix",
     "stylelint": "stylelint src/**/index.css",
     "stylelint:fix": "stylelint src/**/index.css --fix",		
-		"📦": "bundlesize",
-		"prettification": "prettier --write \"**/*.js\""
+	"📦": "bundlesize",
+	"prettification": "prettier --write \"**/*.js\""
   },
 	"lint-staged": {
     "*.{js,jsx}": [
@@ -51,7 +52,7 @@ Normally, I would choose the [create-react-app](https://reactjs.org/docs/create-
 
 ## scripts
 
-Here is where the magic 🎩 lies, all the good things happen here
+Here is where all the magic 🎩  lies, all the good things happen here
 
 - build the app
 - style the app
@@ -60,7 +61,7 @@ Here is where the magic 🎩 lies, all the good things happen here
 - lint the app 😖
 - and many more
 
-### Some tips for `scripts` in pacakge.json
+### Some tips for `scripts` in pacakge.json ✅
 
 The script name should be easy to remember and small, Avoid using large names like `build:then:check:what:happened`
 
@@ -71,24 +72,23 @@ The script name should be easy to remember and small, Avoid using large names li
 }
 ```
 
-My choice: using emoji 😉 as a script name. Let me know if you're favorite emoji for deploying the code.
+My choice: using emoji 😉 &nbsp;as a script name. Let me know if you're favorite emoji for building or deploying the code, for me for building the app is 🥳 &nbsp;and for deploying the app is 🚀
 
-When I use Tailwind CSS, I tend to name the script as `build:style`, so it's easy to identify that it's a style related task, you can also name it to be specific to the framework/library like `build:tailwind` and that would even easier
+When I use Tailwind CSS, I tend to name the script as `build:style`, so it's easy to identify that it's a style related task, you can also name it to be specific to the framework/library like `build:tailwind` if you're using multiple styling frameworks.
 
-```jsx
+```json
 "scripts": {
-  "build:style": "tailwind build index.css -o app.css"
+	"build:style": "tailwind build index.css -o app.css"
 }
-
 ```
 
-Use `:` instead of `-` for script name, this will make the script name neat & crisp and also readable 👍 The `-` is for package names & `:` is for script names 😉
+Use `:` instead of `-` for script name, this will make the script name neat & crisp and also readable 👍 &nbsp;The `-` is for package names & `:` is for script names 😉
 
-### Other or main stuff in `scripts`
+### Other stuff in `scripts`
 
-Linting, Prettifying, Testing your app & Checking the bundle size is the part & parcel of app developing. To avoid code formatting issues, I have enabled the pre-commit hook with the leverage of prettier. I use `eslint` for linting JS, JSX and I use `stylelint` for linting the styles and `prettier` to format the code and to keep a tab on the bundle size, I use `bundlesize`.
+Linting, Prettifying, Testing your app & Checking the bundle size is part & parcel of app development. To avoid code formatting issues, I have enabled the pre-commit hook with the leverage of prettier. I use `eslint` for linting JS, JSX and I use `stylelint` for linting the styles and `prettier` to format the code and to keep a tab on the bundle size, I use `bundlesize`.
 
-Code splitting using React Lazy, Suspense & React Router and I try to keep each *.js in the build to be less than 500kb 😱 which sometime is not possible 🤯
+Code splitting using React Lazy, Suspense & React Router 😇
 
 ## Folder structure
 
@@ -98,7 +98,7 @@ I follow the Atomic Design Methodology, I follow `Atoms` strictly and then bring
 - The time to build an Organism or a Page will be faster 🚀
 - The style guide for the project will reside in `theme.js`, The color palette, spacing, font families, font sizes, line heights, margin, padding, flex, grid and many more
 
-![How%20I%20structure%20React%20apps%20903518a3d3044c7e924fbee98da8b89e/Atomic_Design.jpg](How%20I%20structure%20React%20apps%20903518a3d3044c7e924fbee98da8b89e/Atomic_Design.jpg)
+![Atomic_Design.png](Atomic_Design.png)
 
 ### Atoms
 
@@ -106,48 +106,50 @@ Atoms are the smallest components, like Buttons, Heading, Input, Dropdown, Icon,
 
 ### Organisms
 
-Organisms are a combination of Atoms like Header, Card, Search Box with Icon, List Item,  and many more. Once you spend planning, designing the `Atoms`, the amount you spend on Organisms will be lesser. 
+Organisms are a combination of Atoms like Header, Card, Search Box with Icon, List Item,  and many more. Once you spend planning, designing the `Atoms`. The amount you spend on Organisms will be lesser. 
 
 ### Pages
 
-Pages can be a combination of Atoms, Organisms or only Organisms depends on the UX design. It can be many cards with a header having a search box and some buttons.
+Pages can be a combination of Atoms & Organisms or only Organisms, which depends on the UX design. For ex: It can be many cards with a header having a search box and some buttons.
 
-If the components are designed in the above methodology, the  time taken to build a Component will be lesser and this is not a one time process where everything will done at one go, this will get better in time ⏰, with multiple design iterations, discussions and different approaches by different people 😉
+If the components are designed in the above methodology, the time taken to build a Component will be lesser.
 
-### Detailed folder structure of the components
+The main take in this is that it's not a one time process where all the small components [Atoms] are built at one go, the design of the components will get better in time ⏰, with multiple iterations & discussions
+
+### The detailed folder structure of the components [Here I'm using Context API for shared state]
 
 ```markdown
-📦src
- ┣ 📂components
- ┃ ┣ 📂atoms
+📦 src
+ ┣ 📂 components
+ ┃ ┣ 📂 atoms
  ┃ ┃ ┣ Heading.js
  ┃ ┃ ┣ Input.js
  ┃ ┃ ┣ Icon.js
  ┃ ┃ ┣ Tag.js
  ┃ ┃ ┗ TextArea.js
- ┃ ┣ 📂organisms
+ ┃ ┣ 📂 organisms
  ┃ ┃ ┣ Card.js
  ┃ ┃ ┣ Search.js
  ┃ ┃ ┣ Upload.js
- ┃ ┣ 📂hooks
+ ┃ ┣ 📂 hooks
  ┃ ┃ ┣ useIntersectionObserver.js
  ┃ ┃ ┗ useKeyPress.js
- ┃ ┣ 📂logics
- ┃ ┃ ┣ Name.js
- ┃ ┃ ┗ Status.js
- ┃ ┣ 📂pages
- ┃ ┃ ┣ 📂Create
+ ┃ ┣ 📂 logics
+ ┃ ┃ ┣ useName.js
+ ┃ ┃ ┗ useStatus.js
+ ┃ ┣ 📂 pages
+ ┃ ┃ ┣ 📂 Create
  ┃ ┃ ┃ ┗ index.js
- ┃ ┃ ┣ 📂List
+ ┃ ┃ ┣ 📂 List
  ┃ ┃ ┃ ┗ index.js
- ┃ ┃ ┣ 📂Onboarding
+ ┃ ┃ ┣ 📂 Onboarding
  ┃ ┃ ┃ ┗ index.js
  ┃ ┃ ┗ index.js
- ┣ 📂context
- ┣ 📂images
- ┣ 📂styled-elements
- ┣ 📂tests
- ┣ 📂utils
+ ┣ 📂 context
+ ┣ 📂 images
+ ┣ 📂 styled-elements
+ ┣ 📂 tests
+ ┣ 📂 utils
  ┣ App.js
  ┣ constants.js
  ┣ index.js
@@ -156,13 +158,63 @@ If the components are designed in the above methodology, the  time taken to buil
  ┗ theme.js
 ```
 
+## How I structure React component
+
+Handle the UI code in one component and separate the logic of that component in other places. This will make the component feel lightweight 🐥 and you can code better
+
+### UI 👇
+
+```jsx
+// File Name: ../pages/Create/index.js
+
+import React from 'react';
+import { useName } from '../logics/useName';
+
+const Create = () => {
+	const { name, setName } = useName();
+
+	const onChange = e => {
+		setName(e.target.value);
+	};
+
+	return (
+		<div>
+			<span>{name}</span>
+			<input onChange={e => onChange(e)} value={name} />
+		</div>
+	);
+};
+
+export { Create };
+```
+
+### Logic 👇
+
+```jsx
+// File Name: ../logics/useName.js
+
+import React, { useState } from 'react';
+
+const useName = () => {
+	const [name, setValue] = useState('');
+
+	const setName = name => {
+		setValue(name);
+	};
+
+	return { name, setName };
+};
+
+export { useName };
+```
+
 ## Styling
 
-Normally i shuffle between [Tailwind CSS](https://tailwindcss.com/) or < 💅> [styled-components](https://styled-components.com/) based on the project requirements.
+Normally I shuffle between [Tailwind CSS](https://tailwindcss.com/) or < 💅> [styled-components](https://styled-components.com/) based on the project requirements.
 
 ### Tailwind CSS
 
-If I choose Tailwind CSS I tend to choose only the needed options in `tailwind.config.js` and  nmae the npm script as `build:style` to build the styles. Naming the script `build:style` will help in identifying that it's a build method for styling purpose 😃
+If I choose Tailwind CSS I tend to choose only the needed options in `tailwind.config.js` and name the npm script as `build:style` to build the styles. Naming the script `build:style` will help in identifying that it's a build method for styling purpose 😃 as I mentioned earlier.
 
 ### < 💅> styled-components
 
@@ -202,7 +254,7 @@ export const theme = {
 
 ## Hosting
 
-I choose [Netlify](https://www.netlify.com/) to host all the apps, Netlify is easy and make things easy around deployment 🚀
+I choose [Netlify](https://www.netlify.com/) to host all the apps, Netlify is easy and also makes things easy 🚀
 
 ## References
 
