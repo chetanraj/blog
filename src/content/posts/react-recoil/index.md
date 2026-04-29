@@ -41,7 +41,7 @@ function Input() {
   };
 
   return (
-    <div className="input">
+    <div class="input">
       <input
         placeholder="Enter name"
         type="text"
@@ -49,7 +49,7 @@ function Input() {
         onChange={onChange}
       />
       <br />
-      <div className="comment">
+      <div class="comment">
         The state is shared using <a href="https://recoiljs.org/">recoil</a>
       </div>
     </div>
