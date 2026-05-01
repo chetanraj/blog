@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>💫 Understanding Recoil - The state management system for React.</title><link rel="icon" href="/icons/icon-48x48.png"><link rel="apple-touch-icon" href="/icons/icon-48x48.png"><link rel="apple-touch-icon" href="/icons/icon-72x72.png"><link rel="apple-touch-icon" href="/icons/icon-96x96.png"><link rel="apple-touch-icon" href="/icons/icon-144x144.png"><link rel="apple-touch-icon" href="/icons/icon-192x192.png"><link rel="apple-touch-icon" href="/icons/icon-256x256.png"><link rel="apple-touch-icon" href="/icons/icon-384x384.png"><link rel="apple-touch-icon" href="/icons/icon-512x512.png"><link rel="stylesheet" href="/_astro/index.DDEgJ5Cv.css"></head> <body> <header class="bg-blog-header h-64 relative"> <div class="flex flex-col items-center h-64 hero-text justify-center text-center text-blog-bg relative z-10"> <div class="text-2xl w-3/4 transition-colors duration-500"> 💫 Understanding Recoil - The state management system for React. </div>  </div> <span class="text-blog-bg home"> <a class="pointer transition-colors duration-500" href="/"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"> <polyline points="12 19 5 12 12 5"></polyline> </svg> </a> </span> <div id="themeToggle" class="flex light cursor-pointer z-20 absolute"> <a class="mx-4 hidden md:block" href="/rss.xml" title="RSS"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme"> <path d="M4 11a9 9 0 0 1 9 9"></path> <path d="M4 4a16 16 0 0 1 16 16"></path> <circle cx="5" cy="19" r="1"></circle> </svg> </a> <button class="mx-4" title="theme" type="button" id="themeButton"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme" id="themeIcon"> <path id="themeIconPath" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> </div> <div class="bg"></div> </header> <script>
+  const root = document.body;
+  const wrap = document.getElementById('themeToggle');
+  const btn = document.getElementById('themeButton');
+  const svg = document.getElementById('themeIcon');
+
+  const moon = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+  const sun = `
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  `;
+  const system = `<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>`;
+
+  function getInitialTheme() {
+    const persisted = window.localStorage.getItem('theme');
+    if (persisted === 'dark' || persisted === 'light' || persisted === 'system') return persisted;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function playSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  }
+
+  function setTheme(next) {
+    const themeToApply = next === 'system'
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : next;
+    
+    root.className = themeToApply;
+    wrap?.classList.remove('dark', 'light');
+    wrap?.classList.add(themeToApply);
+    
+    if (svg) {
+      if (next === 'light') svg.innerHTML = moon;
+      else if (next === 'dark') svg.innerHTML = sun;
+      else if (next === 'system') svg.innerHTML = system;
+    }
+    window.localStorage.setItem('theme', next);
+    playSound();
+  }
+
+  const initial = typeof window !== 'undefined' ? getInitialTheme() : 'light';
+  setTheme(initial);
+
+  btn?.addEventListener('click', () => {
+    const current = window.localStorage.getItem('theme') || initial;
+    const next = current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
+    setTheme(next);
+  });
+</script> <section class="w-3/4 m-auto"> <main class="h-sc"> <div class="">  <article class="blog-post-container blog-post-content"> <div class="mt-4"> <div class="pl-4 pt-2 mb-6 flex items-center"> <div class="text-blog-secondary flex items-center justify-center mr-2"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> 2020-05-16 &middot;
+</div> <div class="text-blog-secondary flex items-center justify-center ml-2"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 3 min read &middot;
+</div> <div class="text-blog-secondary flex items-center justify-center ml-2">  <div class="flex gap-2 flex-wrap"> <span class="text-xs bg-blog-header text-blog-bg px-2 py-1 rounded"> react </span><span class="text-xs bg-blog-header text-blog-bg px-2 py-1 rounded"> recoil </span> </div>  </div> </div> </div> <div class="blog-post-content text-blog-primary"> <blockquote>
+<p>Recoil works and thinks like React.</p>
+</blockquote>
+<h3 id="definition">Definition</h3>
+<p>Recoil is an experimental state management system for React by Facebook. It offers several out of the box abilities which are difficult to achieve with React ⚛️ alone.</p>
+<p>Recoil lets you create a data-flow graph that flows from <strong>atoms</strong> through <strong>selectors</strong> and down into your React components.</p>
+<h3 id="what-are-atoms">What are Atoms ?</h3>
+<p>Atoms are units of state, which can be subscribed individually unlike many state management systems. When an atom is updated, each component which is subscribed to it is re-rendered with the updated value.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#FF79C6">export</span><span style="color:#FF79C6"> const</span><span style="color:#F8F8F2"> nameStateAtom </span><span style="color:#FF79C6">=</span><span style="color:#50FA7B"> atom</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#F8F8F2">  key</span><span style="color:#FF79C6">:</span><span style="color:#E9F284"> '</span><span style="color:#F1FA8C">nameStateAtom</span><span style="color:#E9F284">'</span><span style="color:#F8F8F2">, </span><span style="color:#6272A4">// an unique id</span></span>
+<span class="line"><span style="color:#F8F8F2">  default</span><span style="color:#FF79C6">:</span><span style="color:#E9F284"> ''</span><span style="color:#F8F8F2">, </span><span style="color:#6272A4">// default value</span></span>
+<span class="line"><span style="color:#F8F8F2">});</span></span></code></pre>
+<p>Atoms always need a unique key, which is used for debugging, persistence and some APIs which let us see the map of all atoms.</p>
+<p>The <code>atom()</code> function takes an object as a parameter, that object contains a <code>key</code> which is a unique id. Make sure that you don’t create two atoms with the same key.</p>
+<p>To read and write an atom from a component, use a hook called <code>useRecoilState</code>. It is the same as React’s <code>useState</code> but the useRecoilState can be shared between components.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#FF79C6">function</span><span style="color:#50FA7B"> Input</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FF79C6">  const</span><span style="color:#F8F8F2"> [name, setName] </span><span style="color:#FF79C6">=</span><span style="color:#50FA7B"> useRecoilState</span><span style="color:#F8F8F2">(nameStateAtom);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF79C6">  const</span><span style="color:#50FA7B"> onChange</span><span style="color:#FF79C6"> =</span><span style="color:#F8F8F2"> (</span><span style="color:#FFB86C;font-style:italic">event</span><span style="color:#F8F8F2">) </span><span style="color:#FF79C6">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#50FA7B">    setName</span><span style="color:#F8F8F2">(event.target.value);</span></span>
+<span class="line"><span style="color:#F8F8F2">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF79C6">  return</span><span style="color:#F8F8F2"> (</span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;</span><span style="color:#FF79C6">div</span><span style="color:#50FA7B;font-style:italic"> class</span><span style="color:#FF79C6">=</span><span style="color:#E9F284">"</span><span style="color:#F1FA8C">input</span><span style="color:#E9F284">"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#FF79C6">input</span></span>
+<span class="line"><span style="color:#50FA7B;font-style:italic">        placeholder</span><span style="color:#FF79C6">=</span><span style="color:#E9F284">"</span><span style="color:#F1FA8C">Enter name</span><span style="color:#E9F284">"</span></span>
+<span class="line"><span style="color:#50FA7B;font-style:italic">        type</span><span style="color:#FF79C6">=</span><span style="color:#E9F284">"</span><span style="color:#F1FA8C">text</span><span style="color:#E9F284">"</span></span>
+<span class="line"><span style="color:#50FA7B;font-style:italic">        value</span><span style="color:#FF79C6">={</span><span style="color:#F8F8F2">name</span><span style="color:#FF79C6">}</span></span>
+<span class="line"><span style="color:#50FA7B;font-style:italic">        onChange</span><span style="color:#FF79C6">={</span><span style="color:#F8F8F2">onChange</span><span style="color:#FF79C6">}</span></span>
+<span class="line"><span style="color:#F8F8F2">      /></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#FF79C6">br</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#FF79C6">div</span><span style="color:#50FA7B;font-style:italic"> class</span><span style="color:#FF79C6">=</span><span style="color:#E9F284">"</span><span style="color:#F1FA8C">comment</span><span style="color:#E9F284">"</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">        The state is shared using &#x3C;</span><span style="color:#FF79C6">a</span><span style="color:#50FA7B;font-style:italic"> href</span><span style="color:#FF79C6">=</span><span style="color:#E9F284">"</span><span style="color:#F1FA8C">https://recoiljs.org/</span><span style="color:#E9F284">"</span><span style="color:#F8F8F2">>recoil&#x3C;/</span><span style="color:#FF79C6">a</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;/</span><span style="color:#FF79C6">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;/</span><span style="color:#FF79C6">div</span><span style="color:#F8F8F2">></span></span>
+<span class="line"><span style="color:#F8F8F2">  );</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
+<p>When we enter any value in the input box above, the value of the input in the <code>Input</code> component is shared with other components which are subscribed to this atom <code>nameStateAtom</code>.</p>
+<h3 id="selectors">Selectors</h3>
+<p>A <strong>selector</strong> is a pure function which accepts atom as an input. When an atom is updated which is subscribed by the selector, the selector function will be re-evaluated. Components can also subscribe to selectors just like atoms, and will then be re-rendered when the selectors change.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#FF79C6">export</span><span style="color:#FF79C6"> const</span><span style="color:#F8F8F2"> nameStateSelector </span><span style="color:#FF79C6">=</span><span style="color:#50FA7B"> selector</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#F8F8F2">  key</span><span style="color:#FF79C6">:</span><span style="color:#E9F284"> '</span><span style="color:#F1FA8C">nameStateSelector</span><span style="color:#E9F284">'</span><span style="color:#F8F8F2">, </span><span style="color:#6272A4">// unique ID</span></span>
+<span class="line"><span style="color:#50FA7B">  get</span><span style="color:#FF79C6">:</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FFB86C;font-style:italic">get</span><span style="color:#F8F8F2"> }) </span><span style="color:#FF79C6">=></span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FF79C6">    const</span><span style="color:#F8F8F2"> text </span><span style="color:#FF79C6">=</span><span style="color:#50FA7B"> get</span><span style="color:#F8F8F2">(nameStateAtom);</span></span>
+<span class="line"><span style="color:#FF79C6">    return</span><span style="color:#F8F8F2"> text;</span></span>
+<span class="line"><span style="color:#F8F8F2">  },</span></span>
+<span class="line"><span style="color:#F8F8F2">});</span></span></code></pre>
+<p>Selectors also needs a unique key and a <code>getter</code> function, computed value can be accessed in the component.</p>
+<p>In the above snippet of code, the <code>nameStateSelector</code> has one dependency, that is <code>nameStateAtom</code>. When the <code>nameStateAtom</code> changes/updates the <code>nameStateSelector</code> executes the getter and computes the value.</p>
+<p>The Selectors can be reading the <code>useRecoilValue()</code>, which takes an atom or selector as an argument.</p>
+<h3 id="userecoilvaluestate">useRecoilValue(state)</h3>
+<p>This is one of the important hooks in the Recoil API. This hook will just subscribe the component to the given Recoil state, it is used to return the value of the given Recoil state.</p>
+<p>This is the recommended hook to use when a component intends to read the state.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#FF79C6">import</span><span style="color:#F8F8F2"> { atom, selector, useRecoilValue } </span><span style="color:#FF79C6">from</span><span style="color:#E9F284"> '</span><span style="color:#F1FA8C">recoil</span><span style="color:#E9F284">'</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF79C6">const</span><span style="color:#F8F8F2"> nameStateAtom </span><span style="color:#FF79C6">=</span><span style="color:#50FA7B"> atom</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#F8F8F2">  key</span><span style="color:#FF79C6">:</span><span style="color:#E9F284"> '</span><span style="color:#F1FA8C">nameStateAtom</span><span style="color:#E9F284">'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">  default</span><span style="color:#FF79C6">:</span><span style="color:#E9F284"> ''</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#F8F8F2">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF79C6">const</span><span style="color:#F8F8F2"> nameStateSelector </span><span style="color:#FF79C6">=</span><span style="color:#50FA7B"> selector</span><span style="color:#F8F8F2">({</span></span>
+<span class="line"><span style="color:#F8F8F2">  key</span><span style="color:#FF79C6">:</span><span style="color:#E9F284"> '</span><span style="color:#F1FA8C">nameStateSelector</span><span style="color:#E9F284">'</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#50FA7B">  get</span><span style="color:#FF79C6">:</span><span style="color:#F8F8F2"> ({ </span><span style="color:#FFB86C;font-style:italic">get</span><span style="color:#F8F8F2"> }) </span><span style="color:#FF79C6">=></span><span style="color:#50FA7B"> get</span><span style="color:#F8F8F2">(nameStateAtom),</span></span>
+<span class="line"><span style="color:#F8F8F2">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF79C6">function</span><span style="color:#50FA7B"> NameDisplay</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FF79C6">  const</span><span style="color:#F8F8F2"> name </span><span style="color:#FF79C6">=</span><span style="color:#50FA7B"> useRecoilValue</span><span style="color:#F8F8F2">(nameStateAtom);</span></span>
+<span class="line"><span style="color:#FF79C6">  const</span><span style="color:#F8F8F2"> nameSelector </span><span style="color:#FF79C6">=</span><span style="color:#50FA7B"> useRecoilValue</span><span style="color:#F8F8F2">(nameStateSelector);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF79C6">  return</span><span style="color:#F8F8F2"> (</span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;></span></span>
+<span class="line"><span style="color:#F8F8F2">      Name: </span><span style="color:#FF79C6">{</span><span style="color:#F8F8F2">name</span><span style="color:#FF79C6">}</span></span>
+<span class="line"><span style="color:#F8F8F2">      &#x3C;</span><span style="color:#FF79C6">br</span><span style="color:#F8F8F2"> /></span></span>
+<span class="line"><span style="color:#F8F8F2">      Name from selector: </span><span style="color:#FF79C6">{</span><span style="color:#F8F8F2">name</span><span style="color:#FF79C6">}</span></span>
+<span class="line"><span style="color:#F8F8F2">    &#x3C;/></span></span>
+<span class="line"><span style="color:#F8F8F2">  );</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
+<blockquote>
+<p>If the value has to be accessed directly in the component, then use atom inside the <code>useRecoilValue()</code>. If any computation is required for the value, then use the selector.</p>
+</blockquote>
+<h3 id="a-sample-project-is-available-on-github">A sample project is available on <a target="_blank" href="https://github.com/chetanraj/react-recoil-example/">GitHub</a>.</h3>
+<h3 id="talk-about-recoil-in-react-europe">Talk about <a href="https://www.youtube.com/watch?v=_ISAA_Jt9kI">Recoil</a> in React Europe</h3> </div> </article>  </div> </main> </section> <footer class="bg-blog-header"> <div class="p-6 sm:flex justify-between items-center"> <div class="left pt-6"> <a class="text-2xl text-blog-bg pointer transition-colors duration-500" href="https://chetanraj.in">
+Chetan Raj
+</a> <div class="opacity-50 text-blog-bg pointer transition-colors duration-500 pt-16 hidden sm:block md:block lg:block xl:block">
+&copy; Chetan Raj. All Rights Reserved.
+</div> </div> <div class="right pt-10 sm:pt-0 flex"> <div class="pr-20 social"> <h4 class="opacity-50 text-blog-bg pointer transition-colors duration-500">
+Social
+</h4> <div class="grid grid-cols-1 pt-4 w-full"> <a class="text-blog-bg pointer transition-colors duration-500" href="https://twitter.com/chetan_raj"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-abp-filters-channel="c255be2e-a9f9-4db8-8acb-a5c77df7b0c2"> <polygon class="st0" points="21.3,21.1 9.9,2.9 2.7,2.9 14.1,21.1 "></polygon> <line class="st0" x1="2.7" y1="21.1" x2="9.9" y2="14.5"></line> <line class="st0" x1="14.1" y1="9.5" x2="21.3" y2="2.9"></line></svg> </a> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="https://github.com/chetanraj"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg> </a> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="https://www.instagram.com/thecjstream/"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> </a> </div> </div> <div class="links"> <h4 class="opacity-50 text-blog-bg pointer transition-colors duration-500">
+Links
+</h4> <div class="grid grid-cols-1 pt-4 w-full"> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="https://www.instagram.com/javascriptessentials/"> <span class="mr-2" role="img" aria-label="globe">🌏</span>
+JavaScript Essentials
+</a> </div> </div> </div> <div class="opacity-50 text-blog-bg pointer transition-colors duration-500 pt-16 block sm:hidden md:hidden lg:hidden xl:hidden">
+&copy; Chetan Raj. All Rights Reserved.
+</div> </div> </footer> </body></html>

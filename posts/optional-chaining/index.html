@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>⛓ The optional chaining operator in JavaScript</title><link rel="icon" href="/icons/icon-48x48.png"><link rel="apple-touch-icon" href="/icons/icon-48x48.png"><link rel="apple-touch-icon" href="/icons/icon-72x72.png"><link rel="apple-touch-icon" href="/icons/icon-96x96.png"><link rel="apple-touch-icon" href="/icons/icon-144x144.png"><link rel="apple-touch-icon" href="/icons/icon-192x192.png"><link rel="apple-touch-icon" href="/icons/icon-256x256.png"><link rel="apple-touch-icon" href="/icons/icon-384x384.png"><link rel="apple-touch-icon" href="/icons/icon-512x512.png"><link rel="stylesheet" href="/_astro/index.DDEgJ5Cv.css"></head> <body> <header class="bg-blog-header h-64 relative"> <div class="flex flex-col items-center h-64 hero-text justify-center text-center text-blog-bg relative z-10"> <div class="text-2xl w-3/4 transition-colors duration-500"> ⛓ The optional chaining operator in JavaScript </div>  </div> <span class="text-blog-bg home"> <a class="pointer transition-colors duration-500" href="/"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"> <polyline points="12 19 5 12 12 5"></polyline> </svg> </a> </span> <div id="themeToggle" class="flex light cursor-pointer z-20 absolute"> <a class="mx-4 hidden md:block" href="/rss.xml" title="RSS"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme"> <path d="M4 11a9 9 0 0 1 9 9"></path> <path d="M4 4a16 16 0 0 1 16 16"></path> <circle cx="5" cy="19" r="1"></circle> </svg> </a> <button class="mx-4" title="theme" type="button" id="themeButton"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme" id="themeIcon"> <path id="themeIconPath" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> </div> <div class="bg"></div> </header> <script>
+  const root = document.body;
+  const wrap = document.getElementById('themeToggle');
+  const btn = document.getElementById('themeButton');
+  const svg = document.getElementById('themeIcon');
+
+  const moon = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+  const sun = `
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  `;
+  const system = `<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>`;
+
+  function getInitialTheme() {
+    const persisted = window.localStorage.getItem('theme');
+    if (persisted === 'dark' || persisted === 'light' || persisted === 'system') return persisted;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function playSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  }
+
+  function setTheme(next) {
+    const themeToApply = next === 'system'
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : next;
+    
+    root.className = themeToApply;
+    wrap?.classList.remove('dark', 'light');
+    wrap?.classList.add(themeToApply);
+    
+    if (svg) {
+      if (next === 'light') svg.innerHTML = moon;
+      else if (next === 'dark') svg.innerHTML = sun;
+      else if (next === 'system') svg.innerHTML = system;
+    }
+    window.localStorage.setItem('theme', next);
+    playSound();
+  }
+
+  const initial = typeof window !== 'undefined' ? getInitialTheme() : 'light';
+  setTheme(initial);
+
+  btn?.addEventListener('click', () => {
+    const current = window.localStorage.getItem('theme') || initial;
+    const next = current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
+    setTheme(next);
+  });
+</script> <section class="w-3/4 m-auto"> <main class="h-sc"> <div class="">  <article class="blog-post-container blog-post-content"> <div class="mt-4"> <div class="pl-4 pt-2 mb-6 flex items-center"> <div class="text-blog-secondary flex items-center justify-center mr-2"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> 2020-05-02 &middot;
+</div> <div class="text-blog-secondary flex items-center justify-center ml-2"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 3 min read &middot;
+</div> <div class="text-blog-secondary flex items-center justify-center ml-2">  <div class="flex gap-2 flex-wrap"> <span class="text-xs bg-blog-header text-blog-bg px-2 py-1 rounded"> javascript 💛 </span><span class="text-xs bg-blog-header text-blog-bg px-2 py-1 rounded"> es2020 </span> </div>  </div> </div> </div> <div class="blog-post-content text-blog-primary"> <h2 id="definition">Definition</h2>
+<p>The optional chaining operator <code>?.</code> permits reading the value of a property located deep within a chain of connected objects.</p>
+<blockquote>
+<p>The optional chaining was introduced as part of the ES2020 standard.</p>
+</blockquote>
+<h2 id="why-this">Why this ?</h2>
+<p>It changes the way we access the properties from the deep objects. The optional chaining makes your code look cleaner 🧼 and crisp 🔥</p>
+<p>Consider this piece of code, where the data object has a query and an answer to the query.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#F8F8F2">const response = {</span></span>
+<span class="line"><span style="color:#8BE9FE">	"</span><span style="color:#8BE9FD">data</span><span style="color:#8BE9FE">"</span><span style="color:#FF79C6">:</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#8BE9FE">		"</span><span style="color:#8BE9FD">query</span><span style="color:#8BE9FE">"</span><span style="color:#FF79C6">:</span><span style="color:#E9F284"> "</span><span style="color:#F1FA8C">What is javascript ?</span><span style="color:#E9F284">"</span><span style="color:#F8F8F2">,</span></span>
+<span class="line"><span style="color:#8BE9FE">		"</span><span style="color:#8BE9FD">answer</span><span style="color:#8BE9FE">"</span><span style="color:#FF79C6"> :</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#8BE9FE">			"</span><span style="color:#8BE9FD">value</span><span style="color:#8BE9FE">"</span><span style="color:#FF79C6">:</span><span style="color:#E9F284"> "</span><span style="color:#F1FA8C">JavaScript is 💛</span><span style="color:#E9F284">"</span></span>
+<span class="line"><span style="color:#F8F8F2">		}</span></span>
+<span class="line"><span style="color:#F8F8F2">	}</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
+<p>To access the <code>value</code>, you have to write a loooong conditional statement which is difficult to read and format 😢</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#FF79C6">let</span><span style="color:#F8F8F2"> theValue;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF79C6">if</span><span style="color:#F8F8F2"> (</span></span>
+<span class="line"><span style="color:#F8F8F2">  response </span><span style="color:#FF79C6">&#x26;&#x26;</span></span>
+<span class="line"><span style="color:#F8F8F2">  response.data </span><span style="color:#FF79C6">&#x26;&#x26;</span></span>
+<span class="line"><span style="color:#F8F8F2">  response.data.answer </span><span style="color:#FF79C6">&#x26;&#x26;</span></span>
+<span class="line"><span style="color:#F8F8F2">  response.data.answer.value</span></span>
+<span class="line"><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#F8F8F2">  theValue </span><span style="color:#FF79C6">=</span><span style="color:#F8F8F2"> response.data.answer.value;</span></span>
+<span class="line"><span style="color:#F8F8F2">} </span><span style="color:#FF79C6">else</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#F8F8F2">  theValue </span><span style="color:#FF79C6">=</span><span style="color:#E9F284"> '</span><span style="color:#F1FA8C">JavaScript is BAE 💛❤️</span><span style="color:#E9F284">'</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span></code></pre>
+<p>But with optional chaining, you can access the <code>value</code> easily 😃 and you don’t have to worry about the null &#x26; undefined checks.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F8F8F2">response?.data?.answer?.value</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6272A4">// Output</span></span>
+<span class="line"><span style="color:#F8F8F2">JavaScript is 💛</span></span></code></pre>
+<p>Wow, this code looks so clean 🧼 and crisp !! If the <code>value</code> is not present, we can assign a default value to it.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F8F8F2">response?.data?.answer?.key </span><span style="color:#FF79C6">||</span><span style="color:#E9F284"> '</span><span style="color:#F1FA8C">JavaScript is BAE 💛❤️</span><span style="color:#E9F284">'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6272A4">// Output</span></span>
+<span class="line"><span style="color:#F8F8F2">JavaScript is BAE 💛❤️</span></span></code></pre>
+<h2 id="setting-up-the-babel-plugin">Setting up the Babel Plugin</h2>
+<p>Babel <a href="https://babeljs.io/blog/2020/01/11/7.8.0">7.8.0</a> supports the new <code>ECMAScript 2020</code> features by default. There is no need of enabling an individual plugin for optional chaining (<code>?.</code>).</p>
+<p>If you are using the latest Babel version which is above or equal to 7.8.0, then it’s an easy setup</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#50FA7B">npm</span><span style="color:#F1FA8C"> install</span><span style="color:#BD93F9"> --save-dev</span><span style="color:#F1FA8C"> @babel/cli</span><span style="color:#F1FA8C"> @babel/core</span><span style="color:#F1FA8C"> @babel/preset-env</span></span></code></pre>
+<p>Now add the following configuration to the <code>.babelrc</code></p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>{</span></span>
+<span class="line"><span>  "presets": ["@babel/preset-env"]</span></span>
+<span class="line"><span>}</span></span></code></pre>
+<p>The necessary babel modules and the preset configurations are done. Now it’s time to do the babel magic ✨</p>
+<p>Run this command to transpile the code to the supported version everywhere. This command will work if you have installed the <code>babel</code> module globally.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#50FA7B">babel</span><span style="color:#F1FA8C"> app.js</span><span style="color:#BD93F9"> --out-file</span><span style="color:#F1FA8C"> script-transpiled.js</span></span></code></pre>
+<p>All the optional chaining code should be placed in <code>app.js</code> and then the above command should be executed. This produces the transpiled code which works in major browsers and in <code>node.js</code>.</p>
+<h2 id="different-types-of-optional-chaining">Different types of optional chaining</h2>
+<h3 id="1-optional-chaining-with-function-calls">1. Optional chaining with function calls</h3>
+<p>Optional chaining can be used when you are trying to invoke a method which may not exist. Using optional chaining with function calls causes the expression to automatically return undefined instead of throwing an exception.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#FF79C6">class</span><span style="color:#8BE9FD"> Operation</span><span style="color:#F8F8F2"> {</span></span>
+<span class="line"><span style="color:#FF79C6">  constructor</span><span style="color:#F8F8F2">(</span><span style="color:#FFB86C;font-style:italic">a</span><span style="color:#F8F8F2">, </span><span style="color:#FFB86C;font-style:italic">b</span><span style="color:#F8F8F2">) {</span></span>
+<span class="line"><span style="color:#BD93F9;font-style:italic">    this</span><span style="color:#F8F8F2">.a </span><span style="color:#FF79C6">=</span><span style="color:#F8F8F2"> a;</span></span>
+<span class="line"><span style="color:#BD93F9;font-style:italic">    this</span><span style="color:#F8F8F2">.b </span><span style="color:#FF79C6">=</span><span style="color:#F8F8F2"> b;</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#50FA7B">  getSum</span><span style="color:#F8F8F2">() {</span></span>
+<span class="line"><span style="color:#FF79C6">    return</span><span style="color:#BD93F9;font-style:italic"> this</span><span style="color:#F8F8F2">.a </span><span style="color:#FF79C6">+</span><span style="color:#BD93F9;font-style:italic"> this</span><span style="color:#F8F8F2">.b;</span></span>
+<span class="line"><span style="color:#F8F8F2">  }</span></span>
+<span class="line"><span style="color:#F8F8F2">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF79C6">let</span><span style="color:#F8F8F2"> o </span><span style="color:#FF79C6">=</span><span style="color:#FF79C6;font-weight:bold"> new</span><span style="color:#50FA7B"> Operation</span><span style="color:#F8F8F2">(</span><span style="color:#BD93F9">2</span><span style="color:#F8F8F2">, </span><span style="color:#BD93F9">3</span><span style="color:#F8F8F2">);</span></span>
+<span class="line"><span style="color:#F8F8F2">o.</span><span style="color:#50FA7B">getSum</span><span style="color:#F8F8F2">(); </span><span style="color:#6272A4">// 5</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F8F8F2">o.</span><span style="color:#50FA7B">getDiff</span><span style="color:#F8F8F2">(); </span><span style="color:#6272A4">// Output - Uncaught TypeError: o.getDiff is not a function</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6272A4">// Check if the function exists</span></span>
+<span class="line"><span style="color:#FF79C6">typeof</span><span style="color:#F8F8F2"> o.getDiff </span><span style="color:#FF79C6">!=</span><span style="color:#E9F284"> '</span><span style="color:#F1FA8C">undefined</span><span style="color:#E9F284">'</span><span style="color:#FF79C6"> &#x26;&#x26;</span><span style="color:#F8F8F2"> o.</span><span style="color:#50FA7B">getDiff</span><span style="color:#F8F8F2">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6272A4">// With the use of optional chaining</span></span>
+<span class="line"><span style="color:#F8F8F2">o.</span><span style="color:#50FA7B">getDiff</span><span style="color:#F8F8F2">?.(); </span><span style="color:#6272A4">// Output - undefined</span></span></code></pre>
+<h3 id="2-optional-chaining-with-expression">2. Optional chaining with expression</h3>
+<p>If the left operand is null or undefined, the expression after the optional chaining operator will not be evaluated.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>let user = null;</span></span>
+<span class="line"><span>let age = 12;</span></span>
+<span class="line"><span>let isTeenage = user?.[value++];</span></span>
+<span class="line"><span>console.log('isTeenage :: ', isTeenage);</span></span></code></pre>
+<br>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>isTeenage::undefined;</span></span></code></pre>
+<p>The user is defined as null, while executing the line #3, the <code>isTeenage</code> didn’t throw any error because if the left operand is null or undefined, the expression will not be evaluated.</p>
+<h2 id="3-combining-with-the-nullish-coalescing-operator-which-is-another-es2020-feature">3. Combining with the nullish coalescing operator [which is another <em>ES2020</em> feature]</h2>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#FF79C6">let</span><span style="color:#F8F8F2"> user </span><span style="color:#FF79C6">=</span><span style="color:#BD93F9"> null</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#FF79C6">let</span><span style="color:#F8F8F2"> age </span><span style="color:#FF79C6">=</span><span style="color:#BD93F9"> 12</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#FF79C6">let</span><span style="color:#F8F8F2"> isTeenage </span><span style="color:#FF79C6">=</span><span style="color:#F8F8F2"> user?.[value</span><span style="color:#FF79C6">++</span><span style="color:#F8F8F2">] </span><span style="color:#FF79C6">??</span><span style="color:#E9F284"> '</span><span style="color:#F1FA8C">not a teenager !!</span><span style="color:#E9F284">'</span><span style="color:#F8F8F2">;</span></span>
+<span class="line"><span style="color:#F8F8F2">console.</span><span style="color:#50FA7B">log</span><span style="color:#F8F8F2">(</span><span style="color:#E9F284">'</span><span style="color:#F1FA8C">isTeenage :: </span><span style="color:#E9F284">'</span><span style="color:#F8F8F2">, isTeenage);</span></span></code></pre>
+<br>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>isTeenage :: not a teenager !!</span></span></code></pre>
+<h2 id="things-about-optional-chaining">Things about optional chaining</h2>
+<p>🚀Clean &#x26; Readable code</p>
+<p>🚀Don’t worry about <code>null</code> or <code>undefined</code> in an object</p>
+<p>🚀 Less error</p>
+<h2 id="browser-support">Browser Support</h2>
+<ul>
+<li>Chrome - 80</li>
+<li>Edge - 80</li>
+<li>Firefox - 74</li>
+<li>Internet Explorer - NO</li>
+<li>Opera - 67</li>
+<li>Node.js - 14.0.0</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining">MDN web docs</a></li>
+</ul> </div> </article>  </div> </main> </section> <footer class="bg-blog-header"> <div class="p-6 sm:flex justify-between items-center"> <div class="left pt-6"> <a class="text-2xl text-blog-bg pointer transition-colors duration-500" href="https://chetanraj.in">
+Chetan Raj
+</a> <div class="opacity-50 text-blog-bg pointer transition-colors duration-500 pt-16 hidden sm:block md:block lg:block xl:block">
+&copy; Chetan Raj. All Rights Reserved.
+</div> </div> <div class="right pt-10 sm:pt-0 flex"> <div class="pr-20 social"> <h4 class="opacity-50 text-blog-bg pointer transition-colors duration-500">
+Social
+</h4> <div class="grid grid-cols-1 pt-4 w-full"> <a class="text-blog-bg pointer transition-colors duration-500" href="https://twitter.com/chetan_raj"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-abp-filters-channel="c255be2e-a9f9-4db8-8acb-a5c77df7b0c2"> <polygon class="st0" points="21.3,21.1 9.9,2.9 2.7,2.9 14.1,21.1 "></polygon> <line class="st0" x1="2.7" y1="21.1" x2="9.9" y2="14.5"></line> <line class="st0" x1="14.1" y1="9.5" x2="21.3" y2="2.9"></line></svg> </a> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="https://github.com/chetanraj"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg> </a> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="https://www.instagram.com/thecjstream/"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> </a> </div> </div> <div class="links"> <h4 class="opacity-50 text-blog-bg pointer transition-colors duration-500">
+Links
+</h4> <div class="grid grid-cols-1 pt-4 w-full"> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="https://www.instagram.com/javascriptessentials/"> <span class="mr-2" role="img" aria-label="globe">🌏</span>
+JavaScript Essentials
+</a> </div> </div> </div> <div class="opacity-50 text-blog-bg pointer transition-colors duration-500 pt-16 block sm:hidden md:hidden lg:hidden xl:hidden">
+&copy; Chetan Raj. All Rights Reserved.
+</div> </div> </footer> </body></html>
