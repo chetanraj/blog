@@ -132,6 +132,14 @@ header .light {
   margin-bottom: 1.25em;
 }
 
+.blog-post-content pre {
+  background: var(--blockquote-color);
+  color: var(--primary-text);
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
 .blog-post-content img {
   margin: 0 auto;
 }
