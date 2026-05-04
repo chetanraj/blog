@@ -6,6 +6,7 @@ const base = import.meta.env.BASE_URL.endsWith('/')
   : `${import.meta.env.BASE_URL}/`;
 
 const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
+
 ---
 
 <header class="bg-blog-header h-64 relative">
@@ -33,7 +34,7 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     {!title ? (
       <a
         class="pointer transition-colors duration-500"
-        href="https://chetanraj.in"
+        href="https://chetanraj.dev"
       >
         HOME
       </a>
@@ -116,19 +117,48 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
   `;
+  const system = `<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>`;
 
   function getInitialTheme() {
     const persisted = window.localStorage.getItem('theme');
-    if (persisted === 'dark' || persisted === 'light') return persisted;
+    if (persisted === 'dark' || persisted === 'light' || persisted === 'system') return persisted;
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
+  function playSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  }
+
   function setTheme(next) {
-    root.className = next;
+    const themeToApply = next === 'system'
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : next;
+    
+    root.className = themeToApply;
     wrap?.classList.remove('dark', 'light');
-    wrap?.classList.add(next);
-    if (svg) svg.innerHTML = next === 'light' ? moon : sun;
+    wrap?.classList.add(themeToApply);
+    
+    if (svg) {
+      if (next === 'light') svg.innerHTML = moon;
+      else if (next === 'dark') svg.innerHTML = sun;
+      else if (next === 'system') svg.innerHTML = system;
+    }
     window.localStorage.setItem('theme', next);
+    playSound();
   }
 
   const initial = typeof window !== 'undefined' ? getInitialTheme() : 'light';
@@ -136,7 +166,8 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
 
   btn?.addEventListener('click', () => {
     const current = window.localStorage.getItem('theme') || initial;
-    setTheme(current === 'light' ? 'dark' : 'light');
+    const next = current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
+    setTheme(next);
   });
 </script>
 
