@@ -1,4 +1,24 @@
-<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Hi 👋 | Blog by Chetan Raj</title><link rel="icon" href="/blog/icons/icon-48x48.png"><link rel="apple-touch-icon" href="/blog/icons/icon-48x48.png"><link rel="apple-touch-icon" href="/blog/icons/icon-72x72.png"><link rel="apple-touch-icon" href="/blog/icons/icon-96x96.png"><link rel="apple-touch-icon" href="/blog/icons/icon-144x144.png"><link rel="apple-touch-icon" href="/blog/icons/icon-192x192.png"><link rel="apple-touch-icon" href="/blog/icons/icon-256x256.png"><link rel="apple-touch-icon" href="/blog/icons/icon-384x384.png"><link rel="apple-touch-icon" href="/blog/icons/icon-512x512.png"><link rel="stylesheet" href="/blog/_astro/index.BzGoZzMe.css"></head> <body> <header class="bg-blog-header h-64 relative"> <div class="flex flex-col items-center h-64 hero-text justify-center text-center text-blog-bg relative z-10"> <div class="text-2xl w-3/4 transition-colors duration-500"> Blog by Chetan Raj </div> <div class="text-lg font-light md:w-2/5 lg:w-3/5 xl:w-2/5 mt-4 mx-6 lg:mx-0 md:mx-0 transition-colors duration-500">
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><script>
+      (() => {
+        const root = document.documentElement;
+        const storedTheme = window.localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const themePreference =
+          storedTheme === 'dark' || storedTheme === 'light' || storedTheme === 'system'
+            ? storedTheme
+            : prefersDark
+              ? 'dark'
+              : 'light';
+        const colorMode =
+          themePreference === 'system' ? (prefersDark ? 'dark' : 'light') : themePreference;
+        const storedEra = window.localStorage.getItem('blog-design-era');
+        const designEra = storedEra || 'default';
+
+        root.dataset.colorMode = colorMode;
+        root.dataset.themePreference = themePreference;
+        root.dataset.trend = designEra;
+      })();
+    </script><title>Hi 👋 | Blog by Chetan Raj</title><link rel="icon" href="/blog/icons/icon-48x48.png"><link rel="apple-touch-icon" href="/blog/icons/icon-48x48.png"><link rel="apple-touch-icon" href="/blog/icons/icon-72x72.png"><link rel="apple-touch-icon" href="/blog/icons/icon-96x96.png"><link rel="apple-touch-icon" href="/blog/icons/icon-144x144.png"><link rel="apple-touch-icon" href="/blog/icons/icon-192x192.png"><link rel="apple-touch-icon" href="/blog/icons/icon-256x256.png"><link rel="apple-touch-icon" href="/blog/icons/icon-384x384.png"><link rel="apple-touch-icon" href="/blog/icons/icon-512x512.png"><link rel="stylesheet" href="/blog/_astro/index.v-ts8InP.css"></head> <body> <header class="site-header bg-blog-header h-64 relative"> <div class="flex flex-col items-center h-64 hero-text justify-center text-center text-blog-bg relative z-10"> <div class="text-2xl w-3/4 transition-colors duration-500"> Blog by Chetan Raj </div> <div class="text-lg font-light md:w-2/5 lg:w-3/5 xl:w-2/5 mt-4 mx-6 lg:mx-0 md:mx-0 transition-colors duration-500">
 Web Designer & Developer,  <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/javascriptessentials/" class="underline">
 Tech Instagrammer
 </a>
@@ -6,10 +26,12 @@ Tech Instagrammer
 </div> </div> <span class="text-blog-bg home"> <a class="pointer transition-colors duration-500" href="https://chetanraj.dev">
 HOME
 </a> </span> <div id="themeToggle" class="flex light cursor-pointer z-20 absolute"> <a class="mx-4 hidden md:block" href="/blog/rss.xml" title="RSS"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme"> <path d="M4 11a9 9 0 0 1 9 9"></path> <path d="M4 4a16 16 0 0 1 16 16"></path> <circle cx="5" cy="19" r="1"></circle> </svg> </a> <button class="mx-4" title="theme" type="button" id="themeButton"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme" id="themeIcon"> <path id="themeIconPath" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> </div> <div class="bg"></div> </header> <script>
-  const root = document.body;
+  const root = document.documentElement;
+  const body = document.body;
   const wrap = document.getElementById('themeToggle');
   const btn = document.getElementById('themeButton');
   const svg = document.getElementById('themeIcon');
+  const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
   const moon = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
   const sun = `
@@ -27,37 +49,45 @@ HOME
 
   function getInitialTheme() {
     const persisted = window.localStorage.getItem('theme');
-    if (persisted === 'dark' || persisted === 'light' || persisted === 'system') return persisted;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (persisted === 'dark' || persisted === 'light' || persisted === 'system')
+      return persisted;
+    return colorSchemeQuery.matches ? 'dark' : 'light';
   }
 
   function playSound() {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const audioContext = new (
+      window.AudioContext || window.webkitAudioContext
+    )();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
-    
+
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
-    
+
     oscillator.frequency.value = 800;
     oscillator.type = 'sine';
-    
+
     gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-    
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      audioContext.currentTime + 0.1
+    );
+
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + 0.1);
   }
 
   function setTheme(next) {
-    const themeToApply = next === 'system'
-      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-      : next;
-    
-    root.className = themeToApply;
+    const themeToApply =
+      next === 'system' ? (colorSchemeQuery.matches ? 'dark' : 'light') : next;
+
+    root.dataset.colorMode = themeToApply;
+    root.dataset.themePreference = next;
+    body.classList.remove('dark', 'light');
+    body.classList.add(themeToApply);
     wrap?.classList.remove('dark', 'light');
     wrap?.classList.add(themeToApply);
-    
+
     if (svg) {
       if (next === 'light') svg.innerHTML = moon;
       else if (next === 'dark') svg.innerHTML = sun;
@@ -72,64 +102,31 @@ HOME
 
   btn?.addEventListener('click', () => {
     const current = window.localStorage.getItem('theme') || initial;
-    const next = current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
+    const next =
+      current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
     setTheme(next);
   });
-</script> <section class="w-3/4 m-auto"> <main class="h-sc"> <div class="">  <div class="text-4xl font-light text-blog-lightgray mt-6 mb-4 transition-colors duration-500 my-6">
+
+  colorSchemeQuery.addEventListener('change', () => {
+    if (window.localStorage.getItem('theme') === 'system') {
+      setTheme('system');
+    }
+  });
+</script> <div class="trend-toggle-bar" role="toolbar" aria-label="Design trend selector"> <span class="trend-toggle-label">Design Era &nbsp;&nbsp;&dash;</span> <div class="trend-toggle-buttons"> <button class="trend-btn" data-era="default">Default</button> <button class="trend-btn" data-era="liquid-glass">Liquid Glass</button> <button class="trend-btn" data-era="glassmorphism">Glassmorphism</button> <button class="trend-btn" data-era="brutalism">Brutalism</button> <button class="trend-btn" data-era="skeuomorphism">Skeuomorphism</button> <button class="trend-btn" data-era="flat">Flat</button> </div> </div> <script type="module">const l="blog-design-era",r="default",o={default:"Default · Original Blog","liquid-glass":"Liquid Glass · 2025–26",glassmorphism:"Glassmorphism · 2021–24",brutalism:"Brutalism · Timeless",skeuomorphism:"Skeuomorphism · 2007–13",flat:"Flat / Material · 2013–20"};function s(e){document.documentElement.setAttribute("data-trend",e),localStorage.setItem(l,e),document.querySelectorAll(".trend-toggle-bar [data-era]").forEach(t=>{t.classList.toggle("active",t.dataset.era===e),t.setAttribute("aria-pressed",String(t.dataset.era===e))});const a=document.getElementById("trend-badge-label");a&&(a.textContent=o[e]??e)}const i=localStorage.getItem(l)??r;s(i);document.querySelectorAll(".trend-toggle-bar [data-era]").forEach(e=>{e.addEventListener("click",()=>{e.dataset.era&&s(e.dataset.era)})});</script> <section class="w-3/4 m-auto"> <main class="h-sc"> <div class="">  <div class="text-4xl font-light text-blog-lightgray mt-6 mb-4 transition-colors duration-500 my-6">
 Latest post
-</div> <a class="font-light" href="/blog/posts/how-i-structure-react-app/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 🏢  How I structure React app </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500">  </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-wrote on 2020-10-08 &#183;  <span> <span class="mr-2" role="img" aria-label="hourglass">
-⏳
-</span>
-02:00
-</span>   </div> </a><div class="text-4xl font-light text-blog-lightgray mt-6 mb-4 transition-colors duration-500 my-6">
+</div> <a class="font-light" href="/blog/posts/how-i-structure-react-app/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> How I structure a React app </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> A practical React folder structure using scripts, atomic components, reusable hooks, and a small theme layer. </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
+wrote on 2020-10-08  </div> </a><div class="text-4xl font-light text-blog-lightgray mt-6 mb-4 transition-colors duration-500 my-6">
 Other posts
 </div> <ul class="mt-4 space-y-2"> <li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/deploying-any-app-github-pages/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 🚀 Deploying any app to GitHub Pages </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> GitHub Pages is a website holder for you &amp; your projects. You can host your code directly from your GitHub repo. </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-wrote on 2020-08-21 &#183;  <span> <span class="mr-2" role="img" aria-label="hourglass">
-⏳
-</span>
-02:00
-</span>   </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/nifty-npm-tips/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 💻 nifty npm tips </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> Useful npm tips which will make you developer life on CLI 💻 easy. </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-wrote on 2020-06-09 &#183;  <span> <span class="mr-2" role="img" aria-label="hourglass">
-⏳
-</span>
-02:00
-</span>   </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/react-recoil/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 💫 Understanding Recoil - The state management system for React. </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> Recoil is an experimental state management system for React by Facebook </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-wrote on 2020-05-16 &#183;  <span> <span class="mr-2" role="img" aria-label="hourglass">
-⏳
-</span>
-02:00
-</span>   </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/optional-chaining/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> ⛓ The optional chaining operator in JavaScript </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> The optional chaining operator ?. permits reading the value of a property located deep within a chain of connected objects. </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-wrote on 2020-05-02 &#183;  <span> <span class="mr-2" role="img" aria-label="hourglass">
-⏳
-</span>
-02:00
-</span>   </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/what-is-context-path/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 🤔 What is context path ? </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> The context path is the prefix of a URL path that is used to select the context(s) to which an incoming request is passed. </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-wrote on 2020-03-28 &#183;  <span> <span class="mr-2" role="img" aria-label="hourglass">
-⏳
-</span>
-02:00
-</span>   </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/my-top-ten-vs-code-plugins/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 🎳 My Top Ten VS Code Plugins </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500">  </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-wrote on 2020-01-23 &#183;  <span> <span class="mr-2" role="img" aria-label="hourglass">
-⏳
-</span>
-02:00
-</span>   </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/compose-in-styled-system/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 🧐 What is compose-in-styled-system ? </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> The compose utility in the styled-system is used to combine multiple style functions together into one </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-wrote on 2019-08-01 &#183;  <span> <span class="mr-2" role="img" aria-label="hourglass">
-⏳
-</span>
-02:00
-</span>   </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/gridsome-with-github/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 💡 How Gridsome works with GitHub Pages </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> Gridsome is Vue flavoured and a powerful static site generator. It’s the Gatsby alternative for... </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-wrote on 2019-05-06 &#183;  <span> <span class="mr-2" role="img" aria-label="hourglass">
-⏳
-</span>
-02:00
-</span>   </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/nodemon/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 🔃 Using nodemon for auto-reload of server after code change for node.js applications </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> The compose utility in the styled-system is used to combine multiple style functions together into one </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-wrote on 2016-06-21 &#183;  <span> <span class="mr-2" role="img" aria-label="hourglass">
-⏳
-</span>
-02:00
-</span>   </div> </a> </li> </ul>  </div> </main> </section> <footer class="bg-blog-header"> <div class="p-6 sm:flex justify-between items-center"> <div class="left pt-6"> <a class="text-2xl text-blog-bg pointer transition-colors duration-500" href="https://chetanraj.in">
+wrote on 2020-08-21  </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/nifty-npm-tips/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 💻 nifty npm tips </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> Useful npm tips which will make you developer life on CLI 💻 easy. </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
+wrote on 2020-06-09  </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/react-recoil/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 💫 Understanding Recoil - The state management system for React. </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> Recoil is an experimental state management system for React by Facebook </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
+wrote on 2020-05-16  </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/optional-chaining/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> ⛓ The optional chaining operator in JavaScript </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> The optional chaining operator ?. permits reading the value of a property located deep within a chain of connected objects. </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
+wrote on 2020-05-02  </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/what-is-context-path/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 🤔 What is context path ? </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> The context path is the prefix of a URL path that is used to select the context(s) to which an incoming request is passed. </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
+wrote on 2020-03-28  </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/my-top-ten-vs-code-plugins/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 🎳 My Top Ten VS Code Plugins </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500">  </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
+wrote on 2020-01-23  </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/compose-in-styled-system/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 🧐 What is compose-in-styled-system ? </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> The compose utility in the styled-system is used to combine multiple style functions together into one </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
+wrote on 2019-08-01  </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/gridsome-with-github/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 💡 How Gridsome works with GitHub Pages </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> Gridsome is Vue flavoured and a powerful static site generator. It’s the Gatsby alternative for... </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
+wrote on 2019-05-06  </div> </a> </li><li class="flex flex-wrap items-baseline gap-x-2 gap-y-1"> <a class="font-light" href="/blog/posts/nodemon/"> <div class="text-2xl text-blog-primary transition-colors duration-500"> 🔃 Using nodemon for auto-reload of server after code change for node.js applications </div> <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500"> The compose utility in the styled-system is used to combine multiple style functions together into one </div> <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
+wrote on 2016-06-21  </div> </a> </li> </ul>  </div> </main> </section> <footer class="bg-blog-header"> <div class="p-6 sm:flex justify-between items-center"> <div class="left pt-6"> <a class="text-2xl text-blog-bg pointer transition-colors duration-500" href="https://chetanraj.in">
 Chetan Raj
 </a> <div class="opacity-50 text-blog-bg pointer transition-colors duration-500 pt-16 hidden sm:block md:block lg:block xl:block">
 &copy; Chetan Raj. All Rights Reserved.
