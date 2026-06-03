@@ -2,10 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 
-const base = import.meta.env.BASE_URL.endsWith('/')
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
 export const prerender = true;
+
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
   return posts.map((post) => ({
@@ -19,10 +17,15 @@ const { Content, remarkPluginFrontmatter } = await render(post);
 ---
 
 <BaseLayout title={post.data.title} headerTitle={post.data.title}>
-  <article class="blog-post-container blog-post-content">
-    <div class="mt-4">
-      <div class="pl-4 pt-2 mb-6 flex items-center">
-        <div class="text-blog-secondary flex items-center justify-center mr-2">
+  <article class="blog-post-container">
+    <div class="blog-post-content">
+      <div
+        class="mx-6 mt-4 mb-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-blog-secondary"
+      >
+        <time
+          datetime={post.data.date.toISOString()}
+          class="flex items-center justify-center"
+        >
           <svg
             viewBox="0 0 24 24"
             width="24"
@@ -43,10 +46,10 @@ const { Content, remarkPluginFrontmatter } = await render(post);
               x2="21"
               y2="10"></line></svg
           >
-          {post.data.date.toISOString().slice(0, 10)} &middot;
-        </div>
+          {post.data.date.toISOString().slice(0, 10)}
+        </time>
 
-        <div class="text-blog-secondary flex items-center justify-center ml-2">
+        <div class="flex items-center justify-center">
           <svg
             viewBox="0 0 24 24"
             width="24"
@@ -60,28 +63,27 @@ const { Content, remarkPluginFrontmatter } = await render(post);
             ><circle cx="12" cy="12" r="10"></circle><polyline
               points="12 6 12 12 16 14"></polyline></svg
           >
-          {remarkPluginFrontmatter.minutesRead} &middot;
+          {remarkPluginFrontmatter.minutesRead}
         </div>
 
-        <div class="text-blog-secondary flex items-center justify-center ml-2">
+        <div class="flex items-center justify-center">
           {
             post.data.tags && post.data.tags.length > 0 && (
-              <>
-                <div class="flex gap-2 flex-wrap">
-                  {post.data.tags.map((tag) => (
-                    <span class="text-xs bg-blog-header text-blog-bg px-2 py-1 rounded">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </>
+              <div class="flex gap-2 flex-wrap">
+                {post.data.tags.map((tag) => (
+                  <span class="text-xs bg-blog-header text-blog-bg px-2 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
             )
           }
         </div>
       </div>
-    </div>
-    <div class="blog-post-content text-blog-primary">
-      <Content />
+
+      <div class="text-blog-primary">
+        <Content />
+      </div>
     </div>
   </article>
 </BaseLayout>

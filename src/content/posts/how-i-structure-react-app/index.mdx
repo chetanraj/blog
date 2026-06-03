@@ -1,264 +1,216 @@
 ---
 path: "/how-i-structure-react-app"
 date: "2020-10-08"
-title: "🏢  How I structure React app"
+title: "How I structure a React app"
+description: "A practical React folder structure using scripts, atomic components, reusable hooks, and a small theme layer."
 published: false
 tags: ['React']
 ---
 
-# Structuring an app is like building a house 🏡, many decisions 🤯  many views, many perspectives 🧐
+import AtomicDesign from '../../../posts/how-i-structure-react-app/Atomic_Design.png';
 
-Folder structure also plays a vital role. The mind is flooded with questions like where this folder/file should reside? Which place it should go to? What should be the name of the folder, file, component, hook or context 🤔
+# Structuring a React app
 
-> 💻 &nbsp;&nbsp;It's the developer way of life
+Every React app starts with the same quiet question: where should this thing live?
 
-I normally choose the [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) to create a react app as it's easy to kick-start development in no time & all the tools 🛠  like basic css file, build scripts, basic testing framework & PWA are included by default.
+The folder structure decides how easy the app is to grow, debug, and explain to the next person. I like keeping the shape simple: scripts at the project level, small components near the UI, hooks for reusable behavior, and theme tokens in one predictable place.
 
-## Starting with package.json
+> **My rule:** the structure should make the next change feel obvious.
 
-## package.json
+## Start with package.json
+
+`package.json` is the control panel for the app. I keep script names short, readable, and grouped by intent.
 
 ```json
 {
   "name": "app-name",
   "version": "0.0.1",
-  "dependencies": { },
-	"devDependencies": { }
   "scripts": {
     "start": "react-scripts start",
-	"build": "react-scripts build",
-	"test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "stylelint": "stylelint src/**/index.css",
-    "stylelint:fix": "stylelint src/**/index.css --fix",		
-	"📦": "bundlesize",
-	"prettification": "prettier --write \"**/*.js\""
+    "stylelint:fix": "stylelint src/**/index.css --fix",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "bundle:size": "bundlesize"
   },
-	"lint-staged": {
-    "*.{js,jsx}": [
-      "npm run prettification",
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run prettier",
       "git add"
     ]
   },
-	"husky": {
+  "husky": {
     "hooks": {
-      "pre-commit": [
-        "lint-staged"
-      ]
+      "pre-commit": "lint-staged"
     }
   }
 }
 ```
 
-## scripts
+## Script naming
 
-Here is where all the magic 🎩  lies, all the good things happen here
-
-- build the app
-- style the app
-- test the app
-- prettify the app 🥳
-- lint the app 😖
-- and many more
-
-### Some tips for `scripts` in pacakge.json ✅
-
-The script name should be easy to remember and small, Avoid using large names like `build:then:check:what:happened`
+Scripts should be easy to remember. I prefer `:` for script groups because it reads naturally:
 
 ```json
-"scripts": {
-	"build:then:check:what:happened": "react-scripts build",
-	"are:we:building:then:check:what:happened": "react-scripts build"
+{
+  "scripts": {
+    "build": "react-scripts build",
+    "build:style": "tailwindcss -i src/index.css -o src/app.css",
+    "lint": "eslint src",
+    "lint:style": "stylelint src/**/*.css",
+    "test": "react-scripts test"
+  }
 }
 ```
 
-My choice: using emoji 😉 &nbsp;as a script name. Let me know if you're favorite emoji for building or deploying the code, for me for building the app is 🥳 &nbsp;and for deploying the app is 🚀
+That gives the project a small command language:
 
-When I use Tailwind CSS, I tend to name the script as `build:style`, so it's easy to identify that it's a style related task, you can also name it to be specific to the framework/library like `build:tailwind` if you're using multiple styling frameworks.
+- `build` creates the app bundle
+- `build:style` creates the CSS bundle
+- `lint` checks JavaScript and JSX
+- `lint:style` checks stylesheets
+- `test` runs the test suite
 
-```json
-"scripts": {
-	"build:style": "tailwind build index.css -o app.css"
-}
-```
+## Component structure
 
-Use `:` instead of `-` for script name, this will make the script name neat & crisp and also readable 👍 &nbsp;The `-` is for package names & `:` is for script names 😉
+I use Atomic Design as a starting point, then keep only the layers that help the team move faster. In practice, that usually means `atoms`, `organisms`, and `pages`.
 
-### Other stuff in `scripts`
-
-Linting, Prettifying, Testing your app & Checking the bundle size is part & parcel of app development. To avoid code formatting issues, I have enabled the pre-commit hook with the leverage of prettier. I use `eslint` for linting JS, JSX and I use `stylelint` for linting the styles and `prettier` to format the code and to keep a tab on the bundle size, I use `bundlesize`.
-
-Code splitting using React Lazy, Suspense & React Router 😇
-
-## Folder structure
-
-I follow the Atomic Design Methodology, I follow `Atoms` strictly and then bring them together in `Organisms`, then directly to `Pages`. Following the Atomic Design methodology will help you in many things while developing the project.
-
-- Less repeated code in components, this reduces the inconsistency between the components
-- The time to build an Organism or a Page will be faster 🚀
-- The style guide for the project will reside in `theme.js`, The color palette, spacing, font families, font sizes, line heights, margin, padding, flex, grid and many more
-
-
+<img src={AtomicDesign.src} alt="Atomic design diagram" />
 
 ### Atoms
 
-Atoms are the smallest components, like Buttons, Heading, Input, Dropdown, Icon, Tags. This plays an important role in any app. The whole state of the app mainly starts from here.
+Atoms are the smallest reusable pieces: buttons, inputs, headings, icons, tags, and text areas.
+
+They should be boring in the best possible way. An atom accepts props, renders consistently, and avoids knowing too much about the page around it.
 
 ### Organisms
 
-Organisms are a combination of Atoms like Header, Card, Search Box with Icon, List Item,  and many more. Once you spend planning, designing the `Atoms`. The amount you spend on Organisms will be lesser. 
+Organisms combine atoms into useful interface sections: headers, cards, search boxes, upload panels, list items, and filters.
+
+This is where product behavior starts to appear, but the component should still be reusable across pages when the shape is common.
 
 ### Pages
 
-Pages can be a combination of Atoms & Organisms or only Organisms, which depends on the UX design. For ex: It can be many cards with a header having a search box and some buttons.
+Pages assemble atoms and organisms into complete routes. A page can handle layout decisions, route-specific copy, and the larger data flow for that view.
 
-If the components are designed in the above methodology, the time taken to build a Component will be lesser.
+## Folder structure
 
-The main take in this is that it's not a one time process where all the small components [Atoms] are built at one go, the design of the components will get better in time ⏰, with multiple iterations & discussions
-
-### The detailed folder structure of the components [Here I'm using Context API for shared state]
+Here is the structure I usually start with when the app uses React Context for shared state:
 
 ```markdown
-📦 src
- ┣ 📂 components
- ┃ ┣ 📂 atoms
- ┃ ┃ ┣ Heading.js
- ┃ ┃ ┣ Input.js
- ┃ ┃ ┣ Icon.js
- ┃ ┃ ┣ Tag.js
- ┃ ┃ ┗ TextArea.js
- ┃ ┣ 📂 organisms
- ┃ ┃ ┣ Card.js
- ┃ ┃ ┣ Search.js
- ┃ ┃ ┣ Upload.js
- ┃ ┣ 📂 hooks
- ┃ ┃ ┣ useIntersectionObserver.js
- ┃ ┃ ┗ useKeyPress.js
- ┃ ┣ 📂 logics
- ┃ ┃ ┣ useName.js
- ┃ ┃ ┗ useStatus.js
- ┃ ┣ 📂 pages
- ┃ ┃ ┣ 📂 Create
- ┃ ┃ ┃ ┗ index.js
- ┃ ┃ ┣ 📂 List
- ┃ ┃ ┃ ┗ index.js
- ┃ ┃ ┣ 📂 Onboarding
- ┃ ┃ ┃ ┗ index.js
- ┃ ┃ ┗ index.js
- ┣ 📂 context
- ┣ 📂 images
- ┣ 📂 styled-elements
- ┣ 📂 tests
- ┣ 📂 utils
- ┣ App.js
- ┣ constants.js
- ┣ index.js
- ┣ serviceWorker.js
- ┣ setupTests.js
- ┗ theme.js
+src
+├── components
+│   ├── atoms
+│   │   ├── Heading.js
+│   │   ├── Icon.js
+│   │   ├── Input.js
+│   │   ├── Tag.js
+│   │   └── TextArea.js
+│   └── organisms
+│       ├── Card.js
+│       ├── Search.js
+│       └── Upload.js
+├── context
+├── hooks
+│   ├── useIntersectionObserver.js
+│   └── useKeyPress.js
+├── logic
+│   ├── useName.js
+│   └── useStatus.js
+├── pages
+│   ├── Create
+│   │   └── index.js
+│   ├── List
+│   │   └── index.js
+│   ├── Onboarding
+│   │   └── index.js
+│   └── index.js
+├── styles
+├── tests
+├── utils
+├── App.js
+├── constants.js
+├── index.js
+├── serviceWorker.js
+├── setupTests.js
+└── theme.js
 ```
 
-## How I structure React component
+## Keep UI and logic apart
 
-Handle the UI code in one component and separate the logic of that component in other places. This will make the component feel lightweight 🐥 and you can code better
+For feature components, I like keeping the UI component light and moving reusable behavior into a hook.
 
-### UI 👇
+### UI component
 
 ```jsx
-// File Name: ../pages/Create/index.js
+// pages/Create/index.js
 
 import React from 'react';
-import { useName } from '../logics/useName';
+import { useName } from '../../logic/useName';
 
 const Create = () => {
-	const { name, setName } = useName();
+  const { name, setName } = useName();
 
-	const onChange = e => {
-		setName(e.target.value);
-	};
-
-	return (
-		<div>
-			<span>{name}</span>
-			<input onChange={e => onChange(e)} value={name} />
-		</div>
-	);
+  return (
+    <div>
+      <span>{name}</span>
+      <input onChange={(event) => setName(event.target.value)} value={name} />
+    </div>
+  );
 };
 
 export { Create };
 ```
 
-### Logic 👇
+### Logic hook
 
 ```jsx
-// File Name: ../logics/useName.js
+// logic/useName.js
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const useName = () => {
-	const [name, setValue] = useState('');
+  const [name, setName] = useState('');
 
-	const setName = name => {
-		setValue(name);
-	};
-
-	return { name, setName };
+  return { name, setName };
 };
 
 export { useName };
 ```
 
+The component stays focused on rendering. The hook owns the state shape and can grow later without making the page harder to read.
+
 ## Styling
 
-Normally I shuffle between [Tailwind CSS](https://tailwindcss.com/) or < 💅> [styled-components](https://styled-components.com/) based on the project requirements.
+I usually choose between Tailwind CSS and styled-components depending on the project.
 
-### Tailwind CSS
+Tailwind works well when the team wants fast composition and shared utility rules. styled-components works well when a component needs a tighter relationship between props, variants, and theme tokens.
 
-If I choose Tailwind CSS I tend to choose only the needed options in `tailwind.config.js` and name the npm script as `build:style` to build the styles. Naming the script `build:style` will help in identifying that it's a build method for styling purpose 😃 as I mentioned earlier.
+Either way, I keep design values in one place.
 
-### < 💅> styled-components
-
-### theme.js
-
-```json
+```js
 export const theme = {
-	breakpoints: [32, 48, 64],
-	space: [0, 4, 8, 16, 24, 32, 48, 64, 128, 256, 512],
-	fontSizes: [12, 14, 16, 18, 20, 24, 36, 48, 80, 96],
-	fontWeights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-	lineHeights: {
-		normal: 1,
-		title: 1.25,
-		paragraph: 1.5
-	},
-	letterSpacings: {
-		normal: 'normal'
-	},
-	colors: {
-		black: '#000',
-		white: '#fff',
-		transparent: 'transparent',
-		background: '',
-		blue: '',
-		lightblue: '',
-		lighterblue: '',
-		lightestblue: '',
-		gray: '',
-		darkgray: '',
-		red: ''
-	},
-	radii: ['0px', '2px', '4px', '8px', '16px', '48px']
-	// ... and many things
+  breakpoints: [32, 48, 64],
+  space: [0, 4, 8, 16, 24, 32, 48, 64],
+  fontSizes: [12, 14, 16, 18, 20, 24, 36, 48],
+  fontWeights: [400, 500, 600, 700],
+  lineHeights: {
+    title: 1.25,
+    paragraph: 1.5
+  },
+  colors: {
+    background: '#ffffff',
+    text: '#111827',
+    muted: '#6b7280',
+    primary: '#2563eb'
+  },
+  radii: ['0px', '2px', '4px', '8px', '16px']
 };
 ```
 
-## Hosting
+## The takeaway
 
-I choose [Netlify](https://www.netlify.com/) to host all the apps, Netlify is easy and also makes things easy 🚀
+A good React app structure is not about having the most folders. It is about reducing the number of decisions you need to make every time you add a feature.
 
-## References
-
-- [https://bradfrost.com/blog/post/atomic-web-design](https://bradfrost.com/blog/post/atomic-web-design/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [< 💅> styled-components](https://styled-components.com/)
-- [Component Based Design System With Styled-System](https://varun.ca/styled-system/) by [Varun Vachhar](https://varun.ca/)
+Start small, keep naming consistent, separate reusable behavior from UI, and let the structure evolve only when the app asks for it.

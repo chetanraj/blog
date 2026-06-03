@@ -4,6 +4,8 @@ import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 
+import TrendToggle from '../components/TrendToggle.astro';
+
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
@@ -13,6 +15,27 @@ const base = import.meta.env.BASE_URL.endsWith('/')
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const storedTheme = window.localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const themePreference =
+          storedTheme === 'dark' || storedTheme === 'light' || storedTheme === 'system'
+            ? storedTheme
+            : prefersDark
+              ? 'dark'
+              : 'light';
+        const colorMode =
+          themePreference === 'system' ? (prefersDark ? 'dark' : 'light') : themePreference;
+        const storedEra = window.localStorage.getItem('blog-design-era');
+        const designEra = storedEra || 'default';
+
+        root.dataset.colorMode = colorMode;
+        root.dataset.themePreference = themePreference;
+        root.dataset.trend = designEra;
+      })();
+    </script>
     <title>{title}</title>
     <link rel="icon" href={`${base}icons/icon-48x48.png`} />
     <link rel="apple-touch-icon" href={`${base}icons/icon-48x48.png`} />
@@ -26,6 +49,7 @@ const base = import.meta.env.BASE_URL.endsWith('/')
   </head>
   <body>
     <SiteHeader title={Astro.props.headerTitle} />
+    <TrendToggle />
     <section class="w-3/4 m-auto">
       <main class="h-sc">
         <div class="">
