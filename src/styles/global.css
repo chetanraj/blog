@@ -1,23 +1,40 @@
+@import './trends.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─── BLOG COLOR PALETTE ───────────────────────────────────────── */
+
 :root {
-  --bg-color: #fff;
-  --blockquote-color: #cfe8fd;
-  --blockquote-border: #94ceff;
+  --bg-color: var(--color-bg);
+  --blockquote-color: var(--trend-surface);
+  --blockquote-border: var(--trend-border-accent);
   --header-bg: #0f4c81;
-  --primary-text: #0d2538;
-  --primary-color: #333;
-  --secondary-color: #666;
+  --header-text: #fff;
+  --primary-text: var(--color-content, var(--color-primary));
+  --primary-color: var(--color-primary);
+  --secondary-color: var(--color-secondary);
+  --lightgray-color: var(--color-lightgray);
   --yellow: #f7df1e;
 }
 
 .dark {
-  --bg-color: #0f4c81;
-  --primary-color: #fff;
-  --secondary-color: #ced8de;
+  --bg-color: var(--color-bg);
+  --primary-color: var(--color-primary);
+  --secondary-color: var(--color-secondary);
   --header-bg: #dfebf6;
+  --header-text: #0f4c81;
+}
+
+html[data-color-mode='light'] {
+  --header-bg: #0f4c81;
+  --header-text: #fff;
+}
+
+html[data-color-mode='dark'] {
+  --header-bg: #dfebf6;
+  --header-text: #0f4c81;
 }
 
 ::selection {
@@ -39,7 +56,7 @@
 
 .bg {
   background-color: rgba(15, 76, 129, 60%);
-  background-image: url('/images/bg.jpg');
+  background-image: url('../images/bg.jpg');
   background-position: 0 30%;
   background-repeat: no-repeat;
   width: 100%;
@@ -58,8 +75,13 @@ header .light {
   right: 1em;
 }
 
+.site-header,
+.site-header .text-blog-bg {
+  color: var(--header-text);
+}
+
 .theme {
-  stroke: var(--bg-color);
+  stroke: var(--header-text);
 }
 
 .home {
@@ -71,8 +93,8 @@ header .light {
 
 .blog-post-container h1,
 .blog-post-container h2 {
-  color: var(--header-bg);
-  font-family: 'Boogaloo', system-ui, sans-serif;
+  color: var(--color-accent);
+  font-family: var(--trend-font-heading, 'Boogaloo', system-ui, sans-serif);
 }
 
 .blog-post-container h2 {
@@ -80,16 +102,19 @@ header .light {
 }
 
 .blog-post-container h3 {
+  color: var(--primary-color);
   font-size: 1.24em;
   font-weight: 500;
 }
 
 .blog-post-container h4 {
+  color: var(--primary-color);
   font-size: 1.166em;
   font-weight: 500;
 }
 
 .blog-post-container h5 {
+  color: var(--primary-color);
   font-size: 1.125em;
   font-weight: 500;
 }
@@ -113,8 +138,15 @@ header .light {
   margin-bottom: 1.25em;
   position: relative;
   border: 1px solid var(--blockquote-border);
-  transition-property: background-color, border-color, color;
+  box-shadow: var(--trend-shadow);
+  backdrop-filter: var(--trend-blur);
+  -webkit-backdrop-filter: var(--trend-blur);
+  transition-property: background-color, border-color, color, box-shadow;
   transition-duration: 500ms;
+}
+
+.blog-post-container blockquote strong {
+  color: var(--color-accent);
 }
 
 .blog-post-container blockquote p {
@@ -133,11 +165,21 @@ header .light {
 }
 
 .blog-post-content pre {
-  background: var(--blockquote-color);
+  background: var(--trend-surface);
   color: var(--primary-text);
   padding: 1rem;
-  border-radius: 5px;
+  border: 1px solid var(--trend-border);
+  border-radius: var(--trend-radius-sm);
+  box-shadow: var(--trend-shadow);
   overflow-x: auto;
+}
+
+.blog-post-content code:not(pre code) {
+  background: var(--trend-surface);
+  border: 1px solid var(--trend-border);
+  border-radius: var(--trend-radius-sm);
+  color: var(--color-accent);
+  padding: 0.1rem 0.35rem;
 }
 
 .blog-post-content img {
@@ -152,13 +194,22 @@ header .light {
 }
 
 .blog-post-content a:not(.text-base) {
+  color: var(--color-accent);
   text-decoration: underline;
+  text-decoration-color: var(--trend-border-accent);
+  text-underline-offset: 0.18em;
 }
 
 .blog-post-content li {
   margin: 0.55rem 0;
   list-style: disc;
   margin-left: 2em;
+}
+
+.blog-post-content hr {
+  border: 0;
+  border-top: 1px solid var(--trend-border);
+  margin: 2rem 1.5rem;
 }
 
 .new {

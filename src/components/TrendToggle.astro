@@ -1,0 +1,58 @@
+---
+// TrendToggle.astro
+// Drop into src/components/TrendToggle.astro
+---
+
+<div class="trend-toggle-bar" role="toolbar" aria-label="Design trend selector">
+  <span class="trend-toggle-label">Design Era &nbsp;&nbsp;&dash;</span>
+  <div class="trend-toggle-buttons">
+    <button class="trend-btn" data-era="default">Default</button>
+    <button class="trend-btn" data-era="liquid-glass">Liquid Glass</button>
+    <button class="trend-btn" data-era="glassmorphism">Glassmorphism</button>
+    <button class="trend-btn" data-era="brutalism">Brutalism</button>
+    <button class="trend-btn" data-era="skeuomorphism">Skeuomorphism</button>
+    <button class="trend-btn" data-era="flat">Flat</button>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'blog-design-era';
+  const DEFAULT_TREND = 'default';
+
+  const trendLabels: Record<string, string> = {
+    default: 'Default · Original Blog',
+    'liquid-glass': 'Liquid Glass · 2025–26',
+    glassmorphism: 'Glassmorphism · 2021–24',
+    brutalism: 'Brutalism · Timeless',
+    skeuomorphism: 'Skeuomorphism · 2007–13',
+    flat: 'Flat / Material · 2013–20',
+  };
+
+  function applyTrend(trend: string) {
+    document.documentElement.setAttribute('data-trend', trend);
+    localStorage.setItem(STORAGE_KEY, trend);
+
+    document
+      .querySelectorAll<HTMLButtonElement>('.trend-toggle-bar [data-era]')
+      .forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.era === trend);
+        btn.setAttribute('aria-pressed', String(btn.dataset.era === trend));
+      });
+
+    const badge = document.getElementById('trend-badge-label');
+    if (badge) badge.textContent = trendLabels[trend] ?? trend;
+  }
+
+  // Restore on load
+  const saved = localStorage.getItem(STORAGE_KEY) ?? DEFAULT_TREND;
+  applyTrend(saved);
+
+  // Wire up buttons
+  document
+    .querySelectorAll<HTMLButtonElement>('.trend-toggle-bar [data-era]')
+    .forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.era) applyTrend(btn.dataset.era);
+      });
+    });
+</script>
