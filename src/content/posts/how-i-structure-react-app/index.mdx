@@ -1,0 +1,216 @@
+---
+path: "/how-i-structure-react-app"
+date: "2020-10-08"
+title: "How I structure a React app"
+description: "A practical React folder structure using scripts, atomic components, reusable hooks, and a small theme layer."
+published: false
+tags: ['React']
+---
+
+import AtomicDesign from '../../../posts/how-i-structure-react-app/Atomic_Design.png';
+
+# Structuring a React app
+
+Every React app starts with the same quiet question: where should this thing live?
+
+The folder structure decides how easy the app is to grow, debug, and explain to the next person. I like keeping the shape simple: scripts at the project level, small components near the UI, hooks for reusable behavior, and theme tokens in one predictable place.
+
+> **My rule:** the structure should make the next change feel obvious.
+
+## Start with package.json
+
+`package.json` is the control panel for the app. I keep script names short, readable, and grouped by intent.
+
+```json
+{
+  "name": "app-name",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "stylelint": "stylelint src/**/index.css",
+    "stylelint:fix": "stylelint src/**/index.css --fix",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "bundle:size": "bundlesize"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run prettier",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
+```
+
+## Script naming
+
+Scripts should be easy to remember. I prefer `:` for script groups because it reads naturally:
+
+```json
+{
+  "scripts": {
+    "build": "react-scripts build",
+    "build:style": "tailwindcss -i src/index.css -o src/app.css",
+    "lint": "eslint src",
+    "lint:style": "stylelint src/**/*.css",
+    "test": "react-scripts test"
+  }
+}
+```
+
+That gives the project a small command language:
+
+- `build` creates the app bundle
+- `build:style` creates the CSS bundle
+- `lint` checks JavaScript and JSX
+- `lint:style` checks stylesheets
+- `test` runs the test suite
+
+## Component structure
+
+I use Atomic Design as a starting point, then keep only the layers that help the team move faster. In practice, that usually means `atoms`, `organisms`, and `pages`.
+
+<img src={AtomicDesign.src} alt="Atomic design diagram" />
+
+### Atoms
+
+Atoms are the smallest reusable pieces: buttons, inputs, headings, icons, tags, and text areas.
+
+They should be boring in the best possible way. An atom accepts props, renders consistently, and avoids knowing too much about the page around it.
+
+### Organisms
+
+Organisms combine atoms into useful interface sections: headers, cards, search boxes, upload panels, list items, and filters.
+
+This is where product behavior starts to appear, but the component should still be reusable across pages when the shape is common.
+
+### Pages
+
+Pages assemble atoms and organisms into complete routes. A page can handle layout decisions, route-specific copy, and the larger data flow for that view.
+
+## Folder structure
+
+Here is the structure I usually start with when the app uses React Context for shared state:
+
+```markdown
+src
+├── components
+│   ├── atoms
+│   │   ├── Heading.js
+│   │   ├── Icon.js
+│   │   ├── Input.js
+│   │   ├── Tag.js
+│   │   └── TextArea.js
+│   └── organisms
+│       ├── Card.js
+│       ├── Search.js
+│       └── Upload.js
+├── context
+├── hooks
+│   ├── useIntersectionObserver.js
+│   └── useKeyPress.js
+├── logic
+│   ├── useName.js
+│   └── useStatus.js
+├── pages
+│   ├── Create
+│   │   └── index.js
+│   ├── List
+│   │   └── index.js
+│   ├── Onboarding
+│   │   └── index.js
+│   └── index.js
+├── styles
+├── tests
+├── utils
+├── App.js
+├── constants.js
+├── index.js
+├── serviceWorker.js
+├── setupTests.js
+└── theme.js
+```
+
+## Keep UI and logic apart
+
+For feature components, I like keeping the UI component light and moving reusable behavior into a hook.
+
+### UI component
+
+```jsx
+// pages/Create/index.js
+
+import React from 'react';
+import { useName } from '../../logic/useName';
+
+const Create = () => {
+  const { name, setName } = useName();
+
+  return (
+    <div>
+      <span>{name}</span>
+      <input onChange={(event) => setName(event.target.value)} value={name} />
+    </div>
+  );
+};
+
+export { Create };
+```
+
+### Logic hook
+
+```jsx
+// logic/useName.js
+
+import { useState } from 'react';
+
+const useName = () => {
+  const [name, setName] = useState('');
+
+  return { name, setName };
+};
+
+export { useName };
+```
+
+The component stays focused on rendering. The hook owns the state shape and can grow later without making the page harder to read.
+
+## Styling
+
+I usually choose between Tailwind CSS and styled-components depending on the project.
+
+Tailwind works well when the team wants fast composition and shared utility rules. styled-components works well when a component needs a tighter relationship between props, variants, and theme tokens.
+
+Either way, I keep design values in one place.
+
+```js
+export const theme = {
+  breakpoints: [32, 48, 64],
+  space: [0, 4, 8, 16, 24, 32, 48, 64],
+  fontSizes: [12, 14, 16, 18, 20, 24, 36, 48],
+  fontWeights: [400, 500, 600, 700],
+  lineHeights: {
+    title: 1.25,
+    paragraph: 1.5
+  },
+  colors: {
+    background: '#ffffff',
+    text: '#111827',
+    muted: '#6b7280',
+    primary: '#2563eb'
+  },
+  radii: ['0px', '2px', '4px', '8px', '16px']
+};
+```
+
+## The takeaway
+
+A good React app structure is not about having the most folders. It is about reducing the number of decisions you need to make every time you add a feature.
+
+Start small, keep naming consistent, separate reusable behavior from UI, and let the structure evolve only when the app asks for it.

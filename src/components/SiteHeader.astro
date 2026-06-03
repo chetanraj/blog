@@ -1,0 +1,196 @@
+---
+const { title } = Astro.props;
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
+---
+
+<header class="site-header bg-blog-header h-64 relative">
+  <div
+    class="flex flex-col items-center h-64 hero-text justify-center text-center text-blog-bg relative z-10"
+  >
+    <div class="text-2xl w-3/4 transition-colors duration-500">
+      {headerTitle}
+    </div>
+    {
+      !title && (
+        <div class="text-lg font-light md:w-2/5 lg:w-3/5 xl:w-2/5 mt-4 mx-6 lg:mx-0 md:mx-0 transition-colors duration-500">
+          Web Designer & Developer,{' '}
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.instagram.com/javascriptessentials/"
+            class="underline"
+          >
+            Tech Instagrammer
+          </a>
+          , Music, Movies, Gadgets, Iron Man & Batman lover.
+        </div>
+      )
+    }
+  </div>
+
+  <span class="text-blog-bg home">
+    {
+      !title ? (
+        <a
+          class="pointer transition-colors duration-500"
+          href="https://chetanraj.dev"
+        >
+          HOME
+        </a>
+      ) : (
+        <a class="pointer transition-colors duration-500" href={base}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-arrow-left"
+          >
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+        </a>
+      )
+    }
+  </span>
+
+  <div id="themeToggle" class="flex light cursor-pointer z-20 absolute">
+    <a class="mx-4 hidden md:block" href={`${base}rss.xml`} title="RSS">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="theme"
+      >
+        <path d="M4 11a9 9 0 0 1 9 9"></path>
+        <path d="M4 4a16 16 0 0 1 16 16"></path>
+        <circle cx="5" cy="19" r="1"></circle>
+      </svg>
+    </a>
+    <button class="mx-4" title="theme" type="button" id="themeButton">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#fff"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="theme"
+        id="themeIcon"
+      >
+        <path
+          id="themeIconPath"
+          d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="bg"></div>
+</header>
+
+<script is:inline>
+  const root = document.documentElement;
+  const body = document.body;
+  const wrap = document.getElementById('themeToggle');
+  const btn = document.getElementById('themeButton');
+  const svg = document.getElementById('themeIcon');
+  const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const moon = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+  const sun = `
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  `;
+  const system = `<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>`;
+
+  function getInitialTheme() {
+    const persisted = window.localStorage.getItem('theme');
+    if (persisted === 'dark' || persisted === 'light' || persisted === 'system')
+      return persisted;
+    return colorSchemeQuery.matches ? 'dark' : 'light';
+  }
+
+  function playSound() {
+    const audioContext = new (
+      window.AudioContext || window.webkitAudioContext
+    )();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      audioContext.currentTime + 0.1
+    );
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  }
+
+  function setTheme(next) {
+    const themeToApply =
+      next === 'system' ? (colorSchemeQuery.matches ? 'dark' : 'light') : next;
+
+    root.dataset.colorMode = themeToApply;
+    root.dataset.themePreference = next;
+    body.classList.remove('dark', 'light');
+    body.classList.add(themeToApply);
+    wrap?.classList.remove('dark', 'light');
+    wrap?.classList.add(themeToApply);
+
+    if (svg) {
+      if (next === 'light') svg.innerHTML = moon;
+      else if (next === 'dark') svg.innerHTML = sun;
+      else if (next === 'system') svg.innerHTML = system;
+    }
+    window.localStorage.setItem('theme', next);
+    playSound();
+  }
+
+  const initial = typeof window !== 'undefined' ? getInitialTheme() : 'light';
+  setTheme(initial);
+
+  btn?.addEventListener('click', () => {
+    const current = window.localStorage.getItem('theme') || initial;
+    const next =
+      current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
+    setTheme(next);
+  });
+
+  colorSchemeQuery.addEventListener('change', () => {
+    if (window.localStorage.getItem('theme') === 'system') {
+      setTheme('system');
+    }
+  });
+</script>

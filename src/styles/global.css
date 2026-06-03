@@ -1,0 +1,232 @@
+@import './trends.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── BLOG COLOR PALETTE ───────────────────────────────────────── */
+
+:root {
+  --bg-color: var(--color-bg);
+  --blockquote-color: var(--trend-surface);
+  --blockquote-border: var(--trend-border-accent);
+  --header-bg: #0f4c81;
+  --header-text: #fff;
+  --primary-text: var(--color-content, var(--color-primary));
+  --primary-color: var(--color-primary);
+  --secondary-color: var(--color-secondary);
+  --lightgray-color: var(--color-lightgray);
+  --yellow: #f7df1e;
+}
+
+.dark {
+  --bg-color: var(--color-bg);
+  --primary-color: var(--color-primary);
+  --secondary-color: var(--color-secondary);
+  --header-bg: #dfebf6;
+  --header-text: #0f4c81;
+}
+
+html[data-color-mode='light'] {
+  --header-bg: #0f4c81;
+  --header-text: #fff;
+}
+
+html[data-color-mode='dark'] {
+  --header-bg: #dfebf6;
+  --header-text: #0f4c81;
+}
+
+::selection {
+  background: var(--header-bg);
+  color: var(--bg-color);
+}
+
+@layer base {
+  body {
+    @apply font-sans;
+    background-color: var(--bg-color);
+    transition: color 0.6s, background-color 0.6s;
+  }
+
+  header {
+    transition: color 0.6s, background-color 0.6s;
+  }
+}
+
+.bg {
+  background-color: rgba(15, 76, 129, 60%);
+  background-image: url('../images/bg.jpg');
+  background-position: 0 30%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  opacity: 0.29;
+}
+
+header .dark,
+header .light {
+  top: 1em;
+  right: 1em;
+}
+
+.site-header,
+.site-header .text-blog-bg {
+  color: var(--header-text);
+}
+
+.theme {
+  stroke: var(--header-text);
+}
+
+.home {
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  z-index: 10;
+}
+
+.blog-post-container h1,
+.blog-post-container h2 {
+  color: var(--color-accent);
+  font-family: var(--trend-font-heading, 'Boogaloo', system-ui, sans-serif);
+}
+
+.blog-post-container h2 {
+  font-size: 1.602em;
+}
+
+.blog-post-container h3 {
+  color: var(--primary-color);
+  font-size: 1.24em;
+  font-weight: 500;
+}
+
+.blog-post-container h4 {
+  color: var(--primary-color);
+  font-size: 1.166em;
+  font-weight: 500;
+}
+
+.blog-post-container h5 {
+  color: var(--primary-color);
+  font-size: 1.125em;
+  font-weight: 500;
+}
+
+.blog-post-container h1,
+.blog-post-container h2,
+.blog-post-container h3,
+.blog-post-container h4,
+.blog-post-container h5 {
+  transition: color 0.6s;
+  margin: 2.75rem 0 1rem;
+  text-rendering: optimizeLegibility;
+}
+
+.blog-post-container blockquote {
+  background: var(--blockquote-color);
+  color: var(--primary-text);
+  margin-top: 1.25em;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1.25em;
+  position: relative;
+  border: 1px solid var(--blockquote-border);
+  box-shadow: var(--trend-shadow);
+  backdrop-filter: var(--trend-blur);
+  -webkit-backdrop-filter: var(--trend-blur);
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 500ms;
+}
+
+.blog-post-container blockquote strong {
+  color: var(--color-accent);
+}
+
+.blog-post-container blockquote p {
+  margin: 0;
+}
+
+.blog-post-content {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.blog-post-content > *:not(img) {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-bottom: 1.25em;
+}
+
+.blog-post-content pre {
+  background: var(--trend-surface);
+  color: var(--primary-text);
+  padding: 1rem;
+  border: 1px solid var(--trend-border);
+  border-radius: var(--trend-radius-sm);
+  box-shadow: var(--trend-shadow);
+  overflow-x: auto;
+}
+
+.blog-post-content code:not(pre code) {
+  background: var(--trend-surface);
+  border: 1px solid var(--trend-border);
+  border-radius: var(--trend-radius-sm);
+  color: var(--color-accent);
+  padding: 0.1rem 0.35rem;
+}
+
+.blog-post-content img {
+  margin: 0 auto;
+}
+
+.blog-post-content p {
+  text-align: left;
+  letter-spacing: -0.004em;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.blog-post-content a:not(.text-base) {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-color: var(--trend-border-accent);
+  text-underline-offset: 0.18em;
+}
+
+.blog-post-content li {
+  margin: 0.55rem 0;
+  list-style: disc;
+  margin-left: 2em;
+}
+
+.blog-post-content hr {
+  border: 0;
+  border-top: 1px solid var(--trend-border);
+  margin: 2rem 1.5rem;
+}
+
+.new {
+  background: var(--yellow);
+  color: var(--primary-text);
+  animation: zoom 1s infinite;
+}
+
+.h-sc {
+  min-height: calc(100vh - 300px);
+}
+
+@keyframes zoom {
+  0% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}

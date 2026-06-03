@@ -1,0 +1,652 @@
+/* ─── DEFAULT / ORIGINAL BLOG ──────────────────────────────────── */
+:root {
+  --color-bg: #fff;
+  --color-header: #0f4c81;
+  --color-primary: #333;
+  --color-secondary: #666;
+  --color-lightgray: #999;
+  --color-accent: #0f4c81;
+  --color-content: #0d2538;
+
+  --trend-surface: #cfe8fd;
+  --trend-border: #94ceff;
+  --trend-border-accent: #94ceff;
+  --trend-blur: none;
+  --trend-shadow: none;
+  --trend-radius: 5px;
+  --trend-radius-sm: 5px;
+  --trend-font-heading: 'Syne', system-ui, sans-serif;
+  --trend-font-body: 'IBM Plex Mono', ui-monospace, monospace;
+  --trend-transition: all 0.4s ease;
+  --trend-btn-active-bg: #0f4c81;
+  --trend-btn-active-color: #fff;
+  --trend-btn-active-border: #0f4c81;
+  --trend-toggle-label: #5c7a94;
+  --trend-toggle-btn: #0f4c81;
+  --trend-toggle-btn-bg: transparent;
+  --trend-toggle-btn-border: transparent;
+  --trend-noise: 0;
+}
+
+html[data-trend='default'] {
+  --color-bg: #fff;
+  --color-header: #0f4c81;
+  --color-primary: #333;
+  --color-secondary: #666;
+  --color-lightgray: #999;
+  --color-accent: #0f4c81;
+  --color-content: #0d2538;
+
+  --trend-surface: #cfe8fd;
+  --trend-border: #94ceff;
+  --trend-border-accent: #94ceff;
+  --trend-blur: none;
+  --trend-shadow: none;
+  --trend-radius: 5px;
+  --trend-radius-sm: 5px;
+  --trend-btn-active-bg: #0f4c81;
+  --trend-btn-active-color: #fff;
+  --trend-btn-active-border: #0f4c81;
+  --trend-noise: 0;
+}
+
+/* ─── LIQUID GLASS ─────────────────────────────────────────────── */
+html[data-trend='liquid-glass'] {
+  --color-bg: #0a0a14;
+  --color-header: rgba(232, 234, 246, 0.82);
+  --color-primary: #e8eaf6;
+  --color-secondary: rgba(232, 234, 246, 0.65);
+  --color-lightgray: rgba(232, 234, 246, 0.4);
+  --color-accent: #7eb8ff;
+
+  --trend-surface: rgba(255, 255, 255, 0.1);
+  --trend-border: rgba(255, 255, 255, 0.2);
+  --trend-border-accent: rgba(126, 184, 255, 0.45);
+  --trend-blur: blur(20px);
+  --trend-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --trend-radius: 16px;
+  --trend-radius-sm: 10px;
+  --trend-toggle-label: rgba(232, 240, 255, 0.88);
+  --trend-toggle-btn: rgba(248, 250, 255, 0.94);
+  --trend-toggle-btn-bg: rgba(255, 255, 255, 0.06);
+  --trend-toggle-btn-border: rgba(255, 255, 255, 0.16);
+  --trend-btn-active-bg: rgba(126, 184, 255, 0.28);
+  --trend-btn-active-color: #eff7ff;
+  --trend-btn-active-border: rgba(126, 184, 255, 0.72);
+  --trend-noise: 0;
+}
+
+/* ─── GLASSMORPHISM ────────────────────────────────────────────── */
+html[data-trend='glassmorphism'] {
+  --color-bg: #0d0822;
+  --color-header: rgba(255, 255, 255, 0.07);
+  --color-primary: #f0eeff;
+  --color-secondary: rgba(240, 238, 255, 0.6);
+  --color-lightgray: rgba(240, 238, 255, 0.38);
+  --color-accent: #c896ff;
+
+  --trend-surface: rgba(255, 255, 255, 0.1);
+  --trend-border: rgba(255, 255, 255, 0.22);
+  --trend-border-accent: rgba(200, 150, 255, 0.5);
+  --trend-blur: blur(18px) saturate(180%);
+  --trend-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --trend-radius: 14px;
+  --trend-radius-sm: 8px;
+  --trend-toggle-label: rgba(240, 236, 255, 0.88);
+  --trend-toggle-btn: rgba(248, 246, 255, 0.94);
+  --trend-toggle-btn-bg: rgba(255, 255, 255, 0.06);
+  --trend-toggle-btn-border: rgba(255, 255, 255, 0.16);
+  --trend-btn-active-bg: rgba(200, 150, 255, 0.28);
+  --trend-btn-active-color: #fff7ff;
+  --trend-btn-active-border: rgba(200, 150, 255, 0.72);
+  --trend-noise: 0;
+}
+
+/* ─── BRUTALISM ────────────────────────────────────────────────── */
+html[data-trend='brutalism'] {
+  --color-bg: #f5f0e8;
+  --color-header: #ede8d8;
+  --color-primary: #111111;
+  --color-secondary: #333333;
+  --color-lightgray: #666666;
+  --color-accent: #ff2d00;
+
+  --trend-surface: #ffffff;
+  --trend-border: #111111;
+  --trend-border-accent: #ff2d00;
+  --trend-blur: none;
+  --trend-shadow: 4px 4px 0 #111111;
+  --trend-radius: 0px;
+  --trend-radius-sm: 0px;
+  --trend-btn-active-bg: #ffcc00;
+  --trend-btn-active-color: #111111;
+  --trend-btn-active-border: #111111;
+  --trend-noise: 0;
+}
+
+/* ─── SKEUOMORPHISM (aqua glossy) ──────────────────────────────── */
+html[data-trend='skeuomorphism'] {
+  --color-bg: #1a3a4a;
+  --color-header: #2d5a6b;
+  --color-primary: #e8f4fa;
+  --color-secondary: #a8d4e8;
+  --color-lightgray: #6a9eb0;
+  --color-accent: #7eb8ff;
+
+  --trend-surface: linear-gradient(145deg, #5eb3d4, #3a8fb8);
+  --trend-border: #2a7a9e;
+  --trend-border-accent: #7eb8ff;
+  --trend-blur: none;
+  --trend-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --trend-radius: 6px;
+  --trend-radius-sm: 3px;
+  --trend-btn-active-bg: #5eb3d4;
+  --trend-btn-active-color: #0f3d52;
+  --trend-btn-active-border: #3a8fb8;
+  --trend-noise: 0;
+}
+
+/* ─── FLAT / MATERIAL ──────────────────────────────────────────── */
+html[data-trend='flat'] {
+  --color-bg: #fafafa;
+  --color-header: #f0f0f0;
+  --color-primary: #212121;
+  --color-secondary: #424242;
+  --color-lightgray: #757575;
+  --color-accent: #1976d2;
+
+  --trend-surface: #ffffff;
+  --trend-border: #e0e0e0;
+  --trend-border-accent: #1976d2;
+  --trend-blur: none;
+  --trend-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --trend-radius: 4px;
+  --trend-radius-sm: 2px;
+  --trend-btn-active-bg: #e3f2fd;
+  --trend-btn-active-color: #1976d2;
+  --trend-btn-active-border: #1976d2;
+  --trend-noise: 0;
+}
+
+html[data-trend]:not([data-trend='default']) {
+  --color-content: var(--color-primary);
+}
+
+/* ─── LIGHT / DARK MODE VARIANTS ───────────────────────────────── */
+html[data-color-mode='dark'][data-trend='default'] {
+  --color-bg: #0f4c81;
+  --color-header: #dfebf6;
+  --color-primary: #fff;
+  --color-secondary: #ced8de;
+  --color-lightgray: #ced8de;
+  --color-accent: #dfebf6;
+  --color-content: #0d2538;
+
+  --trend-surface: #cfe8fd;
+  --trend-border: #94ceff;
+  --trend-border-accent: #94ceff;
+  --trend-shadow: none;
+  --trend-toggle-label: #486581;
+  --trend-toggle-btn: #0d2538;
+  --trend-toggle-btn-bg: transparent;
+  --trend-toggle-btn-border: transparent;
+  --trend-btn-active-bg: #0f4c81;
+  --trend-btn-active-color: #fff;
+  --trend-btn-active-border: #0f4c81;
+}
+
+html[data-color-mode='light'][data-trend='default'] {
+  --color-bg: #fff;
+  --color-header: #0f4c81;
+  --color-primary: #333;
+  --color-secondary: #666;
+  --color-lightgray: #999;
+  --color-accent: #0f4c81;
+  --color-content: #0d2538;
+
+  --trend-surface: #cfe8fd;
+  --trend-border: #94ceff;
+  --trend-border-accent: #94ceff;
+  --trend-shadow: none;
+  --trend-toggle-label: #5c7a94;
+  --trend-toggle-btn: #0f4c81;
+  --trend-toggle-btn-bg: transparent;
+  --trend-toggle-btn-border: transparent;
+  --trend-btn-active-bg: #0f4c81;
+  --trend-btn-active-color: #fff;
+  --trend-btn-active-border: #0f4c81;
+}
+
+html[data-color-mode='dark'][data-trend='liquid-glass'] {
+  --color-bg: #0a0a14;
+  --color-header: rgba(232, 234, 246, 0.82);
+  --color-primary: #e8eaf6;
+  --color-secondary: rgba(232, 234, 246, 0.65);
+  --color-lightgray: rgba(232, 234, 246, 0.4);
+  --color-accent: #7eb8ff;
+
+  --trend-surface: rgba(255, 255, 255, 0.1);
+  --trend-border: rgba(255, 255, 255, 0.2);
+  --trend-border-accent: rgba(126, 184, 255, 0.45);
+  --trend-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --trend-toggle-label: rgba(232, 240, 255, 0.88);
+  --trend-toggle-btn: rgba(248, 250, 255, 0.94);
+  --trend-toggle-btn-bg: rgba(255, 255, 255, 0.06);
+  --trend-toggle-btn-border: rgba(255, 255, 255, 0.16);
+  --trend-btn-active-bg: rgba(126, 184, 255, 0.28);
+  --trend-btn-active-color: #eff7ff;
+  --trend-btn-active-border: rgba(126, 184, 255, 0.72);
+}
+
+html[data-color-mode='light'][data-trend='liquid-glass'] {
+  --color-bg: #f7fbff;
+  --color-header: rgba(255, 255, 255, 0.58);
+  --color-primary: #102033;
+  --color-secondary: rgba(16, 32, 51, 0.68);
+  --color-lightgray: rgba(16, 32, 51, 0.42);
+  --color-accent: #256ec1;
+
+  --trend-surface: rgba(255, 255, 255, 0.72);
+  --trend-border: rgba(37, 110, 193, 0.22);
+  --trend-border-accent: rgba(37, 110, 193, 0.46);
+  --trend-shadow:
+    0 10px 34px rgba(52, 101, 164, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  --trend-toggle-label: rgba(16, 32, 51, 0.62);
+  --trend-toggle-btn: rgba(16, 32, 51, 0.88);
+  --trend-toggle-btn-bg: rgba(37, 110, 193, 0.06);
+  --trend-toggle-btn-border: rgba(37, 110, 193, 0.18);
+  --trend-btn-active-bg: rgba(37, 110, 193, 0.16);
+  --trend-btn-active-color: #0f4c81;
+  --trend-btn-active-border: rgba(37, 110, 193, 0.5);
+}
+
+html[data-color-mode='dark'][data-trend='glassmorphism'] {
+  --color-bg: #0d0822;
+  --color-header: rgba(240, 238, 255, 0.84);
+  --color-primary: #f0eeff;
+  --color-secondary: rgba(240, 238, 255, 0.6);
+  --color-lightgray: rgba(240, 238, 255, 0.38);
+  --color-accent: #c896ff;
+
+  --trend-surface: rgba(255, 255, 255, 0.1);
+  --trend-border: rgba(255, 255, 255, 0.22);
+  --trend-border-accent: rgba(200, 150, 255, 0.5);
+  --trend-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --trend-toggle-label: rgba(240, 236, 255, 0.88);
+  --trend-toggle-btn: rgba(248, 246, 255, 0.94);
+  --trend-toggle-btn-bg: rgba(255, 255, 255, 0.06);
+  --trend-toggle-btn-border: rgba(255, 255, 255, 0.16);
+  --trend-btn-active-bg: rgba(200, 150, 255, 0.28);
+  --trend-btn-active-color: #fff7ff;
+  --trend-btn-active-border: rgba(200, 150, 255, 0.72);
+}
+
+html[data-color-mode='light'][data-trend='glassmorphism'] {
+  --color-bg: #fbf7ff;
+  --color-header: rgba(255, 255, 255, 0.62);
+  --color-primary: #24143d;
+  --color-secondary: rgba(36, 20, 61, 0.64);
+  --color-lightgray: rgba(36, 20, 61, 0.4);
+  --color-accent: #8952d6;
+
+  --trend-surface: rgba(255, 255, 255, 0.76);
+  --trend-border: rgba(137, 82, 214, 0.24);
+  --trend-border-accent: rgba(137, 82, 214, 0.48);
+  --trend-shadow:
+    0 8px 28px rgba(94, 60, 150, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  --trend-toggle-label: rgba(36, 20, 61, 0.62);
+  --trend-toggle-btn: rgba(36, 20, 61, 0.88);
+  --trend-toggle-btn-bg: rgba(137, 82, 214, 0.06);
+  --trend-toggle-btn-border: rgba(137, 82, 214, 0.18);
+  --trend-btn-active-bg: rgba(137, 82, 214, 0.16);
+  --trend-btn-active-color: #5b2f9e;
+  --trend-btn-active-border: rgba(137, 82, 214, 0.5);
+}
+
+html[data-color-mode='dark'][data-trend='brutalism'] {
+  --color-bg: #101010;
+  --color-header: #f7f7f7;
+  --color-primary: #f7f7f7;
+  --color-secondary: #d7d7d7;
+  --color-lightgray: #a7a7a7;
+  --color-accent: #ffcc00;
+
+  --trend-surface: #181818;
+  --trend-border: #f7f7f7;
+  --trend-border-accent: #ffcc00;
+  --trend-shadow: 4px 4px 0 #ffcc00;
+  --trend-toggle-label: #bdbdbd;
+  --trend-toggle-btn: #f7f7f7;
+  --trend-toggle-btn-bg: transparent;
+  --trend-toggle-btn-border: rgba(247, 247, 247, 0.25);
+  --trend-btn-active-bg: #ffcc00;
+  --trend-btn-active-color: #101010;
+  --trend-btn-active-border: #f7f7f7;
+}
+
+html[data-color-mode='light'][data-trend='brutalism'] {
+  --color-bg: #f5f0e8;
+  --color-header: #ede8d8;
+  --color-primary: #111111;
+  --color-secondary: #333333;
+  --color-lightgray: #666666;
+  --color-accent: #ff2d00;
+
+  --trend-surface: #ffffff;
+  --trend-border: #111111;
+  --trend-border-accent: #ff2d00;
+  --trend-shadow: 4px 4px 0 #111111;
+  --trend-toggle-label: #555555;
+  --trend-toggle-btn: #111111;
+  --trend-toggle-btn-bg: transparent;
+  --trend-toggle-btn-border: transparent;
+  --trend-btn-active-bg: #ffcc00;
+  --trend-btn-active-color: #111111;
+  --trend-btn-active-border: #111111;
+}
+
+html[data-color-mode='dark'][data-trend='skeuomorphism'] {
+  --color-bg: #1a3a4a;
+  --color-header: #e8f4fa;
+  --color-primary: #e8f4fa;
+  --color-secondary: #a8d4e8;
+  --color-lightgray: #6a9eb0;
+  --color-accent: #7eb8ff;
+
+  --trend-surface: linear-gradient(145deg, #5eb3d4, #3a8fb8);
+  --trend-border: #2a7a9e;
+  --trend-border-accent: #7eb8ff;
+  --trend-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --trend-toggle-label: #8ec4dc;
+  --trend-toggle-btn: #e8f4fa;
+  --trend-toggle-btn-bg: rgba(0, 0, 0, 0.12);
+  --trend-toggle-btn-border: rgba(126, 184, 255, 0.35);
+  --trend-btn-active-bg: #5eb3d4;
+  --trend-btn-active-color: #0f3d52;
+  --trend-btn-active-border: #3a8fb8;
+  --trend-noise: 0;
+}
+
+html[data-color-mode='light'][data-trend='skeuomorphism'] {
+  --color-bg: #e8f4fa;
+  --color-header: #b8dce8;
+  --color-primary: #0f3d52;
+  --color-secondary: #2a5a70;
+  --color-lightgray: #5a8a9e;
+  --color-accent: #0077b6;
+
+  --trend-surface: linear-gradient(145deg, #d4eef8, #a8d4e8);
+  --trend-border: #6eb8d4;
+  --trend-border-accent: #0077b6;
+  --trend-shadow:
+    0 4px 10px rgba(15, 61, 82, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  --trend-toggle-label: #3a6a80;
+  --trend-toggle-btn: #0f3d52;
+  --trend-toggle-btn-bg: rgba(0, 119, 182, 0.06);
+  --trend-toggle-btn-border: rgba(0, 119, 182, 0.18);
+  --trend-btn-active-bg: #0077b6;
+  --trend-btn-active-color: #ffffff;
+  --trend-btn-active-border: #005f92;
+  --trend-noise: 0;
+}
+
+html[data-color-mode='dark'][data-trend='flat'] {
+  --color-bg: #121212;
+  --color-header: #eeeeee;
+  --color-primary: #eeeeee;
+  --color-secondary: #bdbdbd;
+  --color-lightgray: #8a8a8a;
+  --color-accent: #64b5f6;
+
+  --trend-surface: #1f1f1f;
+  --trend-border: #333333;
+  --trend-border-accent: #64b5f6;
+  --trend-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --trend-toggle-label: #9e9e9e;
+  --trend-toggle-btn: #eeeeee;
+  --trend-toggle-btn-bg: transparent;
+  --trend-toggle-btn-border: rgba(255, 255, 255, 0.14);
+  --trend-btn-active-bg: #16344d;
+  --trend-btn-active-color: #90caf9;
+  --trend-btn-active-border: #64b5f6;
+}
+
+html[data-color-mode='light'][data-trend='flat'] {
+  --color-bg: #fafafa;
+  --color-header: #f0f0f0;
+  --color-primary: #212121;
+  --color-secondary: #424242;
+  --color-lightgray: #757575;
+  --color-accent: #1976d2;
+
+  --trend-surface: #ffffff;
+  --trend-border: #e0e0e0;
+  --trend-border-accent: #1976d2;
+  --trend-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --trend-toggle-label: #616161;
+  --trend-toggle-btn: #212121;
+  --trend-toggle-btn-bg: transparent;
+  --trend-toggle-btn-border: transparent;
+  --trend-btn-active-bg: #e3f2fd;
+  --trend-btn-active-color: #1976d2;
+  --trend-btn-active-border: #1976d2;
+}
+
+/* ─── BASE TRANSITIONS ─────────────────────────────────────────── */
+html {
+  background-color: var(--color-bg);
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+}
+
+body {
+  background-color: var(--color-bg);
+  transition: background-color 0.4s ease;
+  position: relative;
+}
+
+/* Noise overlay for skeuomorphism */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: calc(var(--trend-noise, 0) * 0.035);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  transition: opacity 0.4s ease;
+}
+
+/* Ambient orbs for glass trends */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(
+      ellipse 600px 500px at -10% -10%,
+      rgba(126, 184, 255, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 500px 400px at 110% 110%,
+      rgba(184, 169, 255, 0.1),
+      transparent 60%
+    );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+html[data-trend='liquid-glass'] body::before {
+  opacity: 1;
+}
+
+html[data-trend='glassmorphism'] body::before {
+  opacity: 1;
+  background:
+    radial-gradient(
+      ellipse 600px 500px at -10% -10%,
+      rgba(200, 150, 255, 0.15),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 500px 400px at 110% 110%,
+      rgba(255, 150, 200, 0.12),
+      transparent 60%
+    );
+}
+
+/* ─── TAILWIND COLOR TOKEN OVERRIDES ───────────────────────────── */
+/*
+  These override your Tailwind blog-* custom colors via CSS vars.
+  Add this to your tailwind.config.* :
+
+  theme: {
+    extend: {
+      colors: {
+        blog: {
+          bg:        'var(--color-bg)',
+          header:    'var(--color-header)',
+          primary:   'var(--color-primary)',
+          secondary: 'var(--color-secondary)',
+          lightgray: 'var(--color-lightgray)',
+          accent:    'var(--color-accent)',
+        }
+      }
+    }
+  }
+
+  Then use bg-blog-bg, text-blog-primary etc. in your templates.
+*/
+
+/* ─── TREND TOGGLE BAR STYLES ──────────────────────────────────── */
+.trend-toggle-bar {
+  position: relative;
+  z-index: 20;
+  isolation: isolate;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  background: var(--trend-surface);
+  backdrop-filter: var(--trend-blur);
+  -webkit-backdrop-filter: var(--trend-blur);
+  border: 1px solid var(--trend-border);
+  box-shadow: var(--trend-shadow);
+  flex-wrap: wrap;
+  transition: var(--trend-transition, all 0.4s ease);
+  margin-bottom: 2rem;
+}
+
+html[data-trend='brutalism'] .trend-toggle-bar {
+  border: 3px solid var(--trend-border);
+  box-shadow: 5px 5px 0 var(--trend-border-accent);
+}
+
+.trend-toggle-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--trend-toggle-label);
+  padding: 0 0.25rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.4s ease;
+}
+
+.trend-toggle-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.trend-btn {
+  position: relative;
+  z-index: 1;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--trend-toggle-btn);
+  background: var(--trend-toggle-btn-bg);
+  border: 1px solid var(--trend-toggle-btn-border);
+  border-radius: var(--trend-radius-sm);
+  cursor: pointer;
+  pointer-events: auto;
+  white-space: nowrap;
+  transition: var(--trend-transition, all 0.3s ease);
+}
+
+.trend-btn:hover {
+  color: var(--trend-btn-active-color);
+  background: var(--trend-btn-active-bg);
+  border-color: var(--trend-btn-active-border);
+  box-shadow:
+    inset 0 0 0 1px var(--trend-btn-active-border),
+    0 2px 12px color-mix(in srgb, var(--color-accent), transparent 70%);
+}
+
+.trend-btn.active,
+.trend-btn[aria-pressed='true'] {
+  background: var(--trend-btn-active-bg);
+  color: var(--trend-btn-active-color);
+  border-color: var(--trend-btn-active-border);
+  box-shadow: inset 0 0 0 1px var(--trend-btn-active-border);
+}
+
+html[data-trend='brutalism'] .trend-btn {
+  border: 2px solid transparent;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+}
+html[data-trend='brutalism'] .trend-btn:hover {
+  border: 2px solid var(--trend-border);
+  box-shadow: 2px 2px 0 var(--trend-border-accent);
+}
+html[data-trend='brutalism'] .trend-btn.active {
+  border: 2px solid var(--trend-border);
+  box-shadow: 2px 2px 0 var(--trend-border-accent);
+}
+
+html[data-trend='skeuomorphism'] .trend-btn.active {
+  background: var(--trend-btn-active-bg);
+  color: var(--trend-btn-active-color);
+  border-color: var(--trend-btn-active-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── GENERAL TRANSITION HELPERS ───────────────────────────────── */
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+li,
+div,
+span,
+section,
+header,
+footer,
+nav {
+  transition:
+    color 0.4s ease,
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}

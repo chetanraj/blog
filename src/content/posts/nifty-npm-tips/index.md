@@ -45,7 +45,7 @@ ntl /path-to-your/blog/
 
 ### Output
 
-![](./ntl-demo.png)
+
 
 ### To run multiple tasks
 

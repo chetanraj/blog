@@ -2,85 +2,28 @@
   "name": "blog-by-chetanraj",
   "private": true,
   "description": "Blog by Chetan Raj",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Chetan Raj <chetan.narian@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "npm run build && gh-pages -d dist --dotfiles"
+  },
   "dependencies": {
-    "@mdx-js/mdx": "^1.6.4",
-    "@mdx-js/react": "^1.6.4",
-    "autoprefixer": "^9.8.6",
-    "gatsby": "^2.20.12",
-    "gatsby-image": "^2.3.1",
-    "gatsby-plugin-catch-links": "^2.3.3",
-    "gatsby-plugin-feed": "^2.5.11",
-    "gatsby-plugin-feed-mdx": "^1.0.1",
-    "gatsby-plugin-google-analytics": "^2.2.4",
-    "gatsby-plugin-manifest": "^2.3.3",
-    "gatsby-plugin-mdx": "^1.2.13",
-    "gatsby-plugin-offline": "^3.1.2",
-    "gatsby-plugin-postcss": "^2.3.13",
-    "gatsby-plugin-react-helmet": "^3.2.1",
-    "gatsby-plugin-sharp": "^2.5.3",
-    "gatsby-plugin-web-font-loader": "^1.0.4",
-    "gatsby-remark-autolink-headers": "^2.2.4",
-    "gatsby-remark-images": "^3.3.8",
-    "gatsby-remark-picture": "^1.0.1",
-    "gatsby-remark-prismjs": "^3.4.1",
-    "gatsby-remark-reading-time": "^1.1.0",
-    "gatsby-remark-relative-images": "^0.3.0",
-    "gatsby-remark-unwrap-images": "^1.0.2",
-    "gatsby-source-filesystem": "^2.2.2",
-    "gatsby-transformer-remark": "^2.7.1",
-    "gatsby-transformer-sharp": "^2.4.3",
-    "postcss": "^7.0.35",
-    "postcss-loader": "^4.1.0",
-    "prismjs": "^1.20.0",
-    "prop-types": "^15.7.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-helmet": "^6.0.0",
-    "tailwindcss": "^2.0.1-compat",
-    "terser": "^4.7.0",
-    "use-sound": "^1.0.2"
+    "@astrojs/mdx": "^4.0.0",
+    "astro": "^5.2.0",
+    "gh-pages": "^6.1.1",
+    "mdast-util-to-string": "^4.0.0",
+    "reading-time": "^1.5.0"
   },
   "devDependencies": {
-    "gatsby-remark-code-headers": "^1.1.0",
-    "gatsby-remark-code-titles": "^1.1.0",
-    "gh-pages": "^2.2.0",
-    "prettier": "^2.0.5"
-  },
-  "keywords": [
-    "gatsby"
-  ],
-  "license": "MIT",
-  "scripts": {
-    "develop": "gatsby develop",
-    "build": "gatsby build --prefix-paths",
-    "build:simple": "gatsby build",
-    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "start": "npm run develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
-    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
-  },
-  "ntl": {
-    "descriptions": {
-      "develop": "💻",
-      "build": "gatsby build --prefix-paths",
-      "build:simple": "gatsby build",
-      "format": "💄",
-      "start": "💻",
-      "serve": "gatsby serve",
-      "clean": "gatsby clean",
-      "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
-      "deploy": "🚀"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
-  },
-  "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "@astrojs/tailwind": "^6.0.2",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.12",
+    "tailwindcss": "^3.4.19"
   }
 }

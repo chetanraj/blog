@@ -4,7 +4,6 @@ date: '2020-05-16'
 title: '💫 Understanding Recoil - The state management system for React.'
 description: 'Recoil is an experimental state management system for React by Facebook'
 published: true
-hero_image: './react-recoil.png'
 tags: ['react', 'recoil']
 ---
 
@@ -42,7 +41,7 @@ function Input() {
   };
 
   return (
-    <div className="input">
+    <div class="input">
       <input
         placeholder="Enter name"
         type="text"
@@ -50,7 +49,7 @@ function Input() {
         onChange={onChange}
       />
       <br />
-      <div className="comment">
+      <div class="comment">
         The state is shared using <a href="https://recoiljs.org/">recoil</a>
       </div>
     </div>
