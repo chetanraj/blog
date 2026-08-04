@@ -39,35 +39,63 @@ const eras = [
 ] as const;
 ---
 
-<section class="trend-toggle" aria-label="Design era selector">
-  <div class="trend-toggle-intro">
-    <p class="trend-toggle-kicker">Design Era</p>
-    <p class="trend-toggle-current" id="trend-badge-label">Default · Original Blog</p>
-  </div>
+<section class="trend-toggle" data-expanded="false" aria-label="Design era selector">
+  <button
+    type="button"
+    class="trend-toggle-summary"
+    id="trend-toggle-trigger"
+    aria-expanded="false"
+    aria-controls="trend-toggle-panel"
+  >
+    <span class="trend-toggle-summary-preview trend-swatch-preview trend-swatch-preview--default" id="trend-summary-preview" aria-hidden="true">
+      <span class="trend-swatch-chrome"></span>
+      <span class="trend-swatch-body"></span>
+      <span class="trend-swatch-accent"></span>
+    </span>
 
-  <div class="trend-toggle-swatches" role="toolbar" aria-label="Choose a design era">
-    {
-      eras.map((era) => (
-        <button
-          type="button"
-          class="trend-swatch"
-          data-era={era.id}
-          aria-pressed="false"
-          aria-label={`${era.name}, ${era.years}`}
-          title={`${era.name} · ${era.years}`}
-        >
-          <span class={`trend-swatch-preview trend-swatch-preview--${era.id}`} aria-hidden="true">
-            <span class="trend-swatch-chrome" />
-            <span class="trend-swatch-body" />
-            <span class="trend-swatch-accent" />
-          </span>
-          <span class="trend-swatch-meta">
-            <span class="trend-swatch-name">{era.name}</span>
-            <span class="trend-swatch-years">{era.years}</span>
-          </span>
-        </button>
-      ))
-    }
+    <span class="trend-toggle-summary-copy">
+      <span class="trend-toggle-kicker">Design Era</span>
+      <span class="trend-toggle-current" id="trend-badge-label">Default · Original Blog</span>
+    </span>
+
+    <span class="trend-toggle-summary-action">
+      <span class="trend-toggle-action-label" data-label-expand>Change</span>
+      <span class="trend-toggle-action-label" data-label-collapse hidden>Close</span>
+      <span class="trend-toggle-chevron" aria-hidden="true"></span>
+    </span>
+  </button>
+
+  <div
+    class="trend-toggle-panel"
+    id="trend-toggle-panel"
+    role="region"
+    aria-labelledby="trend-toggle-trigger"
+    hidden
+  >
+    <div class="trend-toggle-swatches" role="toolbar" aria-label="Choose a design era">
+      {
+        eras.map((era) => (
+          <button
+            type="button"
+            class="trend-swatch"
+            data-era={era.id}
+            aria-pressed="false"
+            aria-label={`${era.name}, ${era.years}`}
+            title={`${era.name} · ${era.years}`}
+          >
+            <span class={`trend-swatch-preview trend-swatch-preview--${era.id}`} aria-hidden="true">
+              <span class="trend-swatch-chrome" />
+              <span class="trend-swatch-body" />
+              <span class="trend-swatch-accent" />
+            </span>
+            <span class="trend-swatch-meta">
+              <span class="trend-swatch-name">{era.name}</span>
+              <span class="trend-swatch-years">{era.years}</span>
+            </span>
+          </button>
+        ))
+      }
+    </div>
   </div>
 </section>
 
@@ -84,7 +112,30 @@ const eras = [
     flat: 'Flat / Material · 2013–20',
   };
 
-  function applyTrend(trend: string) {
+  const root = document.querySelector<HTMLElement>('.trend-toggle');
+  const trigger = document.getElementById('trend-toggle-trigger') as HTMLButtonElement | null;
+  const panel = document.getElementById('trend-toggle-panel');
+  const summaryPreview = document.getElementById('trend-summary-preview');
+  const expandLabel = document.querySelector<HTMLElement>('[data-label-expand]');
+  const collapseLabel = document.querySelector<HTMLElement>('[data-label-collapse]');
+
+  function setExpanded(expanded: boolean) {
+    if (!root || !trigger || !panel) return;
+
+    root.dataset.expanded = String(expanded);
+    trigger.setAttribute('aria-expanded', String(expanded));
+    panel.hidden = !expanded;
+
+    if (expandLabel) expandLabel.hidden = expanded;
+    if (collapseLabel) collapseLabel.hidden = !expanded;
+
+    if (expanded) {
+      const active = root.querySelector<HTMLButtonElement>('.trend-swatch.active');
+      active?.focus();
+    }
+  }
+
+  function applyTrend(trend: string, options: { collapse?: boolean } = {}) {
     document.documentElement.setAttribute('data-trend', trend);
     localStorage.setItem(STORAGE_KEY, trend);
 
@@ -96,14 +147,33 @@ const eras = [
 
     const badge = document.getElementById('trend-badge-label');
     if (badge) badge.textContent = trendLabels[trend] ?? trend;
+
+    if (summaryPreview) {
+      summaryPreview.className = `trend-toggle-summary-preview trend-swatch-preview trend-swatch-preview--${trend}`;
+    }
+
+    if (options.collapse) setExpanded(false);
   }
 
   const saved = localStorage.getItem(STORAGE_KEY) ?? DEFAULT_TREND;
   applyTrend(saved);
+  setExpanded(false);
+
+  trigger?.addEventListener('click', () => {
+    const next = root?.dataset.expanded !== 'true';
+    setExpanded(next);
+  });
 
   document.querySelectorAll<HTMLButtonElement>('.trend-swatch[data-era]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      if (btn.dataset.era) applyTrend(btn.dataset.era);
+      if (btn.dataset.era) applyTrend(btn.dataset.era, { collapse: true });
     });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && root?.dataset.expanded === 'true') {
+      setExpanded(false);
+      trigger?.focus();
+    }
   });
 </script>
