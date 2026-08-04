@@ -529,102 +529,365 @@ html[data-trend='glassmorphism'] body::before {
   Then use bg-blog-bg, text-blog-primary etc. in your templates.
 */
 
-/* ─── TREND TOGGLE BAR STYLES ──────────────────────────────────── */
-.trend-toggle-bar {
+/* ─── DESIGN ERA SWATCH PICKER ─────────────────────────────────── */
+.trend-toggle {
   position: relative;
   z-index: 20;
   isolation: isolate;
-  pointer-events: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.375rem 0.5rem;
+  display: grid;
+  gap: 0.85rem;
+  width: min(960px, calc(100% - 2rem));
+  margin: 0 auto 2.25rem;
+  padding: 1rem 1.1rem 1.15rem;
   background: var(--trend-surface);
   backdrop-filter: var(--trend-blur);
   -webkit-backdrop-filter: var(--trend-blur);
   border: 1px solid var(--trend-border);
+  border-radius: var(--trend-radius);
   box-shadow: var(--trend-shadow);
-  flex-wrap: wrap;
   transition: var(--trend-transition, all 0.4s ease);
-  margin-bottom: 2rem;
 }
 
-html[data-trend='brutalism'] .trend-toggle-bar {
+html[data-trend='brutalism'] .trend-toggle {
   border: 3px solid var(--trend-border);
+  border-radius: 0;
   box-shadow: 5px 5px 0 var(--trend-border-accent);
 }
 
-.trend-toggle-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--trend-toggle-label);
-  padding: 0 0.25rem;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: color 0.4s ease;
-}
-
-.trend-toggle-buttons {
+.trend-toggle-intro {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
 }
 
-.trend-btn {
-  position: relative;
-  z-index: 1;
-  padding: 0.3rem 0.65rem;
+.trend-toggle-kicker {
+  margin: 0;
   font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--trend-toggle-label);
+}
+
+.trend-toggle-current {
+  margin: 0;
+  font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  color: var(--trend-toggle-btn);
+  letter-spacing: 0.01em;
+}
+
+.trend-toggle-swatches {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+@media (max-width: 820px) {
+  .trend-toggle-swatches {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .trend-toggle {
+    width: calc(100% - 1rem);
+    padding: 0.85rem 0.75rem 1rem;
+  }
+
+  .trend-toggle-swatches {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.trend-swatch {
+  appearance: none;
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.45rem;
+  text-align: left;
   color: var(--trend-toggle-btn);
   background: var(--trend-toggle-btn-bg);
   border: 1px solid var(--trend-toggle-btn-border);
-  border-radius: var(--trend-radius-sm);
+  border-radius: calc(var(--trend-radius-sm) + 2px);
   cursor: pointer;
-  pointer-events: auto;
-  white-space: nowrap;
-  transition: var(--trend-transition, all 0.3s ease);
+  transition:
+    transform 0.25s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    color 0.3s ease;
 }
 
-.trend-btn:hover {
-  color: var(--trend-btn-active-color);
-  background: var(--trend-btn-active-bg);
+.trend-swatch:hover {
+  transform: translateY(-2px);
   border-color: var(--trend-btn-active-border);
-  box-shadow:
-    inset 0 0 0 1px var(--trend-btn-active-border),
-    0 2px 12px color-mix(in srgb, var(--color-accent), transparent 70%);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-accent), transparent 78%);
 }
 
-.trend-btn.active,
-.trend-btn[aria-pressed='true'] {
+.trend-swatch:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.trend-swatch.active,
+.trend-swatch[aria-pressed='true'] {
   background: var(--trend-btn-active-bg);
   color: var(--trend-btn-active-color);
   border-color: var(--trend-btn-active-border);
   box-shadow: inset 0 0 0 1px var(--trend-btn-active-border);
 }
 
-html[data-trend='brutalism'] .trend-btn {
-  border: 2px solid transparent;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.65rem;
-}
-html[data-trend='brutalism'] .trend-btn:hover {
-  border: 2px solid var(--trend-border);
-  box-shadow: 2px 2px 0 var(--trend-border-accent);
-}
-html[data-trend='brutalism'] .trend-btn.active {
-  border: 2px solid var(--trend-border);
-  box-shadow: 2px 2px 0 var(--trend-border-accent);
+.trend-swatch.active .trend-swatch-preview,
+.trend-swatch[aria-pressed='true'] .trend-swatch-preview {
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
-html[data-trend='skeuomorphism'] .trend-btn.active {
-  background: var(--trend-btn-active-bg);
-  color: var(--trend-btn-active-color);
-  border-color: var(--trend-btn-active-border);
+.trend-swatch-preview {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  height: 3.1rem;
+  border-radius: calc(var(--trend-radius-sm) + 1px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.3s ease;
+}
+
+.trend-swatch-chrome,
+.trend-swatch-body,
+.trend-swatch-accent {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+.trend-swatch-meta {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.trend-swatch-name {
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trend-swatch-years {
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+/* Fixed miniature previews — each swatch keeps its own era look */
+.trend-swatch-preview--default {
+  background: linear-gradient(180deg, #0f4c81 42%, #f4f8fc 42%);
+}
+.trend-swatch-preview--default .trend-swatch-chrome {
+  inset: 0.35rem 0.4rem auto;
+  height: 0.28rem;
+  width: 42%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+}
+.trend-swatch-preview--default .trend-swatch-body {
+  left: 0.4rem;
+  right: 0.4rem;
+  bottom: 0.45rem;
+  height: 0.7rem;
+  border-radius: 2px;
+  background: rgba(15, 76, 129, 0.18);
+}
+.trend-swatch-preview--default .trend-swatch-accent {
+  right: 0.4rem;
+  top: 0.35rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.trend-swatch-preview--liquid-glass {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(126, 184, 255, 0.55), transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(180, 140, 255, 0.4), transparent 40%),
+    linear-gradient(145deg, #101222, #1a2038);
+}
+.trend-swatch-preview--liquid-glass .trend-swatch-chrome {
+  inset: 0.35rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(4px);
+}
+.trend-swatch-preview--liquid-glass .trend-swatch-body {
+  left: 0.7rem;
+  right: 0.7rem;
+  top: 0.85rem;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+}
+.trend-swatch-preview--liquid-glass .trend-swatch-accent {
+  left: 0.7rem;
+  right: 1.4rem;
+  top: 1.45rem;
+  height: 0.28rem;
+  border-radius: 999px;
+  background: rgba(126, 184, 255, 0.55);
+}
+
+.trend-swatch-preview--glassmorphism {
+  background:
+    radial-gradient(circle at 15% 80%, rgba(200, 150, 255, 0.55), transparent 42%),
+    radial-gradient(circle at 85% 20%, rgba(100, 180, 255, 0.45), transparent 40%),
+    linear-gradient(160deg, #1a1035, #2a1848);
+}
+.trend-swatch-preview--glassmorphism .trend-swatch-chrome {
+  inset: 0.4rem 0.45rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+.trend-swatch-preview--glassmorphism .trend-swatch-body {
+  left: 0.8rem;
+  right: 0.8rem;
+  top: 0.95rem;
+  height: 0.32rem;
+  border-radius: 999px;
+  background: rgba(240, 238, 255, 0.7);
+}
+.trend-swatch-preview--glassmorphism .trend-swatch-accent {
+  left: 0.8rem;
+  width: 35%;
+  top: 1.5rem;
+  height: 0.28rem;
+  border-radius: 999px;
+  background: rgba(200, 150, 255, 0.7);
+}
+
+.trend-swatch-preview--brutalism {
+  background: #f5f0e8;
+  border-color: #111 !important;
+  border-radius: 0 !important;
+  box-shadow: 3px 3px 0 #ff2d00;
+}
+.trend-swatch-preview--brutalism .trend-swatch-chrome {
+  left: 0.35rem;
+  right: 0.35rem;
+  top: 0.35rem;
+  height: 0.7rem;
+  background: #ffcc00;
+  border: 2px solid #111;
+}
+.trend-swatch-preview--brutalism .trend-swatch-body {
+  left: 0.35rem;
+  right: 0.35rem;
+  bottom: 0.35rem;
+  height: 0.85rem;
+  background: #fff;
+  border: 2px solid #111;
+}
+.trend-swatch-preview--brutalism .trend-swatch-accent {
+  right: 0.55rem;
+  bottom: 0.55rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  background: #ff2d00;
+  border: 2px solid #111;
+}
+
+.trend-swatch-preview--skeuomorphism {
+  background: linear-gradient(180deg, #3f8fad 0%, #245f78 55%, #1d4d63 100%);
+  border-radius: 8px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.25);
+}
+.trend-swatch-preview--skeuomorphism .trend-swatch-chrome {
+  left: 0.45rem;
+  right: 0.45rem;
+  top: 0.4rem;
+  height: 0.9rem;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #7ec8e4, #3f8fad);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 2px 4px rgba(0, 0, 0, 0.25);
+}
+.trend-swatch-preview--skeuomorphism .trend-swatch-body {
+  left: 0.7rem;
+  right: 0.7rem;
+  top: 0.65rem;
+  height: 0.28rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+}
+.trend-swatch-preview--skeuomorphism .trend-swatch-accent {
+  left: 50%;
+  bottom: 0.4rem;
+  width: 1.1rem;
+  height: 0.35rem;
+  margin-left: -0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.trend-swatch-preview--flat {
+  background: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.trend-swatch-preview--flat .trend-swatch-chrome {
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 0.55rem;
+  background: #1976d2;
+}
+.trend-swatch-preview--flat .trend-swatch-body {
+  left: 0.45rem;
+  right: 0.45rem;
+  top: 1rem;
+  height: 0.35rem;
+  border-radius: 2px;
+  background: #212121;
+  opacity: 0.75;
+}
+.trend-swatch-preview--flat .trend-swatch-accent {
+  left: 0.45rem;
+  width: 40%;
+  top: 1.55rem;
+  height: 0.28rem;
+  border-radius: 2px;
+  background: #1976d2;
+}
+
+html[data-trend='brutalism'] .trend-swatch {
+  border: 2px solid transparent;
+  border-radius: 0;
+  font-family: 'Space Mono', monospace;
+}
+
+html[data-trend='brutalism'] .trend-swatch:hover,
+html[data-trend='brutalism'] .trend-swatch.active {
+  border: 2px solid var(--trend-border);
+  box-shadow: 3px 3px 0 var(--trend-border-accent);
+  transform: translate(-1px, -1px);
+}
+
+html[data-trend='skeuomorphism'] .trend-swatch.active {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
     0 2px 4px rgba(0, 0, 0, 0.4);
