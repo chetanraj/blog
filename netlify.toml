@@ -1,17 +1,14 @@
-# Netlify configuration for the Astro static blog
+# Netlify configuration for Astro project
 [build]
   command = "npm run build"
+  functions = "netlify/functions"
   publish = "dist"
 
 [build.environment]
-  # Astro 5 requires Node >= 18.20.8; pin explicitly so deploys
-  # don't fall back to an older .nvmrc / default image.
-  NODE_VERSION = "20.19.0"
-  NPM_FLAGS = "--no-audit --no-fund"
+  NODE_VERSION = "18.20.8"
 
-# Multi-page static site: do not SPA-fallback everything to index.html.
-# Keep pretty URLs for nested post directories.
+# Rewrite rules for SPA routing
 [[redirects]]
-  from = "/blog"
-  to = "/blog/"
-  status = 301
+  from = "/*"
+  to = "/index.html"
+  status = 200
