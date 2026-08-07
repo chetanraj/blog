@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+  base: string;
+}
+
+const { posts, base } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    <section class="related-posts" aria-label="Related posts">
+      <h2 class="related-posts-title">Read next</h2>
+      <ul class="related-posts-list">
+        {posts.map((post) => (
+          <li>
+            <a href={`${base}posts/${post.slug}/`}>
+              <span class="related-posts-name">{post.data.title}</span>
+              {post.data.description && (
+                <span class="related-posts-desc">{post.data.description}</span>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

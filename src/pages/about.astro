@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<BaseLayout
+  title={`About | ${SITE.title}`}
+  headerTitle="About"
+  description="About Chetan Raj — web designer, developer, and writer behind this blog and JavaScript Essentials."
+  path="/about/"
+>
+  <article class="blog-post-container">
+    <div class="blog-post-content static-page">
+      <p>
+        I'm <strong>{SITE.author.name}</strong> — a web designer and developer based in Bangalore.
+        I write about JavaScript, React, CSS, Node.js, and the small details that make developer
+        tools pleasant to use.
+      </p>
+      <p>
+        This blog is my long-form home for tutorials, notes, and opinions. Shorter snapshots and
+        code snippets live on
+        <a href="https://www.instagram.com/javascriptessentials/" rel="noopener noreferrer" target="_blank">
+          JavaScript Essentials
+        </a>.
+      </p>
+      <p>
+        When I'm not coding, you'll find me chasing music, movies, gadgets, and the occasional
+        debate about Iron Man vs Batman.
+      </p>
+      <h2>Find me</h2>
+      <ul>
+        <li><a href="https://chetanraj.dev">chetanraj.dev</a></li>
+        <li><a href="https://github.com/chetanraj">GitHub</a></li>
+        <li><a href={`https://twitter.com/${SITE.author.twitter}`}>Twitter / X</a></li>
+        <li><a href={`https://www.instagram.com/${SITE.author.instagram}/`}>Instagram</a></li>
+      </ul>
+      <p>
+        <a href={base}>← Back to all posts</a>
+      </p>
+    </div>
+  </article>
+</BaseLayout>

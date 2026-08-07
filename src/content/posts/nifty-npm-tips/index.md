@@ -3,7 +3,7 @@ path: '/nifty-npm-tips'
 date: '2020-06-09'
 title: '💻 nifty npm tips'
 description: 'Useful npm tips which will make you developer life on CLI 💻 easy.'
-published: false
+published: true
 tags: ['tips', 'npm']
 toc: true
 tocDepth: 2

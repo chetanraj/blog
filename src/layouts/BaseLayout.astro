@@ -1,14 +1,32 @@
 ---
-const { title = 'Hi 👋 | Blog by Chetan Raj' } = Astro.props;
 import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-
 import TrendToggle from '../components/TrendToggle.astro';
+import SeoHead from '../components/SeoHead.astro';
+import { SITE } from '../site.config';
 
-const base = import.meta.env.BASE_URL.endsWith('/')
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
+interface Props {
+  title?: string;
+  headerTitle?: string;
+  description?: string;
+  path?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+}
+
+const {
+  title = `Hi 👋 | ${SITE.title}`,
+  headerTitle,
+  description = SITE.description,
+  path = '/',
+  image,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+} = Astro.props;
 ---
 
 <html lang="en">
@@ -37,18 +55,18 @@ const base = import.meta.env.BASE_URL.endsWith('/')
       })();
     </script>
     <title>{title}</title>
-    <link rel="icon" href={`${base}icons/icon-48x48.png`} />
-    <link rel="apple-touch-icon" href={`${base}icons/icon-48x48.png`} />
-    <link rel="apple-touch-icon" href={`${base}icons/icon-72x72.png`} />
-    <link rel="apple-touch-icon" href={`${base}icons/icon-96x96.png`} />
-    <link rel="apple-touch-icon" href={`${base}icons/icon-144x144.png`} />
-    <link rel="apple-touch-icon" href={`${base}icons/icon-192x192.png`} />
-    <link rel="apple-touch-icon" href={`${base}icons/icon-256x256.png`} />
-    <link rel="apple-touch-icon" href={`${base}icons/icon-384x384.png`} />
-    <link rel="apple-touch-icon" href={`${base}icons/icon-512x512.png`} />
+    <SeoHead
+      title={title}
+      description={description}
+      path={path}
+      image={image}
+      type={type}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+    />
   </head>
   <body>
-    <SiteHeader title={Astro.props.headerTitle} />
+    <SiteHeader title={headerTitle} />
     <TrendToggle />
     <section class="w-3/4 m-auto">
       <main class="h-sc">

@@ -11,6 +11,7 @@ const posts = defineCollection({
     path: z.string().optional(),
     toc: z.boolean().default(true),
     tocDepth: z.number().min(2).max(6).default(2),
+    updated: z.coerce.date().optional(),
   }),
 });
 
