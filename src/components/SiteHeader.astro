@@ -8,11 +8,11 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
 ---
 
-<header class="site-header bg-blog-header h-64 relative">
+<header class="site-header site-chrome bg-blog-header h-64 relative w-full">
   <div
     class="flex flex-col items-center h-64 hero-text justify-center text-center text-blog-bg relative z-10"
   >
-    <div class="text-2xl w-3/4 transition-colors duration-500">
+    <div class="text-2xl max-w-3xl px-4 transition-colors duration-500">
       {headerTitle}
     </div>
     {

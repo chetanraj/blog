@@ -68,13 +68,11 @@ const {
   <body>
     <SiteHeader title={headerTitle} />
     <TrendToggle />
-    <section class="w-3/4 m-auto">
+    <div class="site-content">
       <main class="h-sc">
-        <div class="">
-          <slot />
-        </div>
+        <slot />
       </main>
-    </section>
+    </div>
     <SiteFooter />
   </body>
 </html>
