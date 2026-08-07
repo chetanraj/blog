@@ -9,7 +9,7 @@ const posts = defineCollection({
     published: z.boolean().default(true),
     tags: z.array(z.string()).default([]),
     path: z.string().optional(),
-    toc: z.boolean().default(false),
+    toc: z.boolean().default(true),
     tocDepth: z.number().min(2).max(6).default(2),
   }),
 });

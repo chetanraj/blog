@@ -5,6 +5,8 @@ title: '⛓ The optional chaining operator in JavaScript'
 description: 'The optional chaining operator ?. permits reading the value of a property located deep within a chain of connected objects.'
 published: true
 tags: ['javascript 💛', 'es2020']
+toc: true
+tocDepth: 2
 ---
 
 ## Definition
