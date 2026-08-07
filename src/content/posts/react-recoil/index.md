@@ -5,6 +5,8 @@ title: '💫 Understanding Recoil - The state management system for React.'
 description: 'Recoil is an experimental state management system for React by Facebook'
 published: true
 tags: ['react', 'recoil']
+toc: true
+tocDepth: 2
 ---
 
 > Recoil works and thinks like React.

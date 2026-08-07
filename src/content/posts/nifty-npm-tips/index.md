@@ -6,7 +6,7 @@ description: 'Useful npm tips which will make you developer life on CLI 💻 eas
 published: false
 tags: ['tips', 'npm']
 toc: true
-toc-depth: 2
+tocDepth: 2
 ---
 
 ## 1. npkill

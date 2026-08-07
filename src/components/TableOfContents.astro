@@ -1,0 +1,33 @@
+---
+export interface TocHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: TocHeading[];
+  maxDepth?: number;
+}
+
+const { headings, maxDepth = 2 } = Astro.props;
+
+const items = headings.filter(
+  (heading) => heading.depth >= 2 && heading.depth <= maxDepth
+);
+---
+
+{
+  items.length > 0 && (
+    <nav class="post-toc" aria-label="Table of contents">
+      <p class="post-toc-title">On this page</p>
+      <ol class="post-toc-list">
+        {items.map((heading) => (
+          <li class={`post-toc-item post-toc-item--depth-${heading.depth}`}>
+            <a href={`#${heading.slug}`}>{heading.text}</a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}

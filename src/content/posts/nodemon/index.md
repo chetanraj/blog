@@ -5,6 +5,8 @@ title: '🔃 Using nodemon for auto-reload of server after code change for node.
 description: 'The compose utility in the styled-system is used to combine multiple style functions together into one'
 published: true
 tags: ['node']
+toc: true
+tocDepth: 2
 ---
 
 Was a newbie to node.js, whenever I make a change in the code, In the terminal i used to keep on hitting Ctrl+C and then Up Arrow and restart the server.

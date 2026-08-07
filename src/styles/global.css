@@ -158,6 +158,62 @@ header .light {
   margin: 0 auto;
 }
 
+.post-toc {
+  margin: 0 1.5rem 1.75rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--trend-border);
+  border-radius: var(--trend-radius-sm);
+  background: var(--trend-surface);
+  box-shadow: var(--trend-shadow);
+  backdrop-filter: var(--trend-blur);
+  -webkit-backdrop-filter: var(--trend-blur);
+}
+
+.post-toc-title {
+  margin: 0 0 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.post-toc-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post-toc-item {
+  margin: 0;
+}
+
+.post-toc-item a {
+  display: block;
+  padding: 0.3rem 0;
+  color: var(--primary-text);
+  text-decoration: none;
+  line-height: 1.4;
+  transition: color 0.25s ease;
+}
+
+.post-toc-item a:hover,
+.post-toc-item a:focus-visible {
+  color: var(--color-accent);
+}
+
+.post-toc-item--depth-3 {
+  padding-left: 0.85rem;
+}
+
+.post-toc-item--depth-4 {
+  padding-left: 1.35rem;
+}
+
+.blog-post-body :is(h2, h3, h4, h5) {
+  scroll-margin-top: 1.5rem;
+}
+
 .blog-post-content > *:not(img) {
   margin-left: 1.5rem;
   margin-right: 1.5rem;

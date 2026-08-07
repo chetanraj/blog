@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 
 export const prerender = true;
@@ -13,7 +14,9 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props as { post: CollectionEntry<'posts'> };
-const { Content, remarkPluginFrontmatter } = await render(post);
+const { Content, headings, remarkPluginFrontmatter } = await render(post);
+const showToc = post.data.toc;
+const tocDepth = post.data.tocDepth;
 ---
 
 <BaseLayout title={post.data.title} headerTitle={post.data.title}>
@@ -81,7 +84,9 @@ const { Content, remarkPluginFrontmatter } = await render(post);
         </div>
       </div>
 
-      <div class="text-blog-primary">
+      {showToc && <TableOfContents headings={headings} maxDepth={tocDepth} />}
+
+      <div class="text-blog-primary blog-post-body">
         <Content />
       </div>
     </div>
