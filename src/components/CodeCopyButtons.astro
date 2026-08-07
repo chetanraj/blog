@@ -1,0 +1,25 @@
+<script>
+  function enhanceCodeBlocks() {
+    document.querySelectorAll<HTMLPreElement>('.blog-post-body pre').forEach((pre) => {
+      if (pre.querySelector('.code-copy-btn')) return;
+
+      pre.classList.add('code-block');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'code-copy-btn';
+      button.textContent = 'Copy';
+      button.addEventListener('click', async () => {
+        const code = pre.querySelector('code')?.textContent ?? pre.textContent ?? '';
+        await navigator.clipboard.writeText(code.trim());
+        button.textContent = 'Copied!';
+        window.setTimeout(() => {
+          button.textContent = 'Copy';
+        }, 1600);
+      });
+      pre.appendChild(button);
+    });
+  }
+
+  enhanceCodeBlocks();
+  document.addEventListener('astro:page-load', enhanceCodeBlocks);
+</script>

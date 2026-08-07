@@ -1,0 +1,50 @@
+---
+import { SITE } from '../site.config';
+
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+---
+
+<div class="post-share" aria-label="Share this post">
+  <p class="post-share-label">Share</p>
+  <div class="post-share-actions">
+    <button type="button" class="post-share-btn" data-copy-url={url}>Copy link</button>
+    <a
+      class="post-share-btn"
+      href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      X
+    </a>
+    <a
+      class="post-share-btn"
+      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      LinkedIn
+    </a>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-url]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const url = button.dataset.copyUrl;
+      if (!url) return;
+      await navigator.clipboard.writeText(url);
+      const original = button.textContent;
+      button.textContent = 'Copied!';
+      window.setTimeout(() => {
+        button.textContent = original;
+      }, 1600);
+    });
+  });
+</script>

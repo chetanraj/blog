@@ -8,9 +8,10 @@ export interface TocHeading {
 interface Props {
   headings: TocHeading[];
   maxDepth?: number;
+  variant?: 'inline' | 'sticky';
 }
 
-const { headings, maxDepth = 2 } = Astro.props;
+const { headings, maxDepth = 2, variant = 'inline' } = Astro.props;
 
 const items = headings.filter(
   (heading) => heading.depth >= 2 && heading.depth <= maxDepth
@@ -19,7 +20,10 @@ const items = headings.filter(
 
 {
   items.length > 0 && (
-    <nav class="post-toc" aria-label="Table of contents">
+    <nav
+      class:list={['post-toc', variant === 'sticky' && 'post-toc--sticky']}
+      aria-label="Table of contents"
+    >
       <p class="post-toc-title">On this page</p>
       <ol class="post-toc-list">
         {items.map((heading) => (
