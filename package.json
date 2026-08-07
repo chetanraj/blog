@@ -26,7 +26,7 @@
     "@astrojs/tailwind": "^6.0.2",
     "autoprefixer": "^10.5.0",
     "pagefind": "^1.5.2",
-    "postcss": "^8.5.12",
+    "postcss": "^8.5.26",
     "tailwindcss": "^3.4.19"
   },
   "engines": {
