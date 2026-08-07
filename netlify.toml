@@ -4,6 +4,9 @@
   functions = "netlify/functions"
   publish = "dist"
 
+[build.environment]
+  NODE_VERSION = "18.20.8"
+
 # Rewrite rules for SPA routing
 [[redirects]]
   from = "/*"
