@@ -6,7 +6,8 @@ export function tagToSlug(tag: string): string {
     .trim()
     .replace(/[^\w\s-]/g, '')
     .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
 export function getAllTags(posts: CollectionEntry<'posts'>[]): string[] {
