@@ -438,11 +438,17 @@ header .light {
   margin-bottom: 1rem;
 }
 
-.blog-post-content a:not(.text-base) {
+.blog-post-content a:not(.text-base):not(.tag-pill):not(.post-tag) {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-color: var(--trend-border-accent);
   text-underline-offset: 0.18em;
+}
+
+.post-tag {
+  font-size: 0.75rem;
+  line-height: 1.25;
+  padding: 0.25rem 0.5rem;
 }
 
 .blog-post-content li {
