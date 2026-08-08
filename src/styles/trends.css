@@ -536,8 +536,9 @@ html[data-trend='glassmorphism'] body::before {
   isolation: isolate;
   display: grid;
   gap: 0;
-  width: var(--site-column-width);
-  margin: 0 auto 2.25rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 2.25rem;
   background: var(--trend-surface);
   backdrop-filter: var(--trend-blur);
   -webkit-backdrop-filter: var(--trend-blur);
@@ -679,10 +680,6 @@ html[data-trend='brutalism'] .trend-toggle {
 }
 
 @media (max-width: 480px) {
-  .trend-toggle {
-    width: calc(100% - 1rem);
-  }
-
   .trend-toggle-summary {
     gap: 0.65rem;
     padding: 0.65rem 0.75rem;
