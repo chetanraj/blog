@@ -11,6 +11,7 @@
     "start": "astro dev",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
+    "generate:favicons": "node scripts/generate-favicons.mjs",
     "deploy": "npm run build && gh-pages -d dist --dotfiles"
   },
   "dependencies": {

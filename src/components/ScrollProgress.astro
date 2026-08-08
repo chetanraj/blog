@@ -1,0 +1,36 @@
+<div class="scroll-progress" aria-hidden="true">
+  <svg class="scroll-progress-svg" viewBox="0 0 36 36">
+    <circle class="scroll-progress-track" cx="18" cy="18" r="15.5" />
+    <circle class="scroll-progress-bar" cx="18" cy="18" r="15.5" />
+  </svg>
+</div>
+
+<script>
+  const root = document.querySelector('.scroll-progress');
+  const bar = document.querySelector<SVGCircleElement>('.scroll-progress-bar');
+
+  if (root && bar) {
+    const radius = 15.5;
+    const circumference = 2 * Math.PI * radius;
+
+    bar.style.strokeDasharray = `${circumference}`;
+    bar.style.strokeDashoffset = `${circumference}`;
+
+    const update = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+
+      if (scrollable <= 0) {
+        root.classList.remove('is-visible');
+        return;
+      }
+
+      const progress = window.scrollY / scrollable;
+      bar.style.strokeDashoffset = `${circumference * (1 - progress)}`;
+      root.classList.toggle('is-visible', window.scrollY > 24);
+    };
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+  }
+</script>
