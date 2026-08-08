@@ -15,7 +15,7 @@ const {
   title,
   description = SITE.description,
   path = '/',
-  image = absoluteUrl('/icons/icon-512x512.png'),
+  image = absoluteUrl('/favicons/icon-512x512.png'),
   type = 'website',
   publishedTime,
   modifiedTime,
@@ -48,8 +48,10 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
 <meta name="author" content={SITE.author.name} />
-<link rel="icon" href={`${base}icons/icon-48x48.png`} />
-<link rel="apple-touch-icon" href={`${base}icons/icon-48x48.png`} />
+<link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+<link rel="icon" href={`${base}favicons/favicon-32.png`} sizes="32x32" type="image/png" />
+<link rel="icon" href={`${base}favicons/favicon-16.png`} sizes="16x16" type="image/png" />
+<link rel="apple-touch-icon" href={`${base}favicons/favicon-180.png`} sizes="180x180" />
 
 {
   SITE.plausibleDomain && (
