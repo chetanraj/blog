@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script>
+      (() => {
+        const root = document.documentElement;
+        const storedTheme = window.localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const themePreference =
+          storedTheme === 'dark' || storedTheme === 'light' || storedTheme === 'system'
+            ? storedTheme
+            : prefersDark
+              ? 'dark'
+              : 'light';
+        const colorMode =
+          themePreference === 'system' ? (prefersDark ? 'dark' : 'light') : themePreference;
+        const storedEra = window.localStorage.getItem('blog-design-era');
+        const designEra = storedEra || 'default';
+
+        root.dataset.colorMode = colorMode;
+        root.dataset.themePreference = themePreference;
+        root.dataset.trend = designEra;
+      })();
+    </script><title>How I structure my Obsidian vault</title><meta name="description" content="A practical Obsidian setup using the Minimal theme, Notebook Navigator, and alternate checkboxes for tasks."><link rel="canonical" href="https://chetanraj.dev/blog/posts/how-i-structure-obsidian/"><link rel="alternate" type="application/rss+xml" title="Blog by Chetan Raj" href="https://chetanraj.dev/blog/rss.xml"><meta property="og:site_name" content="Blog by Chetan Raj"><meta property="og:title" content="How I structure my Obsidian vault"><meta property="og:description" content="A practical Obsidian setup using the Minimal theme, Notebook Navigator, and alternate checkboxes for tasks."><meta property="og:url" content="https://chetanraj.dev/blog/posts/how-i-structure-obsidian/"><meta property="og:type" content="article"><meta property="og:image" content="https://chetanraj.dev/blog/favicons/icon-512x512.png"><meta name="twitter:card" content="summary"><meta name="twitter:site" content="@chetan_raj"><meta name="twitter:title" content="How I structure my Obsidian vault"><meta name="twitter:description" content="A practical Obsidian setup using the Minimal theme, Notebook Navigator, and alternate checkboxes for tasks."><meta name="twitter:image" content="https://chetanraj.dev/blog/favicons/icon-512x512.png"><meta property="article:published_time" content="2026-08-09T00:00:00.000Z"><meta name="author" content="Chetan Raj"><link rel="icon" href="/blog/favicon.svg" type="image/svg+xml"><link rel="icon" href="/blog/favicons/favicon-32.png" sizes="32x32" type="image/png"><link rel="icon" href="/blog/favicons/favicon-16.png" sizes="16x16" type="image/png"><link rel="apple-touch-icon" href="/blog/favicons/favicon-180.png" sizes="180x180"><script defer data-domain="chetanraj.dev" src="https://plausible.io/js/script.js"></script><link rel="stylesheet" href="/blog/_astro/about.rzrL6rtw.css"></head> <body> <header class="site-header site-chrome bg-blog-header h-64 relative w-full"> <div class="flex flex-col items-center h-64 hero-text justify-center text-center text-blog-bg relative z-10"> <div class="text-2xl max-w-3xl px-4 transition-colors duration-500"> How I structure my Obsidian vault </div>  </div> <span class="text-blog-bg home"> <a class="pointer transition-colors duration-500" href="/blog/"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"> <polyline points="12 19 5 12 12 5"></polyline> </svg> </a> </span> <div id="themeToggle" class="flex light cursor-pointer z-20 absolute"> <a class="mx-4 hidden md:block" href="/blog/rss.xml" title="RSS"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme"> <path d="M4 11a9 9 0 0 1 9 9"></path> <path d="M4 4a16 16 0 0 1 16 16"></path> <circle cx="5" cy="19" r="1"></circle> </svg> </a> <button class="mx-4" title="theme" type="button" id="themeButton"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme" id="themeIcon"> <path id="themeIconPath" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> </div> <div class="bg"></div> </header> <script>
+  const root = document.documentElement;
+  const body = document.body;
+  const wrap = document.getElementById('themeToggle');
+  const btn = document.getElementById('themeButton');
+  const svg = document.getElementById('themeIcon');
+  const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const moon = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+  const sun = `
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  `;
+  const system = `<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>`;
+
+  function getInitialTheme() {
+    const persisted = window.localStorage.getItem('theme');
+    if (persisted === 'dark' || persisted === 'light' || persisted === 'system')
+      return persisted;
+    return colorSchemeQuery.matches ? 'dark' : 'light';
+  }
+
+  function playSound() {
+    const audioContext = new (
+      window.AudioContext || window.webkitAudioContext
+    )();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      audioContext.currentTime + 0.1
+    );
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  }
+
+  function setTheme(next) {
+    const themeToApply =
+      next === 'system' ? (colorSchemeQuery.matches ? 'dark' : 'light') : next;
+
+    root.dataset.colorMode = themeToApply;
+    root.dataset.themePreference = next;
+    body.classList.remove('dark', 'light');
+    body.classList.add(themeToApply);
+    wrap?.classList.remove('dark', 'light');
+    wrap?.classList.add(themeToApply);
+
+    if (svg) {
+      if (next === 'light') svg.innerHTML = moon;
+      else if (next === 'dark') svg.innerHTML = sun;
+      else if (next === 'system') svg.innerHTML = system;
+    }
+    window.localStorage.setItem('theme', next);
+    playSound();
+  }
+
+  const initial = typeof window !== 'undefined' ? getInitialTheme() : 'light';
+  setTheme(initial);
+
+  btn?.addEventListener('click', () => {
+    const current = window.localStorage.getItem('theme') || initial;
+    const next =
+      current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
+    setTheme(next);
+  });
+
+  colorSchemeQuery.addEventListener('change', () => {
+    if (window.localStorage.getItem('theme') === 'system') {
+      setTheme('system');
+    }
+  });
+</script> <div class="site-content"> <section class="trend-toggle" data-expanded="false" aria-label="Design era selector"> <button type="button" class="trend-toggle-summary" id="trend-toggle-trigger" aria-expanded="false" aria-controls="trend-toggle-panel"> <span class="trend-toggle-summary-preview trend-swatch-preview trend-swatch-preview--default" id="trend-summary-preview" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-toggle-summary-copy"> <span class="trend-toggle-kicker">Design Era</span> <span class="trend-toggle-current" id="trend-badge-label">Default · Original Blog</span> </span> <span class="trend-toggle-summary-action"> <span class="trend-toggle-action-label" data-label-expand>Change</span> <span class="trend-toggle-action-label" data-label-collapse hidden>Close</span> <span class="trend-toggle-chevron" aria-hidden="true"></span> </span> </button> <div class="trend-toggle-panel" id="trend-toggle-panel" role="region" aria-labelledby="trend-toggle-trigger" hidden> <div class="trend-toggle-swatches" role="toolbar" aria-label="Choose a design era"> <button type="button" class="trend-swatch" data-era="default" aria-pressed="false" aria-label="Default, Original" title="Default · Original"> <span class="trend-swatch-preview trend-swatch-preview--default" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Default</span> <span class="trend-swatch-years">Original</span> </span> </button><button type="button" class="trend-swatch" data-era="liquid-glass" aria-pressed="false" aria-label="Liquid Glass, 2025–26" title="Liquid Glass · 2025–26"> <span class="trend-swatch-preview trend-swatch-preview--liquid-glass" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Liquid Glass</span> <span class="trend-swatch-years">2025–26</span> </span> </button><button type="button" class="trend-swatch" data-era="glassmorphism" aria-pressed="false" aria-label="Glassmorphism, 2021–24" title="Glassmorphism · 2021–24"> <span class="trend-swatch-preview trend-swatch-preview--glassmorphism" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Glassmorphism</span> <span class="trend-swatch-years">2021–24</span> </span> </button><button type="button" class="trend-swatch" data-era="brutalism" aria-pressed="false" aria-label="Brutalism, Timeless" title="Brutalism · Timeless"> <span class="trend-swatch-preview trend-swatch-preview--brutalism" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Brutalism</span> <span class="trend-swatch-years">Timeless</span> </span> </button><button type="button" class="trend-swatch" data-era="skeuomorphism" aria-pressed="false" aria-label="Skeuomorphism, 2007–13" title="Skeuomorphism · 2007–13"> <span class="trend-swatch-preview trend-swatch-preview--skeuomorphism" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Skeuomorphism</span> <span class="trend-swatch-years">2007–13</span> </span> </button><button type="button" class="trend-swatch" data-era="flat" aria-pressed="false" aria-label="Flat, 2013–20" title="Flat · 2013–20"> <span class="trend-swatch-preview trend-swatch-preview--flat" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Flat</span> <span class="trend-swatch-years">2013–20</span> </span> </button> </div> </div> </section> <script type="module">const m="blog-design-era",f="default",p={default:"Default · Original Blog","liquid-glass":"Liquid Glass · 2025–26",glassmorphism:"Glassmorphism · 2021–24",brutalism:"Brutalism · Timeless",skeuomorphism:"Skeuomorphism · 2007–13",flat:"Flat / Material · 2013–20"},t=document.querySelector(".trend-toggle"),a=document.getElementById("trend-toggle-trigger"),c=document.getElementById("trend-toggle-panel"),d=document.getElementById("trend-summary-preview"),i=document.querySelector("[data-label-expand]"),u=document.querySelector("[data-label-collapse]");function s(e){!t||!a||!c||(t.dataset.expanded=String(e),a.setAttribute("aria-expanded",String(e)),c.hidden=!e,i&&(i.hidden=e),u&&(u.hidden=!e),e&&t.querySelector(".trend-swatch.active")?.focus())}function g(e,l={}){document.documentElement.setAttribute("data-trend",e),localStorage.setItem(m,e),document.querySelectorAll(".trend-swatch[data-era]").forEach(r=>{const o=r.dataset.era===e;r.classList.toggle("active",o),r.setAttribute("aria-pressed",String(o))});const n=document.getElementById("trend-badge-label");n&&(n.textContent=p[e]??e),d&&(d.className=`trend-toggle-summary-preview trend-swatch-preview trend-swatch-preview--${e}`),l.collapse&&s(!1)}const y=localStorage.getItem(m)??f;g(y);s(!1);a?.addEventListener("click",()=>{const e=t?.dataset.expanded!=="true";s(e)});document.querySelectorAll(".trend-swatch[data-era]").forEach(e=>{e.addEventListener("click",()=>{e.dataset.era&&g(e.dataset.era,{collapse:!0})})});document.addEventListener("keydown",e=>{e.key==="Escape"&&t?.dataset.expanded==="true"&&(s(!1),a?.focus())});</script> <main class="h-sc">  <article class="blog-post-container"> <div class="post-layout"> <aside class="post-toc-aside" aria-label="Table of contents sidebar"> <nav class="post-toc post-toc--sticky" aria-label="Table of contents"><p class="post-toc-title">On this page</p><ol class="post-toc-list"><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#minimal-theme">Minimal theme</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#notebook-navigator">Notebook Navigator</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#alternate-checkboxes">Alternate checkboxes</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#folder-structure">Folder structure</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#a-project-note-in-practice">A project note in practice</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#getting-started">Getting started</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#the-takeaway">The takeaway</a></li></ol></nav> </aside> <div class="post-layout-main"> <div class="blog-post-content"> <div class="post-meta mt-4 mb-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-blog-secondary"> <time datetime="2026-08-09T00:00:00.000Z" class="flex items-center justify-center"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> 2026-08-09 </time>  <div class="flex items-center justify-center"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 5 min read </div> <div class="flex items-center justify-center"> <div class="flex gap-2 flex-wrap"> <a href="/blog/tags/obsidian/" class="tag-pill post-tag"> Obsidian </a><a href="/blog/tags/productivity/" class="tag-pill post-tag"> productivity </a><a href="/blog/tags/note-taking/" class="tag-pill post-tag"> note-taking </a><a href="/blog/tags/workflow/" class="tag-pill post-tag"> workflow </a> </div> </div> </div> <div class="post-toc-mobile"> <nav class="post-toc" aria-label="Table of contents"><p class="post-toc-title">On this page</p><ol class="post-toc-list"><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#minimal-theme">Minimal theme</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#notebook-navigator">Notebook Navigator</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#alternate-checkboxes">Alternate checkboxes</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#folder-structure">Folder structure</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#a-project-note-in-practice">A project note in practice</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#getting-started">Getting started</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="post-toc-link" href="#the-takeaway">The takeaway</a></li></ol></nav> </div> <div class="text-blog-primary blog-post-body"> <h1 id="structuring-an-obsidian-vault">Structuring an Obsidian vault</h1>
+<p>After sharing <a href="/blog/posts/how-i-structure-react-app/">how I structure a React app</a>, I wanted to write the same kind of post for the tool I open every day: <a href="https://obsidian.md/">Obsidian</a>.</p>
+<p>My vault is not complicated. Three things do most of the work: the <a href="https://github.com/kepano/obsidian-minimal">Minimal theme</a> for a calm reading surface, <a href="https://notebooknavigator.com/">Notebook Navigator</a> for moving between folders, and Minimal’s <a href="https://minimal.guide/Block+types/Checklists">alternate checkboxes</a> for task states inside notes.</p>
+<blockquote>
+<p><strong>My rule:</strong> the vault should make the next note easy to find and the next task easy to scan.</p>
+</blockquote>
+<h2 id="minimal-theme">Minimal theme</h2>
+<p>Obsidian’s default UI is fine, but I prefer something quieter. <a href="https://github.com/kepano/obsidian-minimal">Minimal</a> strips the chrome back and keeps typography readable for long sessions.</p>
+<p>I pair it with the <strong>Minimal Theme Settings</strong> companion plugin. That is where I switch color schemes, tune focus mode, and adjust the small details that make the vault feel like mine.</p>
+<p>During the day I use light mode. In the evening I switch to dark. Focus mode is the feature I reach for most when I am drafting.</p>
+<div class="not-prose my-6 grid gap-4 sm:grid-cols-2"><figure><img src="/blog/_astro/minimal-light.CfQ0ba4D.png" alt="Obsidian with Minimal theme in light mode, showing a project note with tasks" loading="lazy"/><figcaption class="mt-2 text-center text-sm text-blog-secondary">Minimal in light mode</figcaption></figure><figure><img src="/blog/_astro/minimal-dark.C6fyY8Yr.png" alt="Obsidian with Minimal theme in dark mode, showing the same project note" loading="lazy"/><figcaption class="mt-2 text-center text-sm text-blog-secondary">Minimal in dark mode</figcaption></figure></div>
+<h2 id="notebook-navigator">Notebook Navigator</h2>
+<p>As the vault grew, the default file explorer stopped being enough. I wanted to see folders, recent notes, and previews without opening five tabs.</p>
+<p><a href="https://notebooknavigator.com/">Notebook Navigator</a> replaces the explorer with a notebook-style layout: folder tree on the left, note list in the middle, and a preview pane when I need it.</p>
+<p><strong>How I use it:</strong></p>
+<ul>
+<li><strong>Folder notebooks</strong> — my top-level folders (<code>Inbox</code>, <code>Daily Notes</code>, <code>Projects</code>, <code>Areas</code>, <code>Resources</code>, <code>Archive</code>) map directly to notebooks</li>
+<li><strong>Quick switching</strong> — <code>Cmd/Ctrl + P</code> still jumps to a note by name; Navigator is for browsing when I do not know the filename yet</li>
+<li><strong>Recent notes</strong> — each notebook shows what I was working on last, which saves time during weekly reviews</li>
+</ul>
+<img src="/blog/_astro/notebook-navigator.uFQe4gMW.png" alt="Notebook Navigator showing a folder tree, note list, and preview pane" loading="lazy"/>
+<p>I reach for Navigator when I am planning a week or cleaning up after a project. When I already know the note name, the command palette is faster.</p>
+<h2 id="alternate-checkboxes">Alternate checkboxes</h2>
+<p>This is not a separate plugin. Minimal renders special characters inside task brackets as icons — a small detail that changed how I write project notes.</p>
+<p>I keep a short legend in my templates folder and reuse the same symbols everywhere:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Syntax</th><th>Meaning</th></tr></thead><tbody><tr><td><code>- [ ]</code></td><td>Regular task</td></tr><tr><td><code>- [x]</code></td><td>Completed</td></tr><tr><td><code>- [/]</code></td><td>In progress</td></tr><tr><td><code>- [&gt;]</code></td><td>Forwarded to another day or context</td></tr><tr><td><code>- [&lt;]</code></td><td>Scheduled</td></tr><tr><td><code>- [-]</code></td><td>Cancelled</td></tr><tr><td><code>- [!]</code></td><td>Important</td></tr><tr><td><code>- [?]</code></td><td>Needs research or clarification</td></tr><tr><td><code>- [*]</code></td><td>Key insight</td></tr></tbody></table>
+<p>The full list lives in the <a href="https://minimal.guide/Block+types/Checklists">Minimal checklists docs</a>. I did not adopt every variant on day one — I added them when a real workflow needed a distinct state.</p>
+<img src="/blog/_astro/checkbox-styles.CNURE998.png" alt="Alternate checkbox styles in a Minimal-themed note" loading="lazy"/>
+<h2 id="folder-structure">Folder structure</h2>
+<p>My vault follows a modified PARA layout: Projects, Areas, Resources, and Archive, plus an inbox for quick capture and a templates folder for consistency.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2;overflow-x:auto" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#F8F8F2">📁 Obsidian Vault</span></span>
+<span class="line"><span style="color:#F8F8F2">├── 📁 00 - Inbox</span></span>
+<span class="line"><span style="color:#F8F8F2">│   └── Quick capture notes that need processing</span></span>
+<span class="line"><span style="color:#F8F8F2">├── 📁 01 - Daily Notes</span></span>
+<span class="line"><span style="color:#F8F8F2">│   └── Daily reflections and logs</span></span>
+<span class="line"><span style="color:#F8F8F2">├── 📁 02 - Projects</span></span>
+<span class="line"><span style="color:#F8F8F2">│   ├── Active projects</span></span>
+<span class="line"><span style="color:#F8F8F2">│   └── Project templates</span></span>
+<span class="line"><span style="color:#F8F8F2">├── 📁 03 - Areas</span></span>
+<span class="line"><span style="color:#F8F8F2">│   ├── Work</span></span>
+<span class="line"><span style="color:#F8F8F2">│   ├── Personal Development</span></span>
+<span class="line"><span style="color:#F8F8F2">│   └── Health &amp; Fitness</span></span>
+<span class="line"><span style="color:#F8F8F2">├── 📁 04 - Resources</span></span>
+<span class="line"><span style="color:#F8F8F2">│   ├── Articles &amp; Bookmarks</span></span>
+<span class="line"><span style="color:#F8F8F2">│   ├── Book Notes</span></span>
+<span class="line"><span style="color:#F8F8F2">│   └── Learning Materials</span></span>
+<span class="line"><span style="color:#F8F8F2">├── 📁 05 - Archive</span></span>
+<span class="line"><span style="color:#F8F8F2">│   └── Completed projects and old notes</span></span>
+<span class="line"><span style="color:#F8F8F2">└── 📁 06 - Templates</span></span>
+<span class="line"><span style="color:#F8F8F2">    └── Note templates for different purposes</span></span></code></pre>
+<p>Numbered prefixes keep folders sorted the way I think about them. <code>00 - Inbox</code> is always first; <code>05 - Archive</code> is always last.</p>
+<h2 id="a-project-note-in-practice">A project note in practice</h2>
+<p>Here is a typical project note. The checkboxes show status at a glance. The <code>[[wikilinks]]</code> are Obsidian’s internal links — typing <code>[[</code> and part of a note title creates a link that updates if you rename the target note.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2;overflow-x:auto" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#BD93F9;font-weight:bold"># Project: Blog post series</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#BD93F9;font-weight:bold">## Overview</span></span>
+<span class="line"><span style="color:#F8F8F2">Description of the project...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#BD93F9;font-weight:bold">## Tasks</span></span>
+<span class="line"><span style="color:#F8F8F2">[</span><span style="color:#FF79C6">!</span><span style="color:#F8F8F2">] Write outline for Obsidian structure post</span></span>
+<span class="line"><span style="color:#F8F8F2">[</span><span style="color:#FF79C6">x</span><span style="color:#F8F8F2">] Research Minimal theme features</span></span>
+<span class="line"><span style="color:#F8F8F2">[</span><span style="color:#FF79C6">&gt;</span><span style="color:#F8F8F2">] Schedule social media promotion</span></span>
+<span class="line"><span style="color:#F8F8F2">[</span><span style="color:#FF79C6">&lt;</span><span style="color:#F8F8F2">] Publish post (scheduled for next Monday)</span></span>
+<span class="line"><span style="color:#F8F8F2">[</span><span style="color:#FF79C6">?</span><span style="color:#F8F8F2">] Should I add a video walkthrough?</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#BD93F9;font-weight:bold">## Resources</span></span>
+<span class="line"><span style="color:#F8F8F2">- [[Article - Note-taking best practices]]</span></span>
+<span class="line"><span style="color:#F8F8F2">- [[Book Notes - Building a Second Brain]]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#BD93F9;font-weight:bold">## Notes</span></span>
+<span class="line"><span style="color:#F8F8F2">[</span><span style="color:#FF79C6">*</span><span style="color:#F8F8F2">] Key insight: structure should serve thinking, not constrain it</span></span></code></pre>
+<p>One pass through the note tells me what is urgent, what is done, what moved, and what still needs a decision.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>If you want to try a similar setup:</p>
+<ol>
+<li><strong>Install Minimal first</strong> — get comfortable with the reading surface before adding more plugins</li>
+<li><strong>Create folders, then add Notebook Navigator</strong> — the plugin works better when the top-level structure is already decided</li>
+<li><strong>Adopt checkboxes gradually</strong> — start with <code>[ ]</code>, <code>[x]</code>, and <code>[!]</code>; add the rest when you need them</li>
+<li><strong>Review monthly</strong> — I prune empty folders and move finished projects to Archive on the first Sunday of each month</li>
+<li><strong>Do not over-organize</strong> — the goal is faster retrieval, not a perfect taxonomy</li>
+</ol>
+<h2 id="the-takeaway">The takeaway</h2>
+<p>A good Obsidian vault is not about having the most plugins. It is about reducing friction when you capture an idea, find an old note, or scan open tasks.</p>
+<p>Start with a theme you enjoy reading, a navigation pattern that matches how you browse, and a small task vocabulary you will actually use. Let the structure grow only when your notes ask for it.</p>
+<p>For more on Minimal’s features and settings, see <a href="https://minimal.guide/">minimal.guide</a>.</p> </div> <div class="post-share" aria-label="Share this post"> <p class="post-share-label">Share</p> <div class="post-share-actions"> <button type="button" class="post-share-btn" data-copy-url="https://chetanraj.dev/blog/posts/how-i-structure-obsidian/">Copy link</button> <a class="post-share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fchetanraj.dev%2Fblog%2Fposts%2Fhow-i-structure-obsidian%2F&text=How%20I%20structure%20my%20Obsidian%20vault" rel="noopener noreferrer" target="_blank">
+X
+</a> <a class="post-share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fchetanraj.dev%2Fblog%2Fposts%2Fhow-i-structure-obsidian%2F" rel="noopener noreferrer" target="_blank">
+LinkedIn
+</a> </div> </div> <script type="module">document.querySelectorAll("[data-copy-url]").forEach(e=>{e.addEventListener("click",async()=>{const t=e.dataset.copyUrl;if(!t)return;await navigator.clipboard.writeText(t);const a=e.textContent;e.textContent="Copied!",window.setTimeout(()=>{e.textContent=a},1600)})});</script> <aside class="author-blurb" aria-label="About the author"> <p class="author-blurb-kicker">Written by</p> <p class="author-blurb-name"> <a href="https://chetanraj.dev">Chetan Raj</a> </p> <p class="author-blurb-bio">Web Designer &amp; Developer. I write about JavaScript, React, CSS, and developer tooling. Also behind JavaScript Essentials on Instagram.</p> <div class="author-blurb-links"> <a href="https://twitter.com/chetan_raj" rel="noopener noreferrer" target="_blank">
+Twitter
+</a> <a href="https://github.com/chetanraj" rel="noopener noreferrer" target="_blank">
+GitHub
+</a> <a href="https://www.instagram.com/javascriptessentials/" rel="noopener noreferrer" target="_blank">
+Instagram
+</a> <a href="/blog/about/">About</a> </div> </aside> <section class="related-posts" aria-label="Related posts"><h2 class="related-posts-title">Read next</h2><ul class="related-posts-list"><li><a href="/blog/posts/bad-practices-vs-best-practices-in-css/"><span class="related-posts-name">Bad practices vs Best practices in CSS</span><span class="related-posts-desc">Using Vanilla CSS or Pre-processor</span></a></li><li><a href="/blog/posts/how-i-structure-react-app/"><span class="related-posts-name">How I structure a React app</span><span class="related-posts-desc">A practical React folder structure using scripts, atomic components, reusable hooks, and a small theme layer.</span></a></li><li><a href="/blog/posts/deploying-any-app-github-pages/"><span class="related-posts-name">🚀 Deploying any app to GitHub Pages</span><span class="related-posts-desc">GitHub Pages is a website holder for you &amp; your projects. You can host your code directly from your GitHub repo.</span></a></li></ul></section> </div> </div> </div> </article> <script type="module">function o(){document.querySelectorAll(".blog-post-body pre").forEach(e=>{if(e.querySelector(".code-copy-btn"))return;e.classList.add("code-block");const t=document.createElement("button");t.type="button",t.className="code-copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const n=e.querySelector("code")?.textContent??e.textContent??"";await navigator.clipboard.writeText(n.trim()),t.textContent="Copied!",window.setTimeout(()=>{t.textContent="Copy"},1600)}),e.appendChild(t)})}o();document.addEventListener("astro:page-load",o);</script>  </main> </div> <footer class="site-footer site-chrome bg-blog-header w-full"> <div class="site-footer-inner p-6 sm:flex justify-between items-center"> <div class="left pt-6"> <a class="text-2xl text-blog-bg pointer transition-colors duration-500" href="https://chetanraj.dev">
+Chetan Raj
+</a> <div class="opacity-50 text-blog-bg pointer transition-colors duration-500 pt-16 hidden sm:block md:block lg:block xl:block">
+&copy; Chetan Raj. All Rights Reserved.
+</div> </div> <div class="right pt-10 sm:pt-0 flex"> <div class="pr-20 social"> <h4 class="opacity-50 text-blog-bg pointer transition-colors duration-500">
+Social
+</h4> <div class="grid grid-cols-1 pt-4 w-full"> <a class="text-blog-bg pointer transition-colors duration-500" href="https://twitter.com/chetan_raj"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-abp-filters-channel="c255be2e-a9f9-4db8-8acb-a5c77df7b0c2"> <polygon class="st0" points="21.3,21.1 9.9,2.9 2.7,2.9 14.1,21.1 "></polygon> <line class="st0" x1="2.7" y1="21.1" x2="9.9" y2="14.5"></line> <line class="st0" x1="14.1" y1="9.5" x2="21.3" y2="2.9"></line></svg> </a> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="https://github.com/chetanraj"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg> </a> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="https://www.instagram.com/thecjstream/"> <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> </a> </div> </div> <div class="links"> <h4 class="opacity-50 text-blog-bg pointer transition-colors duration-500">
+Links
+</h4> <div class="grid grid-cols-1 pt-4 w-full"> <a class="text-blog-bg pointer transition-colors duration-500" href="/blog/about/">
+About
+</a> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="/blog/tags/">
+Tags
+</a> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="/blog/search/">
+Search
+</a> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="/blog/rss.xml">
+RSS
+</a> <a class="text-blog-bg pointer transition-colors duration-500 pt-2" href="https://www.instagram.com/javascriptessentials/"> <span class="mr-2" role="img" aria-label="globe">🌏</span>
+JavaScript Essentials
+</a> </div> </div> </div> <div class="opacity-50 text-blog-bg pointer transition-colors duration-500 pt-16 block sm:hidden md:hidden lg:hidden xl:hidden">
+&copy; Chetan Raj. All Rights Reserved.
+</div> </div> </footer> <div class="scroll-progress" aria-hidden="true"> <svg class="scroll-progress-svg" viewBox="0 0 36 36"> <circle class="scroll-progress-track" cx="18" cy="18" r="15.5"></circle> <circle class="scroll-progress-bar" cx="18" cy="18" r="15.5"></circle> </svg> </div> <script type="module">const e=document.querySelector(".scroll-progress"),s=document.querySelector(".scroll-progress-bar"),n=document.querySelector(".site-footer");if(e&&s){const r=2*Math.PI*15.5;s.style.strokeDasharray=`${r}`,s.style.strokeDashoffset=`${r}`;const i=()=>{if(!n)return!1;const t=n.getBoundingClientRect(),o=e.getBoundingClientRect();return o.top+o.height/2>=t.top},c=()=>{const t=document.documentElement.scrollHeight-window.innerHeight;if(t<=0){e.classList.remove("is-visible","is-over-footer");return}const o=window.scrollY/t;s.style.strokeDashoffset=`${r*(1-o)}`,e.classList.toggle("is-visible",window.scrollY>24),e.classList.toggle("is-over-footer",i())};c(),window.addEventListener("scroll",c,{passive:!0}),window.addEventListener("resize",c)}</script> </body></html>
