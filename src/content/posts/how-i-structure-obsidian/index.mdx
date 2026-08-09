@@ -1,0 +1,154 @@
+---
+path: "/how-i-structure-obsidian"
+date: "2026-08-09"
+title: "How I structure my Obsidian vault"
+description: "A practical Obsidian setup using the Minimal theme, Notebook Navigator, and alternate checkboxes for tasks."
+published: false
+tags: ['Obsidian', 'productivity', 'note-taking', 'workflow']
+toc: true
+tocDepth: 2
+---
+
+import MinimalLight from './minimal-light.png';
+import MinimalDark from './minimal-dark.png';
+import NotebookNavigator from './notebook-navigator.png';
+import CheckboxStyles from './checkbox-styles.png';
+
+# Structuring an Obsidian vault
+
+After sharing [how I structure a React app](/blog/posts/how-i-structure-react-app/), I wanted to write the same kind of post for the tool I open every day: [Obsidian](https://obsidian.md/).
+
+My vault is not complicated. Three things do most of the work: the [Minimal theme](https://github.com/kepano/obsidian-minimal) for a calm reading surface, [Notebook Navigator](https://notebooknavigator.com/) for moving between folders, and Minimal's [alternate checkboxes](https://minimal.guide/Block+types/Checklists) for task states inside notes.
+
+> **My rule:** the vault should make the next note easy to find and the next task easy to scan.
+
+## Minimal theme
+
+Obsidian's default UI is fine, but I prefer something quieter. [Minimal](https://github.com/kepano/obsidian-minimal) strips the chrome back and keeps typography readable for long sessions.
+
+I pair it with the **Minimal Theme Settings** companion plugin. That is where I switch color schemes, tune focus mode, and adjust the small details that make the vault feel like mine.
+
+During the day I use light mode. In the evening I switch to dark. Focus mode is the feature I reach for most when I am drafting.
+
+<div class="not-prose my-6 grid gap-4 sm:grid-cols-2">
+  <figure>
+    <img src={MinimalLight.src} alt="Obsidian with Minimal theme in light mode, showing a project note with tasks" loading="lazy" />
+    <figcaption class="mt-2 text-center text-sm text-blog-secondary">Minimal in light mode</figcaption>
+  </figure>
+  <figure>
+    <img src={MinimalDark.src} alt="Obsidian with Minimal theme in dark mode, showing the same project note" loading="lazy" />
+    <figcaption class="mt-2 text-center text-sm text-blog-secondary">Minimal in dark mode</figcaption>
+  </figure>
+</div>
+
+## Notebook Navigator
+
+As the vault grew, the default file explorer stopped being enough. I wanted to see folders, recent notes, and previews without opening five tabs.
+
+[Notebook Navigator](https://notebooknavigator.com/) replaces the explorer with a notebook-style layout: folder tree on the left, note list in the middle, and a preview pane when I need it.
+
+**How I use it:**
+
+- **Folder notebooks** — my top-level folders (`Inbox`, `Daily Notes`, `Projects`, `Areas`, `Resources`, `Archive`) map directly to notebooks
+- **Quick switching** — `Cmd/Ctrl + P` still jumps to a note by name; Navigator is for browsing when I do not know the filename yet
+- **Recent notes** — each notebook shows what I was working on last, which saves time during weekly reviews
+
+<img src={NotebookNavigator.src} alt="Notebook Navigator showing a folder tree, note list, and preview pane" loading="lazy" />
+
+I reach for Navigator when I am planning a week or cleaning up after a project. When I already know the note name, the command palette is faster.
+
+## Alternate checkboxes
+
+This is not a separate plugin. Minimal renders special characters inside task brackets as icons — a small detail that changed how I write project notes.
+
+I keep a short legend in my templates folder and reuse the same symbols everywhere:
+
+| Syntax | Meaning |
+|--------|---------|
+| `- [ ]` | Regular task |
+| `- [x]` | Completed |
+| `- [/]` | In progress |
+| `- [>]` | Forwarded to another day or context |
+| `- [<]` | Scheduled |
+| `- [-]` | Cancelled |
+| `- [!]` | Important |
+| `- [?]` | Needs research or clarification |
+| `- [*]` | Key insight |
+
+The full list lives in the [Minimal checklists docs](https://minimal.guide/Block+types/Checklists). I did not adopt every variant on day one — I added them when a real workflow needed a distinct state.
+
+<img src={CheckboxStyles.src} alt="Alternate checkbox styles in a Minimal-themed note" loading="lazy" />
+
+## Folder structure
+
+My vault follows a modified PARA layout: Projects, Areas, Resources, and Archive, plus an inbox for quick capture and a templates folder for consistency.
+
+```markdown
+📁 Obsidian Vault
+├── 📁 00 - Inbox
+│   └── Quick capture notes that need processing
+├── 📁 01 - Daily Notes
+│   └── Daily reflections and logs
+├── 📁 02 - Projects
+│   ├── Active projects
+│   └── Project templates
+├── 📁 03 - Areas
+│   ├── Work
+│   ├── Personal Development
+│   └── Health & Fitness
+├── 📁 04 - Resources
+│   ├── Articles & Bookmarks
+│   ├── Book Notes
+│   └── Learning Materials
+├── 📁 05 - Archive
+│   └── Completed projects and old notes
+└── 📁 06 - Templates
+    └── Note templates for different purposes
+```
+
+Numbered prefixes keep folders sorted the way I think about them. `00 - Inbox` is always first; `05 - Archive` is always last.
+
+## A project note in practice
+
+Here is a typical project note. The checkboxes show status at a glance. The `[[wikilinks]]` are Obsidian's internal links — typing `[[` and part of a note title creates a link that updates if you rename the target note.
+
+```markdown
+# Project: Blog post series
+
+## Overview
+Description of the project...
+
+## Tasks
+[!] Write outline for Obsidian structure post
+[x] Research Minimal theme features
+[>] Schedule social media promotion
+[<] Publish post (scheduled for next Monday)
+[?] Should I add a video walkthrough?
+
+## Resources
+- [[Article - Note-taking best practices]]
+- [[Book Notes - Building a Second Brain]]
+
+## Notes
+[*] Key insight: structure should serve thinking, not constrain it
+```
+
+One pass through the note tells me what is urgent, what is done, what moved, and what still needs a decision.
+
+## Getting started
+
+If you want to try a similar setup:
+
+1. **Install Minimal first** — get comfortable with the reading surface before adding more plugins
+2. **Create folders, then add Notebook Navigator** — the plugin works better when the top-level structure is already decided
+3. **Adopt checkboxes gradually** — start with `[ ]`, `[x]`, and `[!]`; add the rest when you need them
+4. **Review monthly** — I prune empty folders and move finished projects to Archive on the first Sunday of each month
+5. **Do not over-organize** — the goal is faster retrieval, not a perfect taxonomy
+
+## The takeaway
+
+A good Obsidian vault is not about having the most plugins. It is about reducing friction when you capture an idea, find an old note, or scan open tasks.
+
+Start with a theme you enjoy reading, a navigation pattern that matches how you browse, and a small task vocabulary you will actually use. Let the structure grow only when your notes ask for it.
+
+For more on Minimal's features and settings, see [minimal.guide](https://minimal.guide/).
