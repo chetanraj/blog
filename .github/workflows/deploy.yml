@@ -5,14 +5,16 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Only chetanraj can deploy — skips for bots, dependabot, or other collaborators.
+# Deploys on main pushes (e.g. merged PRs) or manual runs by the repo owner.
 concurrency:
   group: deploy-gh-pages
   cancel-in-progress: true
 
 jobs:
   deploy:
-    if: github.actor == 'chetanraj'
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.actor == 'chetanraj') ||
+      (github.event_name == 'push' && contains(fromJSON('["chetanraj", "cursor[bot]"]'), github.actor))
     runs-on: ubuntu-latest
     permissions:
       contents: write
