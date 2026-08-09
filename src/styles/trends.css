@@ -26,6 +26,8 @@
   --trend-toggle-btn-bg: transparent;
   --trend-toggle-btn-border: transparent;
   --trend-noise: 0;
+  --on-surface-text: #0d2538;
+  --on-surface-accent: #0f4c81;
 }
 
 html[data-trend='default'] {
@@ -48,6 +50,8 @@ html[data-trend='default'] {
   --trend-btn-active-color: #fff;
   --trend-btn-active-border: #0f4c81;
   --trend-noise: 0;
+  --on-surface-text: #0d2538;
+  --on-surface-accent: #0f4c81;
 }
 
 /* ─── LIQUID GLASS ─────────────────────────────────────────────── */
@@ -183,11 +187,11 @@ html[data-color-mode='dark'][data-trend='default'] {
   --color-secondary: #ced8de;
   --color-lightgray: #ced8de;
   --color-accent: #dfebf6;
-  --color-content: #0d2538;
+  --color-content: #f0f7ff;
 
-  --trend-surface: #cfe8fd;
-  --trend-border: #94ceff;
-  --trend-border-accent: #94ceff;
+  --trend-surface: rgba(255, 255, 255, 0.14);
+  --trend-border: rgba(255, 255, 255, 0.28);
+  --trend-border-accent: rgba(223, 235, 246, 0.55);
   --trend-shadow: none;
   --trend-toggle-label: #486581;
   --trend-toggle-btn: #0d2538;
@@ -196,6 +200,8 @@ html[data-color-mode='dark'][data-trend='default'] {
   --trend-btn-active-bg: #0f4c81;
   --trend-btn-active-color: #fff;
   --trend-btn-active-border: #0f4c81;
+  --on-surface-text: #f0f7ff;
+  --on-surface-accent: #dfebf6;
 }
 
 html[data-color-mode='light'][data-trend='default'] {
@@ -240,6 +246,8 @@ html[data-color-mode='dark'][data-trend='liquid-glass'] {
   --trend-btn-active-bg: rgba(126, 184, 255, 0.28);
   --trend-btn-active-color: #eff7ff;
   --trend-btn-active-border: rgba(126, 184, 255, 0.72);
+  --on-surface-text: #e8eaf6;
+  --on-surface-accent: #7eb8ff;
 }
 
 html[data-color-mode='light'][data-trend='liquid-glass'] {
@@ -263,6 +271,8 @@ html[data-color-mode='light'][data-trend='liquid-glass'] {
   --trend-btn-active-bg: rgba(37, 110, 193, 0.16);
   --trend-btn-active-color: #0f4c81;
   --trend-btn-active-border: rgba(37, 110, 193, 0.5);
+  --on-surface-text: #102033;
+  --on-surface-accent: #256ec1;
 }
 
 html[data-color-mode='dark'][data-trend='glassmorphism'] {
@@ -285,6 +295,8 @@ html[data-color-mode='dark'][data-trend='glassmorphism'] {
   --trend-btn-active-bg: rgba(200, 150, 255, 0.28);
   --trend-btn-active-color: #fff7ff;
   --trend-btn-active-border: rgba(200, 150, 255, 0.72);
+  --on-surface-text: #f0eeff;
+  --on-surface-accent: #c896ff;
 }
 
 html[data-color-mode='light'][data-trend='glassmorphism'] {
@@ -307,6 +319,8 @@ html[data-color-mode='light'][data-trend='glassmorphism'] {
   --trend-btn-active-bg: rgba(137, 82, 214, 0.16);
   --trend-btn-active-color: #5b2f9e;
   --trend-btn-active-border: rgba(137, 82, 214, 0.5);
+  --on-surface-text: #24143d;
+  --on-surface-accent: #8952d6;
 }
 
 html[data-color-mode='dark'][data-trend='brutalism'] {
@@ -328,6 +342,8 @@ html[data-color-mode='dark'][data-trend='brutalism'] {
   --trend-btn-active-bg: #ffcc00;
   --trend-btn-active-color: #101010;
   --trend-btn-active-border: #f7f7f7;
+  --on-surface-text: #f7f7f7;
+  --on-surface-accent: #ffcc00;
 }
 
 html[data-color-mode='light'][data-trend='brutalism'] {
@@ -349,6 +365,8 @@ html[data-color-mode='light'][data-trend='brutalism'] {
   --trend-btn-active-bg: #ffcc00;
   --trend-btn-active-color: #111111;
   --trend-btn-active-border: #111111;
+  --on-surface-text: #111111;
+  --on-surface-accent: #ff2d00;
 }
 
 html[data-color-mode='dark'][data-trend='skeuomorphism'] {
@@ -372,6 +390,8 @@ html[data-color-mode='dark'][data-trend='skeuomorphism'] {
   --trend-btn-active-color: #0f3d52;
   --trend-btn-active-border: #3a8fb8;
   --trend-noise: 0;
+  --on-surface-text: #e8f4fa;
+  --on-surface-accent: #7eb8ff;
 }
 
 html[data-color-mode='light'][data-trend='skeuomorphism'] {
@@ -395,6 +415,8 @@ html[data-color-mode='light'][data-trend='skeuomorphism'] {
   --trend-btn-active-color: #ffffff;
   --trend-btn-active-border: #005f92;
   --trend-noise: 0;
+  --on-surface-text: #0f3d52;
+  --on-surface-accent: #0077b6;
 }
 
 html[data-color-mode='dark'][data-trend='flat'] {
@@ -416,6 +438,8 @@ html[data-color-mode='dark'][data-trend='flat'] {
   --trend-btn-active-bg: #16344d;
   --trend-btn-active-color: #90caf9;
   --trend-btn-active-border: #64b5f6;
+  --on-surface-text: #eeeeee;
+  --on-surface-accent: #64b5f6;
 }
 
 html[data-color-mode='light'][data-trend='flat'] {
@@ -437,6 +461,8 @@ html[data-color-mode='light'][data-trend='flat'] {
   --trend-btn-active-bg: #e3f2fd;
   --trend-btn-active-color: #1976d2;
   --trend-btn-active-border: #1976d2;
+  --on-surface-text: #212121;
+  --on-surface-accent: #1976d2;
 }
 
 /* ─── BASE TRANSITIONS ─────────────────────────────────────────── */

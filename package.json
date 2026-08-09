@@ -12,6 +12,7 @@
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "generate:favicons": "node scripts/generate-favicons.mjs",
+    "generate:obsidian-screenshots": "python3 scripts/generate-obsidian-screenshots.py",
     "deploy": "npm run build && gh-pages -d dist --dotfiles"
   },
   "dependencies": {

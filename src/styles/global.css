@@ -191,7 +191,7 @@ header .light {
 
 .blog-post-container blockquote {
   background: var(--blockquote-color);
-  color: var(--primary-text);
+  color: var(--on-surface-text, var(--primary-text));
   margin-top: 1.25em;
   padding: 1rem;
   border-radius: 5px;
@@ -206,7 +206,7 @@ header .light {
 }
 
 .blog-post-container blockquote strong {
-  color: var(--color-accent);
+  color: var(--on-surface-accent, var(--color-accent));
 }
 
 .blog-post-container blockquote p {
@@ -241,7 +241,7 @@ header .light {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--on-surface-accent, var(--color-accent));
 }
 
 .post-toc-list {
@@ -254,18 +254,31 @@ header .light {
   margin: 0;
 }
 
-.post-toc-item a {
+.post-toc-item a,
+.post-toc-link {
   display: block;
   padding: 0.3rem 0;
-  color: var(--primary-text);
+  color: var(--on-surface-text, var(--primary-text));
   text-decoration: none;
   line-height: 1.4;
   transition: color 0.25s ease;
 }
 
 .post-toc-item a:hover,
-.post-toc-item a:focus-visible {
-  color: var(--color-accent);
+.post-toc-item a:focus-visible,
+.post-toc-link:hover,
+.post-toc-link:focus-visible {
+  color: var(--on-surface-accent, var(--color-accent));
+}
+
+.blog-post-content .post-toc .post-toc-link {
+  color: var(--on-surface-text, var(--primary-text));
+  text-decoration: none;
+}
+
+.blog-post-content .post-toc .post-toc-link:hover,
+.blog-post-content .post-toc .post-toc-link:focus-visible {
+  color: var(--on-surface-accent, var(--color-accent));
 }
 
 .post-toc-item--depth-3 {
@@ -357,7 +370,7 @@ header .light {
   border: 1px solid var(--trend-border);
   border-radius: var(--trend-radius-sm);
   background: var(--trend-surface);
-  color: var(--primary-text);
+  color: var(--on-surface-text, var(--primary-text));
   text-decoration: none;
 }
 
@@ -422,7 +435,7 @@ header .light {
   border: 1px solid var(--trend-border);
   border-radius: var(--trend-radius-sm);
   background: var(--trend-surface);
-  color: var(--primary-text);
+  color: var(--on-surface-text, var(--primary-text));
   text-decoration: none;
   font-size: 0.85rem;
   cursor: pointer;
@@ -509,8 +522,48 @@ header .light {
   background: var(--trend-surface);
   border: 1px solid var(--trend-border);
   border-radius: var(--trend-radius-sm);
-  color: var(--color-accent);
+  color: var(--on-surface-accent, var(--color-accent));
   padding: 0.1rem 0.35rem;
+}
+
+.blog-post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+}
+
+.blog-post-content th,
+.blog-post-content td {
+  border: 1px solid var(--trend-border);
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.post-toc,
+.blog-post-container blockquote,
+.tag-pill,
+.post-share-btn,
+.author-blurb-links a,
+.code-copy-btn {
+  color: var(--on-surface-text, var(--primary-text));
+}
+
+.post-toc-title,
+.blog-post-container blockquote strong,
+.blog-post-content :not(pre) > code,
+.blog-post-content td code {
+  color: var(--on-surface-accent, var(--color-accent));
+}
+
+.blog-post-content th {
+  background: var(--trend-surface);
+  color: var(--on-surface-text, var(--primary-text));
+  font-weight: 600;
+}
+
+.blog-post-content td {
+  color: inherit;
 }
 
 .blog-post-content img {
@@ -524,7 +577,7 @@ header .light {
   margin-bottom: 1rem;
 }
 
-.blog-post-content a:not(.text-base):not(.tag-pill):not(.post-tag) {
+.blog-post-content a:not(.text-base):not(.tag-pill):not(.post-tag):not(.post-toc-link) {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-color: var(--trend-border-accent);
