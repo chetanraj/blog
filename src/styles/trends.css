@@ -187,11 +187,11 @@ html[data-color-mode='dark'][data-trend='default'] {
   --color-secondary: #ced8de;
   --color-lightgray: #ced8de;
   --color-accent: #dfebf6;
-  --color-content: #0d2538;
+  --color-content: #f0f7ff;
 
-  --trend-surface: #cfe8fd;
-  --trend-border: #94ceff;
-  --trend-border-accent: #94ceff;
+  --trend-surface: rgba(255, 255, 255, 0.14);
+  --trend-border: rgba(255, 255, 255, 0.28);
+  --trend-border-accent: rgba(223, 235, 246, 0.55);
   --trend-shadow: none;
   --trend-toggle-label: #486581;
   --trend-toggle-btn: #0d2538;
@@ -200,8 +200,8 @@ html[data-color-mode='dark'][data-trend='default'] {
   --trend-btn-active-bg: #0f4c81;
   --trend-btn-active-color: #fff;
   --trend-btn-active-border: #0f4c81;
-  --on-surface-text: #0d2538;
-  --on-surface-accent: #0f4c81;
+  --on-surface-text: #f0f7ff;
+  --on-surface-accent: #dfebf6;
 }
 
 html[data-color-mode='light'][data-trend='default'] {

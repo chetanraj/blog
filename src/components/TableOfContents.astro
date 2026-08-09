@@ -28,7 +28,7 @@ const items = headings.filter(
       <ol class="post-toc-list">
         {items.map((heading) => (
           <li class={`post-toc-item post-toc-item--depth-${heading.depth}`}>
-            <a href={`#${heading.slug}`}>{heading.text}</a>
+            <a class="post-toc-link" href={`#${heading.slug}`}>{heading.text}</a>
           </li>
         ))}
       </ol>

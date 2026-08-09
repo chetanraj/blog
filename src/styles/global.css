@@ -241,7 +241,7 @@ header .light {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--on-surface-accent, var(--color-accent));
 }
 
 .post-toc-list {
@@ -254,7 +254,8 @@ header .light {
   margin: 0;
 }
 
-.post-toc-item a {
+.post-toc-item a,
+.post-toc-link {
   display: block;
   padding: 0.3rem 0;
   color: var(--on-surface-text, var(--primary-text));
@@ -264,17 +265,19 @@ header .light {
 }
 
 .post-toc-item a:hover,
-.post-toc-item a:focus-visible {
+.post-toc-item a:focus-visible,
+.post-toc-link:hover,
+.post-toc-link:focus-visible {
   color: var(--on-surface-accent, var(--color-accent));
 }
 
-.blog-post-content .post-toc .post-toc-item a {
+.blog-post-content .post-toc .post-toc-link {
   color: var(--on-surface-text, var(--primary-text));
   text-decoration: none;
 }
 
-.blog-post-content .post-toc .post-toc-item a:hover,
-.blog-post-content .post-toc .post-toc-item a:focus-visible {
+.blog-post-content .post-toc .post-toc-link:hover,
+.blog-post-content .post-toc .post-toc-link:focus-visible {
   color: var(--on-surface-accent, var(--color-accent));
 }
 
@@ -537,14 +540,30 @@ header .light {
   vertical-align: top;
 }
 
+.post-toc,
+.blog-post-container blockquote,
+.tag-pill,
+.post-share-btn,
+.author-blurb-links a,
+.code-copy-btn {
+  color: var(--on-surface-text, var(--primary-text));
+}
+
+.post-toc-title,
+.blog-post-container blockquote strong,
+.blog-post-content :not(pre) > code,
+.blog-post-content td code {
+  color: var(--on-surface-accent, var(--color-accent));
+}
+
 .blog-post-content th {
   background: var(--trend-surface);
   color: var(--on-surface-text, var(--primary-text));
   font-weight: 600;
 }
 
-.blog-post-content td code {
-  color: var(--on-surface-accent, var(--color-accent));
+.blog-post-content td {
+  color: inherit;
 }
 
 .blog-post-content img {
@@ -558,7 +577,7 @@ header .light {
   margin-bottom: 1rem;
 }
 
-.blog-post-content a:not(.text-base):not(.tag-pill):not(.post-tag):not(.post-toc-item a) {
+.blog-post-content a:not(.text-base):not(.tag-pill):not(.post-tag):not(.post-toc-link) {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-color: var(--trend-border-accent);
