@@ -1,3 +1,5 @@
+@import '@capper-ui/tokens';
+@import '@capper-ui/react/styles';
 @import './trends.css';
 
 @tailwind base;

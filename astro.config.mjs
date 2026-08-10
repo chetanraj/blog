@@ -12,7 +12,7 @@ export default defineConfig({
   integrations: [mdx(), react(), tailwind(), sitemap()],
   vite: {
     ssr: {
-      noExternal: ['@capper-ui/react'],
+      noExternal: ['@capper-ui/react', '@phosphor-icons/react'],
     },
   },
   markdown: {
