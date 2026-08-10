@@ -1,11 +1,11 @@
 # Netlify configuration for Astro project
 [build]
   command = "npm run build"
-  functions = "netlify/functions"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "18.20.8"
+  NPM_CONFIG_PRODUCTION = "false"
 
 # Rewrite rules for SPA routing
 [[redirects]]
