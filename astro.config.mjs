@@ -10,6 +10,11 @@ export default defineConfig({
   base: '/blog/',
   output: 'static',
   integrations: [mdx(), react(), tailwind(), sitemap()],
+  vite: {
+    ssr: {
+      noExternal: ['@capper-ui/react'],
+    },
+  },
   markdown: {
     remarkPlugins: [remarkReadingTime],
     shikiConfig: {
