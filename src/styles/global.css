@@ -307,6 +307,155 @@ header .light {
   max-width: 100%;
 }
 
+.theme-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.post-meta {
+  margin: 1rem 0 1.5rem;
+  color: var(--color-secondary);
+}
+
+.post-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.post-meta-icon {
+  flex-shrink: 0;
+}
+
+.post-meta-updated {
+  font-size: 0.875rem;
+}
+
+.post-tag-link,
+.tag-pill-link {
+  text-decoration: none;
+}
+
+.index-section-title {
+  margin: 1.5rem 0 1rem;
+  color: var(--color-lightgray);
+}
+
+.index-post-link {
+  display: block;
+  margin-bottom: 1.25rem;
+  text-decoration: none;
+}
+
+.index-post-title {
+  color: var(--color-primary);
+}
+
+.index-post-description {
+  color: var(--color-secondary);
+}
+
+.index-post-meta {
+  color: var(--color-lightgray);
+}
+
+.index-post-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.index-post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer-brand {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--header-text) !important;
+  text-decoration: none;
+}
+
+.site-footer-heading {
+  opacity: 0.5;
+  color: var(--header-text);
+  margin: 0;
+}
+
+.site-footer-link {
+  color: var(--header-text) !important;
+  text-decoration: none;
+}
+
+.site-footer-icon-link {
+  color: var(--header-text);
+  text-decoration: none;
+}
+
+.site-footer-copy {
+  opacity: 0.5;
+  color: var(--header-text);
+}
+
+.site-footer-copy--desktop {
+  padding-top: 4rem;
+  display: none;
+}
+
+.site-footer-copy--mobile {
+  padding-top: 4rem;
+  display: block;
+}
+
+@media (min-width: 640px) {
+  .site-footer-copy--desktop {
+    display: block;
+  }
+
+  .site-footer-copy--mobile {
+    display: none;
+  }
+}
+
+.related-posts-card,
+.author-blurb-card,
+.post-toc-card {
+  background: var(--trend-surface);
+  border-color: var(--trend-border);
+}
+
+.related-posts-list,
+.post-toc-list,
+.archive-list,
+.tag-cloud {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.related-posts-link,
+.archive-link {
+  text-decoration: none;
+}
+
+.related-posts-name,
+.archive-title {
+  color: var(--color-primary);
+}
+
+.related-posts-desc,
+.archive-date {
+  color: var(--color-secondary);
+}
+
 .post-meta {
   min-width: 0;
   max-width: 100%;
@@ -405,16 +554,13 @@ header .light {
 .author-blurb,
 .related-posts {
   margin: 2rem 0 0;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--trend-border);
 }
 
 .post-share-label,
 .author-blurb-kicker,
-.related-posts-title {
-  margin: 0 0 0.75rem;
-  font-size: 0.72rem;
-  font-weight: 700;
+.related-posts-title,
+.post-toc-title {
+  margin: 0;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-accent);
@@ -422,61 +568,25 @@ header .light {
 
 .post-share-actions,
 .author-blurb-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
-.post-share-btn,
-.author-blurb-links a {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.35rem 0.7rem;
-  border: 1px solid var(--trend-border);
-  border-radius: var(--trend-radius-sm);
-  background: var(--trend-surface);
-  color: var(--on-surface-text, var(--primary-text));
-  text-decoration: none;
+.post-share-btn {
   font-size: 0.85rem;
-  cursor: pointer;
 }
 
 .author-blurb-name {
-  margin: 0 0 0.5rem;
-  font-size: 1.2rem;
-  font-weight: 600;
+  margin: 0;
 }
 
 .author-blurb-bio {
-  margin: 0 0 1rem;
-  color: var(--color-secondary);
-}
-
-.related-posts-list {
-  list-style: none;
   margin: 0;
-  padding: 0;
 }
 
-.related-posts-list li {
-  margin: 0 0 1rem;
+.related-posts-list li,
+.archive-list li,
+.tag-cloud li {
   list-style: none;
-}
-
-.related-posts-list a {
-  display: grid;
-  gap: 0.2rem;
-  text-decoration: none;
-}
-
-.related-posts-name {
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-.related-posts-desc {
-  color: var(--color-secondary);
-  font-size: 0.92rem;
 }
 
 .blog-post-body pre.code-block {
