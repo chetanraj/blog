@@ -1,13 +1,8 @@
+export { Icon, ArrowLeft, Monitor, Moon, Rss, Sun } from '@capper-ui/react';
 export {
-  Icon,
-  ArrowLeft,
   Calendar,
   Clock,
-  Github,
-  Instagram,
-  Monitor,
-  Moon,
-  Rss,
-  Sun,
-  X,
-} from '@capper-ui/react';
+  GithubLogo as Github,
+  InstagramLogo as Instagram,
+  XLogo as X,
+} from '@phosphor-icons/react';

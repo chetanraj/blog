@@ -18,7 +18,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",
     "@astrojs/react": "^6.0.2",
-    "@capper-ui/react": "file:../tmp/capper-ui-react-0.0.2.tgz",
+    "@capper-ui/react": "^0.0.1",
     "@capper-ui/tokens": "^0.0.1",
     "astro": "^5.2.0",
     "gh-pages": "^6.1.1",

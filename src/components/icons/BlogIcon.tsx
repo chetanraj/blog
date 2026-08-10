@@ -1,6 +1,6 @@
 import { Icon } from '@capper-ui/react';
 import type { IconProps as PhosphorIconProps } from '@phosphor-icons/react';
-import type { ComponentType } from 'react';
+import React, { type ComponentType } from 'react';
 
 type BlogIconSize = 'sm' | 'md' | 'lg';
 
