@@ -20,6 +20,7 @@
     "@astrojs/react": "^6.0.2",
     "@capper-ui/react": "^0.0.1",
     "@capper-ui/tokens": "^0.0.1",
+    "@phosphor-icons/react": "^2.1.10",
     "astro": "^5.2.0",
     "gh-pages": "^6.1.1",
     "mdast-util-to-string": "^4.0.0",
