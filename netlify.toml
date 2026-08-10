@@ -1,12 +1,12 @@
 # Netlify configuration for Astro project
 [build]
-  command = "npm ci && npx astro build"
+  command = "npm ci && npm run build"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "18.20.8"
   NPM_CONFIG_PRODUCTION = "false"
-  NETLIFY_CLEAR_CACHE = "true"
+  NODE_OPTIONS = "--max-old-space-size=4096"
 
 # Rewrite rules for SPA routing
 [[redirects]]
