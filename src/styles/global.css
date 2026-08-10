@@ -307,10 +307,27 @@ header .light {
   max-width: 100%;
 }
 
-.post-meta {
-  min-width: 0;
-  max-width: 100%;
+.theme-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
 }
+
+.post-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.post-meta-icon {
+  flex-shrink: 0;
+}
+
 
 .blog-post-body {
   min-width: 0;

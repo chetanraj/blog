@@ -5,6 +5,8 @@ import AuthorBlurb from '../../components/AuthorBlurb.astro';
 import PostShare from '../../components/PostShare.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import CodeCopyButtons from '../../components/CodeCopyButtons.astro';
+import { BlogIcon } from '../../components/icons/BlogIcon';
+import { Calendar, Clock } from '@phosphor-icons/react';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { absoluteUrl } from '../../site.config';
 import { getRelatedPosts } from '../../utils/posts';
@@ -65,52 +67,21 @@ const showUpdated =
           <div
             class="post-meta mt-4 mb-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-blog-secondary"
           >
-            <time datetime={publishedTime} class="flex items-center justify-center">
-              <svg
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="mr-1"
-                ><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line
-                  x1="16"
-                  y1="2"
-                  x2="16"
-                  y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line
-                  x1="3"
-                  y1="10"
-                  x2="21"
-                  y2="10"></line></svg
-              >
+            <time datetime={publishedTime} class="post-meta-item">
+              <BlogIcon icon={Calendar} size="md" className="post-meta-icon" />
               {post.data.date.toISOString().slice(0, 10)}
             </time>
 
             {
               showUpdated && post.data.updated && (
-                <span class="flex items-center justify-center text-sm">
+                <span class="post-meta-item text-sm">
                   updated {post.data.updated.toISOString().slice(0, 10)}
                 </span>
               )
             }
 
-            <div class="flex items-center justify-center">
-              <svg
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="mr-1"
-                ><circle cx="12" cy="12" r="10"></circle><polyline
-                  points="12 6 12 12 16 14"></polyline></svg
-              >
+            <div class="post-meta-item">
+              <BlogIcon icon={Clock} size="md" className="post-meta-icon" />
               {remarkPluginFrontmatter.minutesRead}
             </div>
 
