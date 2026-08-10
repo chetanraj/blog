@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Badge, Inline, Link, Stack, Text } from '@capper-ui/react';
 import { getCollection } from 'astro:content';
 import { getAllTags, tagToSlug } from '../../utils/tags';
 
@@ -19,21 +20,23 @@ const tags = getAllTags(posts);
 >
   <div class="blog-post-container">
     <div class="blog-post-content static-page">
-      <p class="text-blog-secondary">Browse posts by topic.</p>
-      <ul class="tag-cloud">
+      <Text as="p" color="muted">Browse posts by topic.</Text>
+      <Inline as="ul" gap="sm" wrap className="tag-cloud">
         {
           tags.map((tag) => (
             <li>
-              <a class="tag-pill" href={`${base}tags/${tagToSlug(tag)}/`}>
-                {tag}
-              </a>
+              <Link href={`${base}tags/${tagToSlug(tag)}/`} className="tag-pill-link">
+                <Badge variant="accent" size="sm">
+                  {tag}
+                </Badge>
+              </Link>
             </li>
           ))
         }
-      </ul>
-      <p>
-        <a href={base}>← Back to all posts</a>
-      </p>
+      </Inline>
+      <Text as="p">
+        <Link href={base}>← Back to all posts</Link>
+      </Text>
     </div>
   </div>
 </BaseLayout>

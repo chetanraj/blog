@@ -1,27 +1,53 @@
 ---
+import { Card, Inline, Link, Stack, Text } from '@capper-ui/react';
 import { SITE } from '../site.config';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <aside class="author-blurb" aria-label="About the author">
-  <p class="author-blurb-kicker">Written by</p>
-  <p class="author-blurb-name">
-    <a href={SITE.author.url}>{SITE.author.name}</a>
-  </p>
-  <p class="author-blurb-bio">{SITE.author.bio}</p>
-  <div class="author-blurb-links">
-    <a href={`https://twitter.com/${SITE.author.twitter}`} rel="noopener noreferrer" target="_blank">
-      Twitter
-    </a>
-    <a href={`https://github.com/${SITE.author.github}`} rel="noopener noreferrer" target="_blank">
-      GitHub
-    </a>
-    <a
-      href={`https://www.instagram.com/${SITE.author.instagram}/`}
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      Instagram
-    </a>
-    <a href={`${import.meta.env.BASE_URL}about/`}>About</a>
-  </div>
+  <Card padding="lg" elevated className="author-blurb-card">
+    <Stack gap="sm">
+      <Text as="p" size="xs" weight="bold" className="author-blurb-kicker">
+        Written by
+      </Text>
+      <Text as="p" size="lg" weight="semibold" className="author-blurb-name">
+        <Link href={SITE.author.url}>{SITE.author.name}</Link>
+      </Text>
+      <Text as="p" color="muted" className="author-blurb-bio">
+        {SITE.author.bio}
+      </Text>
+      <Inline gap="sm" wrap className="author-blurb-links">
+        <Link
+          href={`https://twitter.com/${SITE.author.twitter}`}
+          rel="noopener noreferrer"
+          target="_blank"
+          size="sm"
+        >
+          Twitter
+        </Link>
+        <Link
+          href={`https://github.com/${SITE.author.github}`}
+          rel="noopener noreferrer"
+          target="_blank"
+          size="sm"
+        >
+          GitHub
+        </Link>
+        <Link
+          href={`https://www.instagram.com/${SITE.author.instagram}/`}
+          rel="noopener noreferrer"
+          target="_blank"
+          size="sm"
+        >
+          Instagram
+        </Link>
+        <Link href={`${base}about/`} size="sm">
+          About
+        </Link>
+      </Inline>
+    </Stack>
+  </Card>
 </aside>

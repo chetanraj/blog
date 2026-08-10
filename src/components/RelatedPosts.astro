@@ -1,4 +1,5 @@
 ---
+import { Badge, Card, Link, Stack, Text } from '@capper-ui/react';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -12,19 +13,31 @@ const { posts, base } = Astro.props;
 {
   posts.length > 0 && (
     <section class="related-posts" aria-label="Related posts">
-      <h2 class="related-posts-title">Read next</h2>
-      <ul class="related-posts-list">
-        {posts.map((post) => (
-          <li>
-            <a href={`${base}posts/${post.slug}/`}>
-              <span class="related-posts-name">{post.data.title}</span>
-              {post.data.description && (
-                <span class="related-posts-desc">{post.data.description}</span>
-              )}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <Card padding="lg" elevated className="related-posts-card">
+        <Stack gap="md">
+          <Text as="h2" size="sm" weight="bold" className="related-posts-title">
+            Read next
+          </Text>
+          <Stack as="ul" gap="sm" className="related-posts-list">
+            {posts.map((post) => (
+              <li>
+                <Link href={`${base}posts/${post.slug}/`} className="related-posts-link">
+                  <Stack gap="xs">
+                    <Text as="span" weight="semibold" className="related-posts-name">
+                      {post.data.title}
+                    </Text>
+                    {post.data.description && (
+                      <Text as="span" size="sm" color="muted" className="related-posts-desc">
+                        {post.data.description}
+                      </Text>
+                    )}
+                  </Stack>
+                </Link>
+              </li>
+            ))}
+          </Stack>
+        </Stack>
+      </Card>
     </section>
   )
 }
