@@ -1,0 +1,193 @@
+From eac4ea15ab705e7974904bb44b8e56029693b60e Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Mon, 10 Aug 2026 04:12:00 +0000
+Subject: [PATCH] Add social and metadata icons to starter set
+
+Export Calendar, Clock, GithubLogo, InstagramLogo, and XLogo from
+@capper-ui/react alongside the existing navigation and theme icons.
+Update Icon docs and Storybook. Bump to 0.0.2.
+---
+ AGENTS.md                                     |  2 +-
+ .../src/site/pages/components/IconPage.tsx    | 39 ++++++++++++++++++-
+ packages/docs/src/stories/Icon.stories.tsx    | 36 ++++++++++++++++-
+ packages/react/package.json                   |  2 +-
+ packages/react/src/icons.ts                   | 14 ++++++-
+ packages/react/src/index.ts                   |  2 +-
+ 6 files changed, 87 insertions(+), 8 deletions(-)
+
+diff --git a/AGENTS.md b/AGENTS.md
+index 63fd176..424d695 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -60,7 +60,7 @@ pnpm test:coverage
+ - Atomic layout: `packages/react/src/{atoms,molecules,organisms}`.
+ - Atoms exist today; molecules and organisms are scaffolded for future work.
+ - Each component owns a co-located `.module.css` file. No CSS-in-JS, no utility-class soup.
+-- Icons use [Phosphor](https://phosphoricons.com) via the `Icon` atom and named exports (`Sun`, `Moon`, `Monitor`, `ArrowLeft`, `Rss`).
++- Icons use [Phosphor](https://phosphoricons.com) via the `Icon` atom and named exports (`Sun`, `Moon`, `Monitor`, `ArrowLeft`, `ArrowRight`, `Rss`, `Calendar`, `Clock`, `GithubLogo`, `InstagramLogo`, `XLogo`).
+ - Generic reusable UI belongs in `@capper-ui/react`. Page-specific docs layout belongs in `@capper-ui/docs`.
+ 
+ ### Docs site copy
+diff --git a/packages/docs/src/site/pages/components/IconPage.tsx b/packages/docs/src/site/pages/components/IconPage.tsx
+index d497bdf..7f507ee 100644
+--- a/packages/docs/src/site/pages/components/IconPage.tsx
++++ b/packages/docs/src/site/pages/components/IconPage.tsx
+@@ -1,4 +1,18 @@
+-import { Icon, Inline, Monitor, Moon, Rss, Sun, Text, ArrowLeft } from '@capper-ui/react';
++import {
++  ArrowLeft,
++  Calendar,
++  Clock,
++  GithubLogo,
++  Icon,
++  Inline,
++  InstagramLogo,
++  Monitor,
++  Moon,
++  Rss,
++  Sun,
++  Text,
++  XLogo,
++} from '@capper-ui/react';
+ import { ComponentPreview } from '../../components/ComponentPreview/ComponentPreview';
+ import { type PropRow, PropsTable } from '../../components/PropsTable/PropsTable';
+ 
+@@ -31,7 +45,7 @@ export function IconPage() {
+         design system and inherits color from currentColor.
+       </Text>
+ 
+-      <Text as="h2">Starter set</Text>
++      <Text as="h2">Navigation and theme</Text>
+       <ComponentPreview
+         code={`import { ArrowLeft, Icon, Monitor, Moon, Rss, Sun } from '@capper-ui/react';\n\n<Icon icon={Sun} label="Light theme" />\n<Icon icon={Moon} label="Dark theme" />\n<Icon icon={Monitor} label="System theme" />\n<Icon icon={ArrowLeft} label="Back" />\n<Icon icon={Rss} label="RSS feed" />`}
+       >
+@@ -44,6 +58,27 @@ export function IconPage() {
+         </Inline>
+       </ComponentPreview>
+ 
++      <Text as="h2">Social</Text>
++      <ComponentPreview
++        code={`import { GithubLogo, Icon, InstagramLogo, XLogo } from '@capper-ui/react';\n\n<Icon icon={XLogo} label="X" />\n<Icon icon={GithubLogo} label="GitHub" />\n<Icon icon={InstagramLogo} label="Instagram" />`}
++      >
++        <Inline gap="md" align="center">
++          <Icon icon={XLogo} size="lg" label="X" />
++          <Icon icon={GithubLogo} size="lg" label="GitHub" />
++          <Icon icon={InstagramLogo} size="lg" label="Instagram" />
++        </Inline>
++      </ComponentPreview>
++
++      <Text as="h2">Content metadata</Text>
++      <ComponentPreview
++        code={`import { Calendar, Clock, Icon } from '@capper-ui/react';\n\n<Icon icon={Calendar} label="Published date" />\n<Icon icon={Clock} label="Reading time" />`}
++      >
++        <Inline gap="md" align="center">
++          <Icon icon={Calendar} size="lg" label="Published date" />
++          <Icon icon={Clock} size="lg" label="Reading time" />
++        </Inline>
++      </ComponentPreview>
++
+       <Text as="h2">Sizes</Text>
+       <ComponentPreview code={`<Icon icon={Sun} size="sm" aria-hidden />\n<Icon icon={Sun} size="md" aria-hidden />\n<Icon icon={Sun} size="lg" aria-hidden />`}>
+         <Inline gap="md" align="center">
+diff --git a/packages/docs/src/stories/Icon.stories.tsx b/packages/docs/src/stories/Icon.stories.tsx
+index 77bdfb6..4aaefc0 100644
+--- a/packages/docs/src/stories/Icon.stories.tsx
++++ b/packages/docs/src/stories/Icon.stories.tsx
+@@ -1,4 +1,17 @@
+-import { ArrowLeft, Icon, Inline, Monitor, Moon, Rss, Sun } from '@capper-ui/react';
++import {
++  ArrowLeft,
++  Calendar,
++  Clock,
++  GithubLogo,
++  Icon,
++  Inline,
++  InstagramLogo,
++  Monitor,
++  Moon,
++  Rss,
++  Sun,
++  XLogo,
++} from '@capper-ui/react';
+ import type { Meta, StoryObj } from '@storybook/react';
+ 
+ const meta: Meta<typeof Icon> = {
+@@ -10,7 +23,7 @@ const meta: Meta<typeof Icon> = {
+ export default meta;
+ type Story = StoryObj<typeof Icon>;
+ 
+-export const StarterSet: Story = {
++export const NavigationAndTheme: Story = {
+   render: () => (
+     <Inline gap="md" align="center">
+       <Icon icon={Sun} size="lg" label="Light theme" />
+@@ -22,6 +35,25 @@ export const StarterSet: Story = {
+   ),
+ };
+ 
++export const Social: Story = {
++  render: () => (
++    <Inline gap="md" align="center">
++      <Icon icon={XLogo} size="lg" label="X" />
++      <Icon icon={GithubLogo} size="lg" label="GitHub" />
++      <Icon icon={InstagramLogo} size="lg" label="Instagram" />
++    </Inline>
++  ),
++};
++
++export const ContentMetadata: Story = {
++  render: () => (
++    <Inline gap="md" align="center">
++      <Icon icon={Calendar} size="lg" label="Published date" />
++      <Icon icon={Clock} size="lg" label="Reading time" />
++    </Inline>
++  ),
++};
++
+ export const Sizes: Story = {
+   render: () => (
+     <Inline gap="md" align="center">
+diff --git a/packages/react/package.json b/packages/react/package.json
+index 5627394..96a275c 100644
+--- a/packages/react/package.json
++++ b/packages/react/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "@capper-ui/react",
+-  "version": "0.0.1",
++  "version": "0.0.2",
+   "description": "Capper UI design system: React component library",
+   "license": "MIT",
+   "author": "chetanraj",
+diff --git a/packages/react/src/icons.ts b/packages/react/src/icons.ts
+index 98e3437..ed037fc 100644
+--- a/packages/react/src/icons.ts
++++ b/packages/react/src/icons.ts
+@@ -1 +1,13 @@
+-export { ArrowLeft, ArrowRight, Monitor, Moon, Rss, Sun } from '@phosphor-icons/react';
++export {
++  ArrowLeft,
++  ArrowRight,
++  Calendar,
++  Clock,
++  GithubLogo,
++  InstagramLogo,
++  Monitor,
++  Moon,
++  Rss,
++  Sun,
++  XLogo,
++} from '@phosphor-icons/react';
+diff --git a/packages/react/src/index.ts b/packages/react/src/index.ts
+index 2c0fd06..fd03bc1 100644
+--- a/packages/react/src/index.ts
++++ b/packages/react/src/index.ts
+@@ -11,4 +11,4 @@ export { Icon } from './atoms/Icon';
+ export { InlineCode } from './atoms/InlineCode';
+ export { CodeBlock } from './atoms/CodeBlock';
+ export { Card } from './molecules/Card';
+-export { ArrowLeft, ArrowRight, Monitor, Moon, Rss, Sun } from './icons';
++export { ArrowLeft, ArrowRight, Calendar, Clock, GithubLogo, InstagramLogo, Monitor, Moon, Rss, Sun, XLogo } from './icons';
+-- 
+2.43.0
+
