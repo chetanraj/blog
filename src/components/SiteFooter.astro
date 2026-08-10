@@ -1,6 +1,6 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
-import { GithubLogo, InstagramLogo, XLogo } from '../icons';
+import { Github, Instagram, X } from '../icons';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
@@ -35,21 +35,21 @@ const base = import.meta.env.BASE_URL.endsWith('/')
             href="https://twitter.com/chetan_raj"
             aria-label="X (Twitter)"
           >
-            <BlogIcon icon={XLogo} />
+            <BlogIcon icon={X} />
           </a>
           <a
             class="text-blog-bg pointer transition-colors duration-500"
             href="https://github.com/chetanraj"
             aria-label="GitHub"
           >
-            <BlogIcon icon={GithubLogo} />
+            <BlogIcon icon={Github} />
           </a>
           <a
             class="text-blog-bg pointer transition-colors duration-500"
             href="https://www.instagram.com/thecjstream/"
             aria-label="Instagram"
           >
-            <BlogIcon icon={InstagramLogo} />
+            <BlogIcon icon={Instagram} />
           </a>
         </div>
       </div>
