@@ -1,6 +1,6 @@
 # Netlify configuration for Astro project
 [build]
-  command = "npm run build"
+  command = "npm ci && npx astro build"
   publish = "dist"
 
 [build.environment]

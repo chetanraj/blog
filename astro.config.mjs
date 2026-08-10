@@ -11,6 +11,9 @@ export default defineConfig({
   output: 'static',
   integrations: [mdx(), react(), tailwind(), sitemap()],
   vite: {
+    resolve: {
+      dedupe: ['react', 'react-dom'],
+    },
     ssr: {
       noExternal: ['@capper-ui/react', '@phosphor-icons/react'],
     },
