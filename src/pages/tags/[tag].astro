@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Link, Stack, Text } from '@capper-ui/react';
 import { getCollection } from 'astro:content';
 import { findTagBySlug, getPostsByTag, tagToSlug } from '../../utils/tags';
 
@@ -38,22 +39,30 @@ const posts = getPostsByTag(allPosts, resolvedTag);
 >
   <div class="blog-post-container">
     <div class="blog-post-content static-page">
-      <p class="text-blog-secondary">{posts.length} post{posts.length === 1 ? '' : 's'}</p>
-      <ul class="archive-list">
+      <Text as="p" color="muted">
+        {posts.length} post{posts.length === 1 ? '' : 's'}
+      </Text>
+      <Stack as="ul" gap="md" className="archive-list">
         {
           posts.map((post) => (
             <li>
-              <a href={`${base}posts/${post.slug}/`}>
-                <span class="archive-title">{post.data.title}</span>
-                <span class="archive-date">{post.data.date.toISOString().slice(0, 10)}</span>
-              </a>
+              <Link href={`${base}posts/${post.slug}/`} className="archive-link">
+                <Stack gap="xs">
+                  <Text as="span" weight="semibold" className="archive-title">
+                    {post.data.title}
+                  </Text>
+                  <Text as="span" size="sm" color="subtle" className="archive-date">
+                    {post.data.date.toISOString().slice(0, 10)}
+                  </Text>
+                </Stack>
+              </Link>
             </li>
           ))
         }
-      </ul>
-      <p>
-        <a href={`${base}tags/`}>← All tags</a>
-      </p>
+      </Stack>
+      <Text as="p">
+        <Link href={`${base}tags/`}>← All tags</Link>
+      </Text>
     </div>
   </div>
 </BaseLayout>

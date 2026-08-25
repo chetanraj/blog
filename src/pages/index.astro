@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Badge, Link, Stack, Text } from '@capper-ui/react';
 import { getCollection } from 'astro:content';
 import { SITE } from '../site.config';
 
@@ -18,11 +19,9 @@ const [latestPost, ...otherPosts] = posts;
   description={SITE.description}
   path="/"
 >
-  <div
-    class="text-4xl font-light text-blog-lightgray mt-6 mb-4 transition-colors duration-500 my-6"
-  >
+  <Text as="h2" size="3xl" weight="regular" className="index-section-title">
     Latest post
-  </div>
+  </Text>
 
   {
     latestPost &&
@@ -32,38 +31,36 @@ const [latestPost, ...otherPosts] = posts;
         );
         const isNew = daysSince < 35;
         return (
-          <a class="font-light" href={`${base}posts/${latestPost.slug}/`}>
-            <div class="text-2xl text-blog-primary transition-colors duration-500">
-              {latestPost.data.title}
-            </div>
-            <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500">
-              {latestPost.data.description}
-            </div>
-            <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-              wrote on {latestPost.data.date.toISOString().slice(0, 10)}
-              {isNew ? (
-                <span class="hidden sm:inline-block">
-                  &#183;&nbsp;
-                  <span class="new not-italic bg-blog-header px-2 rounded inline-block">
-                    New
+          <Link href={`${base}posts/${latestPost.slug}/`} className="index-post-link">
+            <Stack gap="sm" className="index-post-preview">
+              <Text as="span" size="2xl" weight="regular" className="index-post-title">
+                {latestPost.data.title}
+              </Text>
+              <Text as="span" color="muted" className="index-post-description">
+                {latestPost.data.description}
+              </Text>
+              <Text as="span" size="sm" color="subtle" className="index-post-meta">
+                wrote on {latestPost.data.date.toISOString().slice(0, 10)}
+                {isNew ? (
+                  <span class="index-post-new">
+                    {' '}
+                    · <Badge variant="accent" size="sm">New</Badge>
                   </span>
-                </span>
-              ) : (
-                ''
-              )}
-            </div>
-          </a>
+                ) : (
+                  ''
+                )}
+              </Text>
+            </Stack>
+          </Link>
         );
       })()
   }
 
-  <div
-    class="text-4xl font-light text-blog-lightgray mt-6 mb-4 transition-colors duration-500 my-6"
-  >
+  <Text as="h2" size="3xl" weight="regular" className="index-section-title">
     Other posts
-  </div>
+  </Text>
 
-  <ul class="mt-4 space-y-2">
+  <Stack as="ul" gap="md" className="index-post-list">
     {
       otherPosts.map((post) =>
         (() => {
@@ -72,32 +69,32 @@ const [latestPost, ...otherPosts] = posts;
           );
           const isNew = daysSince < 35;
           return (
-            <li class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <a class="font-light" href={`${base}posts/${post.slug}/`}>
-                <div class="text-2xl text-blog-primary transition-colors duration-500">
-                  {post.data.title}
-                </div>
-                <div class="text-blog-secondary text-base font-normal mt-3 transition-colors duration-500">
-                  {post.data.description}
-                </div>
-                <div class="text-blog-lightgray text-base font-light mt-3 mb-5">
-                  wrote on {post.data.date.toISOString().slice(0, 10)}
-                  {isNew ? (
-                    <span class="hidden sm:inline-block">
-                      &#183;&nbsp;
-                      <span class="new not-italic bg-blog-header px-2 rounded inline-block">
-                        New
+            <li>
+              <Link href={`${base}posts/${post.slug}/`} className="index-post-link">
+                <Stack gap="sm" className="index-post-preview">
+                  <Text as="span" size="2xl" weight="regular" className="index-post-title">
+                    {post.data.title}
+                  </Text>
+                  <Text as="span" color="muted" className="index-post-description">
+                    {post.data.description}
+                  </Text>
+                  <Text as="span" size="sm" color="subtle" className="index-post-meta">
+                    wrote on {post.data.date.toISOString().slice(0, 10)}
+                    {isNew ? (
+                      <span class="index-post-new">
+                        {' '}
+                        · <Badge variant="accent" size="sm">New</Badge>
                       </span>
-                    </span>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </a>
+                    ) : (
+                      ''
+                    )}
+                  </Text>
+                </Stack>
+              </Link>
             </li>
           );
         })()
       )
     }
-  </ul>
+  </Stack>
 </BaseLayout>

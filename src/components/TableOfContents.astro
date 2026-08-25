@@ -1,4 +1,6 @@
 ---
+import { Card, Link, Stack, Text } from '@capper-ui/react';
+
 export interface TocHeading {
   depth: number;
   slug: string;
@@ -24,14 +26,22 @@ const items = headings.filter(
       class:list={['post-toc', variant === 'sticky' && 'post-toc--sticky']}
       aria-label="Table of contents"
     >
-      <p class="post-toc-title">On this page</p>
-      <ol class="post-toc-list">
-        {items.map((heading) => (
-          <li class={`post-toc-item post-toc-item--depth-${heading.depth}`}>
-            <a class="post-toc-link" href={`#${heading.slug}`}>{heading.text}</a>
-          </li>
-        ))}
-      </ol>
+      <Card padding="md" className="post-toc-card">
+        <Stack gap="sm">
+          <Text as="p" size="xs" weight="bold" className="post-toc-title">
+            On this page
+          </Text>
+          <Stack as="ol" gap="xs" className="post-toc-list">
+            {items.map((heading) => (
+              <li class={`post-toc-item post-toc-item--depth-${heading.depth}`}>
+                <Link href={`#${heading.slug}`} size="sm" className="post-toc-link">
+                  {heading.text}
+                </Link>
+              </li>
+            ))}
+          </Stack>
+        </Stack>
+      </Card>
     </nav>
   )
 }

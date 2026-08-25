@@ -1,4 +1,5 @@
 ---
+import { Button, Inline, Link, Text } from '@capper-ui/react';
 import { SITE } from '../site.config';
 
 interface Props {
@@ -12,26 +13,32 @@ const encodedTitle = encodeURIComponent(title);
 ---
 
 <div class="post-share" aria-label="Share this post">
-  <p class="post-share-label">Share</p>
-  <div class="post-share-actions">
-    <button type="button" class="post-share-btn" data-copy-url={url}>Copy link</button>
-    <a
-      class="post-share-btn"
+  <Text as="p" size="xs" weight="bold" className="post-share-label">
+    Share
+  </Text>
+  <Inline gap="sm" wrap className="post-share-actions">
+    <Button type="button" variant="ghost" size="sm" className="post-share-btn" data-copy-url={url}>
+      Copy link
+    </Button>
+    <Link
+      className="post-share-btn"
       href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
       rel="noopener noreferrer"
       target="_blank"
+      size="sm"
     >
       X
-    </a>
-    <a
-      class="post-share-btn"
+    </Link>
+    <Link
+      className="post-share-btn"
       href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
       rel="noopener noreferrer"
       target="_blank"
+      size="sm"
     >
       LinkedIn
-    </a>
-  </div>
+    </Link>
+  </Inline>
 </div>
 
 <script>
