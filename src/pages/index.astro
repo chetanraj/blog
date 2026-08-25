@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Badge, Link, Stack, Text } from '@capper-ui/react';
+import { Badge, Text } from '@capper-ui/react';
 import { getCollection } from 'astro:content';
 import { SITE } from '../site.config';
+import { gradientStyle, harshGradientFor } from '../utils/gradients';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
@@ -10,8 +11,6 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 const posts = (await getCollection('posts'))
   .filter((post) => post.data.published !== false)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-
-const [latestPost, ...otherPosts] = posts;
 ---
 
 <BaseLayout
@@ -19,82 +18,117 @@ const [latestPost, ...otherPosts] = posts;
   description={SITE.description}
   path="/"
 >
-  <Text as="h2" size="3xl" weight="regular" className="index-section-title">
-    Latest post
-  </Text>
+  <section
+    class="index-board"
+    data-index-view="tiles"
+    data-index-cols="2"
+    aria-label="Blog posts"
+  >
+    <div class="index-board-toolbar">
+      <Text as="h2" size="3xl" weight="regular" className="index-section-title">
+        Posts
+      </Text>
 
-  {
-    latestPost &&
-      (() => {
-        const daysSince = Math.floor(
-          (Date.now() - latestPost.data.date.getTime()) / (1000 * 60 * 60 * 24)
-        );
-        const isNew = daysSince < 35;
-        return (
-          <Link href={`${base}posts/${latestPost.slug}/`} className="index-post-link">
-            <Stack gap="sm" className="index-post-preview">
-              <Text as="span" size="2xl" weight="regular" className="index-post-title">
-                {latestPost.data.title}
-              </Text>
-              <Text as="span" color="muted" className="index-post-description">
-                {latestPost.data.description}
-              </Text>
-              <Text as="span" size="sm" color="subtle" className="index-post-meta">
-                wrote on {latestPost.data.date.toISOString().slice(0, 10)}
-                {isNew ? (
-                  <span class="index-post-new">
-                    {' '}
-                    · <Badge variant="accent" size="sm">New</Badge>
-                  </span>
-                ) : (
-                  ''
-                )}
-              </Text>
-            </Stack>
-          </Link>
-        );
-      })()
-  }
+      <div class="index-board-controls">
+        <div class="index-control" role="group" aria-label="Post layout">
+          <span class="index-control-label">Layout</span>
+          <button type="button" class="index-chip" data-index-set-view="tiles" aria-pressed="true">
+            Tiles
+          </button>
+          <button type="button" class="index-chip" data-index-set-view="cards" aria-pressed="false">
+            Cards
+          </button>
+        </div>
+        <div class="index-control" role="group" aria-label="Grid density">
+          <span class="index-control-label">Grid</span>
+          <button type="button" class="index-chip" data-index-set-cols="2" aria-pressed="true">
+            2 × 2
+          </button>
+          <button type="button" class="index-chip" data-index-set-cols="3" aria-pressed="false">
+            3 × 3
+          </button>
+        </div>
+      </div>
+    </div>
 
-  <Text as="h2" size="3xl" weight="regular" className="index-section-title">
-    Other posts
-  </Text>
-
-  <Stack as="ul" gap="md" className="index-post-list">
-    {
-      otherPosts.map((post) =>
-        (() => {
+    <ul class="index-board-grid">
+      {
+        posts.map((post) => {
           const daysSince = Math.floor(
             (Date.now() - post.data.date.getTime()) / (1000 * 60 * 60 * 24)
           );
           const isNew = daysSince < 35;
+          const gradient = harshGradientFor(post.slug);
           return (
             <li>
-              <Link href={`${base}posts/${post.slug}/`} className="index-post-link">
-                <Stack gap="sm" className="index-post-preview">
-                  <Text as="span" size="2xl" weight="regular" className="index-post-title">
-                    {post.data.title}
-                  </Text>
-                  <Text as="span" color="muted" className="index-post-description">
-                    {post.data.description}
-                  </Text>
-                  <Text as="span" size="sm" color="subtle" className="index-post-meta">
+              <a
+                class="index-post-cell"
+                href={`${base}posts/${post.slug}/`}
+                style={gradientStyle(gradient)}
+              >
+                <span class="index-post-wash" aria-hidden="true"></span>
+                <span class="index-post-body">
+                  <span class="index-post-title">{post.data.title}</span>
+                  {post.data.description && (
+                    <span class="index-post-description">{post.data.description}</span>
+                  )}
+                  <span class="index-post-meta">
                     wrote on {post.data.date.toISOString().slice(0, 10)}
                     {isNew ? (
                       <span class="index-post-new">
                         {' '}
                         · <Badge variant="accent" size="sm">New</Badge>
                       </span>
-                    ) : (
-                      ''
-                    )}
-                  </Text>
-                </Stack>
-              </Link>
+                    ) : null}
+                  </span>
+                </span>
+              </a>
             </li>
           );
-        })()
-      )
-    }
-  </Stack>
+        })
+      }
+    </ul>
+  </section>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const board = document.querySelector('.index-board');
+    if (!board) return;
+
+    const VIEW_KEY = 'blog-index-view';
+    const COLS_KEY = 'blog-index-cols';
+
+    const apply = (view, cols) => {
+      const nextView = view === 'cards' ? 'cards' : 'tiles';
+      const nextCols = cols === '3' ? '3' : '2';
+      board.dataset.indexView = nextView;
+      board.dataset.indexCols = nextCols;
+      board.querySelectorAll('[data-index-set-view]').forEach((btn) => {
+        btn.setAttribute('aria-pressed', String(btn.getAttribute('data-index-set-view') === nextView));
+      });
+      board.querySelectorAll('[data-index-set-cols]').forEach((btn) => {
+        btn.setAttribute('aria-pressed', String(btn.getAttribute('data-index-set-cols') === nextCols));
+      });
+    };
+
+    apply(window.localStorage.getItem(VIEW_KEY), window.localStorage.getItem(COLS_KEY));
+
+    board.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const viewBtn = target.closest('[data-index-set-view]');
+      const colsBtn = target.closest('[data-index-set-cols]');
+      if (viewBtn) {
+        const view = viewBtn.getAttribute('data-index-set-view');
+        window.localStorage.setItem(VIEW_KEY, view || 'tiles');
+        apply(view, board.dataset.indexCols);
+      }
+      if (colsBtn) {
+        const cols = colsBtn.getAttribute('data-index-set-cols');
+        window.localStorage.setItem(COLS_KEY, cols || '2');
+        apply(board.dataset.indexView, cols);
+      }
+    });
+  })();
+</script>
