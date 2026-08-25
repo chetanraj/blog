@@ -1,24 +1,24 @@
-export type HarshGradient = {
+export type PostGradient = {
   a: string;
   b: string;
   ink: string;
   angle: number;
 };
 
-/** High-chroma pairs with little mid-blend. One pair per post, from slug. */
-const PALETTE: Omit<HarshGradient, 'angle'>[] = [
-  { a: '#f7df1e', b: '#111111', ink: '#111111' },
-  { a: '#ff2d95', b: '#00f0ff', ink: '#111111' },
-  { a: '#ff4d00', b: '#5b00ff', ink: '#ffffff' },
-  { a: '#00ff9d', b: '#1a0033', ink: '#ffffff' },
-  { a: '#ffe600', b: '#ff006e', ink: '#111111' },
-  { a: '#00d4ff', b: '#0011ff', ink: '#ffffff' },
-  { a: '#c8ff00', b: '#ff3d00', ink: '#111111' },
-  { a: '#ffffff', b: '#ff00aa', ink: '#111111' },
-  { a: '#7cfc00', b: '#8b00ff', ink: '#111111' },
-  { a: '#ffd500', b: '#0033ff', ink: '#111111' },
-  { a: '#ff0066', b: '#111111', ink: '#ffffff' },
-  { a: '#00ffcc', b: '#ff4d00', ink: '#111111' },
+/** Soft tints of the blog header blue (#0f4c81 / #dfebf6). */
+const PALETTE: Omit<PostGradient, 'angle'>[] = [
+  { a: '#0f4c81', b: '#7eafd0', ink: '#ffffff' },
+  { a: '#dfebf6', b: '#0f4c81', ink: '#0f4c81' },
+  { a: '#163e66', b: '#9bc4dc', ink: '#ffffff' },
+  { a: '#4a8ab8', b: '#0f4c81', ink: '#ffffff' },
+  { a: '#c5dcec', b: '#1e5f96', ink: '#0f4c81' },
+  { a: '#2d6a9f', b: '#e8f2f8', ink: '#ffffff' },
+  { a: '#5a9bc4', b: '#0f4c81', ink: '#ffffff' },
+  { a: '#e8f2f8', b: '#4a8ab8', ink: '#0f4c81' },
+  { a: '#0f4c81', b: '#dfebf6', ink: '#ffffff' },
+  { a: '#9bc4dc', b: '#163e66', ink: '#0f4c81' },
+  { a: '#1e5f96', b: '#b8d4e8', ink: '#ffffff' },
+  { a: '#7eafd0', b: '#163e66', ink: '#0f4c81' },
 ];
 
 function hashSlug(slug: string): number {
@@ -29,14 +29,14 @@ function hashSlug(slug: string): number {
   return h;
 }
 
-export function harshGradientFor(slug: string): HarshGradient {
+export function harshGradientFor(slug: string): PostGradient {
   const h = hashSlug(slug);
   const base = PALETTE[h % PALETTE.length];
-  const angle = 18 + (h % 7) * 18;
+  const angle = 150 + (h % 5) * 8;
   return { ...base, angle };
 }
 
-export function gradientStyle(gradient: HarshGradient): string {
+export function gradientStyle(gradient: PostGradient): string {
   return [
     `--g-a:${gradient.a}`,
     `--g-b:${gradient.b}`,

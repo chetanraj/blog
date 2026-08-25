@@ -502,10 +502,8 @@ header .light {
   inset: 0;
   z-index: 0;
   background: linear-gradient(
-    var(--g-angle, 36deg),
+    var(--g-angle, 160deg),
     var(--g-a) 0%,
-    var(--g-a) 42%,
-    var(--g-b) 58%,
     var(--g-b) 100%
   );
 }
