@@ -506,29 +506,6 @@ html[data-trend='glassmorphism'] body::before {
     );
 }
 
-/* ─── TAILWIND COLOR TOKEN OVERRIDES ───────────────────────────── */
-/*
-  These override your Tailwind blog-* custom colors via CSS vars.
-  Add this to your tailwind.config.* :
-
-  theme: {
-    extend: {
-      colors: {
-        blog: {
-          bg:        'var(--color-bg)',
-          header:    'var(--color-header)',
-          primary:   'var(--color-primary)',
-          secondary: 'var(--color-secondary)',
-          lightgray: 'var(--color-lightgray)',
-          accent:    'var(--color-accent)',
-        }
-      }
-    }
-  }
-
-  Then use bg-blog-bg, text-blog-primary etc. in your templates.
-*/
-
 /* ─── DESIGN ERA SWATCH PICKER ─────────────────────────────────── */
 .trend-toggle {
   position: relative;

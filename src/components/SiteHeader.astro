@@ -1,5 +1,7 @@
 ---
 const { title } = Astro.props;
+import * as stylex from '@stylexjs/stylex';
+import { headerStyles } from '../styles/header.stylex';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
@@ -8,22 +10,20 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
 ---
 
-<header class="site-header bg-blog-header h-64 relative">
-  <div
-    class="flex flex-col items-center h-64 hero-text justify-center text-center text-blog-bg relative z-10"
-  >
-    <div class="text-2xl w-3/4 transition-colors duration-500">
+<header class:list={['site-header', stylex.props(headerStyles.root).className]}>
+  <div {...stylex.props(headerStyles.hero)}>
+    <div {...stylex.props(headerStyles.title)}>
       {headerTitle}
     </div>
     {
       !title && (
-        <div class="text-lg font-light md:w-2/5 lg:w-3/5 xl:w-2/5 mt-4 mx-6 lg:mx-0 md:mx-0 transition-colors duration-500">
+        <div {...stylex.props(headerStyles.tagline)}>
           Web Designer & Developer,{' '}
           <a
             target="_blank"
             rel="noopener noreferrer"
             href="https://www.instagram.com/javascriptessentials/"
-            class="underline"
+            {...stylex.props(headerStyles.taglineLink)}
           >
             Tech Instagrammer
           </a>
@@ -33,17 +33,17 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     }
   </div>
 
-  <span class="text-blog-bg home">
+  <span {...stylex.props(headerStyles.homeLink)}>
     {
       !title ? (
         <a
-          class="pointer transition-colors duration-500"
+          {...stylex.props(headerStyles.homeAnchor)}
           href="https://chetanraj.dev"
         >
           HOME
         </a>
       ) : (
-        <a class="pointer transition-colors duration-500" href={base}>
+        <a {...stylex.props(headerStyles.homeAnchor)} href={base}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -63,8 +63,8 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     }
   </span>
 
-  <div id="themeToggle" class="flex light cursor-pointer z-20 absolute">
-    <a class="mx-4 hidden md:block" href={`${base}rss.xml`} title="RSS">
+  <div id="themeToggle" class:list={['light', stylex.props(headerStyles.themeToggle).className]}>
+    <a {...stylex.props(headerStyles.rssLink)} href={`${base}rss.xml`} title="RSS">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -82,7 +82,7 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
         <circle cx="5" cy="19" r="1"></circle>
       </svg>
     </a>
-    <button class="mx-4" title="theme" type="button" id="themeButton">
+    <button {...stylex.props(headerStyles.themeAction)} title="theme" type="button" id="themeButton">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -103,7 +103,7 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     </button>
   </div>
 
-  <div class="bg"></div>
+  <div {...stylex.props(headerStyles.background)}></div>
 </header>
 
 <script is:inline>

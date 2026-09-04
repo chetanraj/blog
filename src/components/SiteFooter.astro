@@ -1,28 +1,29 @@
-<footer class="bg-blog-header">
-  <div class="p-6 sm:flex justify-between items-center">
-    <div class="left pt-6">
+---
+import * as stylex from '@stylexjs/stylex';
+import { footerStyles } from '../styles/footer.stylex';
+---
+
+<footer {...stylex.props(footerStyles.root)}>
+  <div {...stylex.props(footerStyles.inner)}>
+    <div class:list={['left', stylex.props(footerStyles.left).className]}>
       <a
-        class="text-2xl text-blog-bg pointer transition-colors duration-500"
+        {...stylex.props(footerStyles.nameLink)}
         href="https://chetanraj.in"
       >
         Chetan Raj
       </a>
-      <div
-        class="opacity-50 text-blog-bg pointer transition-colors duration-500 pt-16 hidden sm:block md:block lg:block xl:block"
-      >
+      <div {...stylex.props(footerStyles.copyrightDesktop)}>
         &copy; Chetan Raj. All Rights Reserved.
       </div>
     </div>
-    <div class="right pt-10 sm:pt-0 flex">
-      <div class="pr-20 social">
-        <h4
-          class="opacity-50 text-blog-bg pointer transition-colors duration-500"
-        >
+    <div class:list={['right', stylex.props(footerStyles.right).className]}>
+      <div class:list={['social', stylex.props(footerStyles.social).className]}>
+        <h4 {...stylex.props(footerStyles.sectionHeading)}>
           Social
         </h4>
-        <div class="grid grid-cols-1 pt-4 w-full">
+        <div {...stylex.props(footerStyles.linkGrid)}>
           <a
-            class="text-blog-bg pointer transition-colors duration-500"
+            {...stylex.props(footerStyles.socialLink)}
             href="https://twitter.com/chetan_raj"
           >
             <svg
@@ -45,7 +46,7 @@
             >
           </a>
           <a
-            class="text-blog-bg pointer transition-colors duration-500 pt-2"
+            {...stylex.props(footerStyles.socialLinkSpaced)}
             href="https://github.com/chetanraj"
           >
             <svg
@@ -64,7 +65,7 @@
             >
           </a>
           <a
-            class="text-blog-bg pointer transition-colors duration-500 pt-2"
+            {...stylex.props(footerStyles.socialLinkSpaced)}
             href="https://www.instagram.com/thecjstream/"
           >
             <svg
@@ -85,25 +86,21 @@
         </div>
       </div>
       <div class="links">
-        <h4
-          class="opacity-50 text-blog-bg pointer transition-colors duration-500"
-        >
+        <h4 {...stylex.props(footerStyles.sectionHeading)}>
           Links
         </h4>
-        <div class="grid grid-cols-1 pt-4 w-full">
+        <div {...stylex.props(footerStyles.linkGrid)}>
           <a
-            class="text-blog-bg pointer transition-colors duration-500 pt-2"
+            {...stylex.props(footerStyles.linkItem)}
             href="https://www.instagram.com/javascriptessentials/"
           >
-            <span class="mr-2" role="img" aria-label="globe">🌏</span>
+            <span {...stylex.props(footerStyles.linkEmoji)} role="img" aria-label="globe">🌏</span>
             JavaScript Essentials
           </a>
         </div>
       </div>
     </div>
-    <div
-      class="opacity-50 text-blog-bg pointer transition-colors duration-500 pt-16 block sm:hidden md:hidden lg:hidden xl:hidden"
-    >
+    <div {...stylex.props(footerStyles.copyrightMobile)}>
       &copy; Chetan Raj. All Rights Reserved.
     </div>
   </div>

@@ -1,9 +1,5 @@
 @import './trends.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* ─── BLOG COLOR PALETTE ───────────────────────────────────────── */
 
 :root {
@@ -42,37 +38,14 @@ html[data-color-mode='dark'] {
   color: var(--bg-color);
 }
 
-@layer base {
-  body {
-    @apply font-sans;
-    background-color: var(--bg-color);
-    transition: color 0.6s, background-color 0.6s;
-  }
-
-  header {
-    transition: color 0.6s, background-color 0.6s;
-  }
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-color);
+  transition: color 0.6s, background-color 0.6s;
 }
 
-.bg {
-  background-color: rgba(15, 76, 129, 60%);
-  background-image: url('../images/bg.jpg');
-  background-position: 0 30%;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  opacity: 0.29;
-}
-
-header .dark,
-header .light {
-  top: 1em;
-  right: 1em;
+header {
+  transition: color 0.6s, background-color 0.6s;
 }
 
 .site-header,
@@ -82,13 +55,6 @@ header .light {
 
 .theme {
   stroke: var(--header-text);
-}
-
-.home {
-  position: absolute;
-  top: 1em;
-  left: 1em;
-  z-index: 10;
 }
 
 .blog-post-container h1,
@@ -216,10 +182,6 @@ header .light {
   background: var(--yellow);
   color: var(--primary-text);
   animation: zoom 1s infinite;
-}
-
-.h-sc {
-  min-height: calc(100vh - 300px);
 }
 
 @keyframes zoom {

@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import * as stylex from '@stylexjs/stylex';
+import { postStyles } from '../../styles/post.stylex';
 
 export const prerender = true;
 
@@ -19,12 +21,10 @@ const { Content, remarkPluginFrontmatter } = await render(post);
 <BaseLayout title={post.data.title} headerTitle={post.data.title}>
   <article class="blog-post-container">
     <div class="blog-post-content">
-      <div
-        class="mx-6 mt-4 mb-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-blog-secondary"
-      >
+      <div {...stylex.props(postStyles.metaRow)}>
         <time
           datetime={post.data.date.toISOString()}
-          class="flex items-center justify-center"
+          {...stylex.props(postStyles.metaItem)}
         >
           <svg
             viewBox="0 0 24 24"
@@ -35,7 +35,7 @@ const { Content, remarkPluginFrontmatter } = await render(post);
             fill="none"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="mr-1"
+            {...stylex.props(postStyles.metaIcon)}
             ><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line
               x1="16"
               y1="2"
@@ -49,7 +49,7 @@ const { Content, remarkPluginFrontmatter } = await render(post);
           {post.data.date.toISOString().slice(0, 10)}
         </time>
 
-        <div class="flex items-center justify-center">
+        <div {...stylex.props(postStyles.metaItem)}>
           <svg
             viewBox="0 0 24 24"
             width="24"
@@ -59,19 +59,19 @@ const { Content, remarkPluginFrontmatter } = await render(post);
             fill="none"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="mr-1"
+            {...stylex.props(postStyles.metaIcon)}
             ><circle cx="12" cy="12" r="10"></circle><polyline
               points="12 6 12 12 16 14"></polyline></svg
           >
           {remarkPluginFrontmatter.minutesRead}
         </div>
 
-        <div class="flex items-center justify-center">
+        <div {...stylex.props(postStyles.metaItem)}>
           {
             post.data.tags && post.data.tags.length > 0 && (
-              <div class="flex gap-2 flex-wrap">
+              <div {...stylex.props(postStyles.tagList)}>
                 {post.data.tags.map((tag) => (
-                  <span class="text-xs bg-blog-header text-blog-bg px-2 py-1 rounded">
+                  <span {...stylex.props(postStyles.tag)}>
                     {tag}
                   </span>
                 ))}
@@ -81,7 +81,7 @@ const { Content, remarkPluginFrontmatter } = await render(post);
         </div>
       </div>
 
-      <div class="text-blog-primary">
+      <div {...stylex.props(postStyles.content)}>
         <Content />
       </div>
     </div>
