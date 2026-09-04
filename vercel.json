@@ -1,0 +1,27 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/blog/",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/blog",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/blog/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/blog/:path*/",
+      "destination": "/:path*/index.html"
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/:path*"
+    }
+  ]
+}
