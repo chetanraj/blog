@@ -5,6 +5,8 @@ title: '🤔 What is context path ?'
 description: 'The context path is the prefix of a URL path that is used to select the context(s) to which an incoming request is passed.'
 published: true
 tags: ['javascript 💛']
+toc: true
+tocDepth: 2
 ---
 
 The context path is the prefix of a URL path that is used to select the context(s) to which an incoming request is passed.

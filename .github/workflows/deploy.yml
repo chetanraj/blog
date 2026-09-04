@@ -1,0 +1,44 @@
+name: Deploy blog to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Deploys on main pushes (e.g. merged PRs) or manual runs by the repo owner.
+concurrency:
+  group: deploy-gh-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.actor == 'chetanraj') ||
+      (github.event_name == 'push' && contains(fromJSON('["chetanraj", "cursor[bot]"]'), github.actor))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          dotfiles: true

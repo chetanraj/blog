@@ -1,107 +1,86 @@
 ---
+import { BlogIcon } from './icons/BlogIcon';
+import { Github, Instagram, X } from '../icons';
+import { Link, Stack, Text } from '@capper-ui/react';
 import * as stylex from '@stylexjs/stylex';
 import { footerStyles } from '../styles/footer.stylex';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
 ---
 
-<footer {...stylex.props(footerStyles.root)}>
-  <div {...stylex.props(footerStyles.inner)}>
+<footer class:list={['site-footer', 'site-chrome', stylex.props(footerStyles.root).className]}>
+  <div class:list={['site-footer-inner', stylex.props(footerStyles.inner).className]}>
     <div class:list={['left', stylex.props(footerStyles.left).className]}>
-      <a
-        {...stylex.props(footerStyles.nameLink)}
-        href="https://chetanraj.in"
+      <Link
+        href="https://chetanraj.dev"
+        className="site-footer-brand"
       >
         Chetan Raj
-      </a>
-      <div {...stylex.props(footerStyles.copyrightDesktop)}>
+      </Link>
+      <Text as="div" size="sm" className="site-footer-copy site-footer-copy--desktop">
         &copy; Chetan Raj. All Rights Reserved.
-      </div>
+      </Text>
     </div>
     <div class:list={['right', stylex.props(footerStyles.right).className]}>
-      <div class:list={['social', stylex.props(footerStyles.social).className]}>
-        <h4 {...stylex.props(footerStyles.sectionHeading)}>
+      <Stack gap="sm" className={`social ${stylex.props(footerStyles.social).className ?? ''}`}>
+        <Text as="h4" size="sm" className="site-footer-heading">
           Social
-        </h4>
-        <div {...stylex.props(footerStyles.linkGrid)}>
+        </Text>
+        <Stack gap="sm" className="site-footer-social-links">
           <a
-            {...stylex.props(footerStyles.socialLink)}
+            class="site-footer-icon-link"
             href="https://twitter.com/chetan_raj"
+            aria-label="X (Twitter)"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              data-abp-filters-channel="c255be2e-a9f9-4db8-8acb-a5c77df7b0c2"
-            >
-              <polygon class="st0" points="21.3,21.1 9.9,2.9 2.7,2.9 14.1,21.1 "
-              ></polygon>
-              <line class="st0" x1="2.7" y1="21.1" x2="9.9" y2="14.5"></line>
-              <line class="st0" x1="14.1" y1="9.5" x2="21.3" y2="2.9"
-              ></line></svg
-            >
+            <BlogIcon icon={X} />
           </a>
           <a
-            {...stylex.props(footerStyles.socialLinkSpaced)}
+            class="site-footer-icon-link"
             href="https://github.com/chetanraj"
+            aria-label="GitHub"
           >
-            <svg
-              viewBox="0 0 24 24"
-              width="24"
-              height="24"
-              stroke="currentColor"
-              stroke-width="2"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="css-i6dzq1"
-              ><path
-                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-              ></path></svg
-            >
+            <BlogIcon icon={Github} />
           </a>
           <a
-            {...stylex.props(footerStyles.socialLinkSpaced)}
+            class="site-footer-icon-link"
             href="https://www.instagram.com/thecjstream/"
+            aria-label="Instagram"
           >
-            <svg
-              viewBox="0 0 24 24"
-              width="24"
-              height="24"
-              stroke="currentColor"
-              stroke-width="2"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="css-i6dzq1"
-              ><rect x="2" y="2" width="20" height="20" rx="5" ry="5"
-              ></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
-              ></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg
-            >
+            <BlogIcon icon={Instagram} />
           </a>
-        </div>
-      </div>
-      <div class="links">
-        <h4 {...stylex.props(footerStyles.sectionHeading)}>
+        </Stack>
+      </Stack>
+      <Stack gap="sm" className="links">
+        <Text as="h4" size="sm" className="site-footer-heading">
           Links
-        </h4>
-        <div {...stylex.props(footerStyles.linkGrid)}>
-          <a
-            {...stylex.props(footerStyles.linkItem)}
+        </Text>
+        <Stack gap="sm" className="site-footer-nav">
+          <Link href={`${base}about/`} className="site-footer-link">
+            About
+          </Link>
+          <Link href={`${base}tags/`} className="site-footer-link">
+            Tags
+          </Link>
+          <Link href={`${base}search/`} className="site-footer-link">
+            Search
+          </Link>
+          <Link href={`${base}rss.xml`} className="site-footer-link">
+            RSS
+          </Link>
+          <Link
             href="https://www.instagram.com/javascriptessentials/"
+            className="site-footer-link"
           >
             <span {...stylex.props(footerStyles.linkEmoji)} role="img" aria-label="globe">🌏</span>
             JavaScript Essentials
-          </a>
-        </div>
-      </div>
+          </Link>
+        </Stack>
+      </Stack>
     </div>
-    <div {...stylex.props(footerStyles.copyrightMobile)}>
+    <Text as="div" size="sm" className="site-footer-copy site-footer-copy--mobile">
       &copy; Chetan Raj. All Rights Reserved.
-    </div>
+    </Text>
   </div>
 </footer>

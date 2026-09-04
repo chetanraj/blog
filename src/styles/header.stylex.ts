@@ -4,11 +4,9 @@ import { colors } from './tokens.stylex';
 export const headerStyles = stylex.create({
   root: {
     position: 'relative',
+    width: '100%',
     height: '16rem',
     backgroundColor: colors.headerBg,
-    color: colors.headerText,
-    transitionProperty: 'color, background-color',
-    transitionDuration: '500ms',
   },
   hero: {
     position: 'relative',
@@ -22,7 +20,8 @@ export const headerStyles = stylex.create({
     color: colors.bg,
   },
   title: {
-    width: '75%',
+    maxWidth: '48rem',
+    paddingInline: '1rem',
     fontSize: '1.5rem',
     lineHeight: 1.25,
     transitionProperty: 'color',
@@ -50,10 +49,6 @@ export const headerStyles = stylex.create({
     textDecoration: 'underline',
   },
   homeLink: {
-    position: 'absolute',
-    top: '1em',
-    left: '1em',
-    zIndex: 10,
     color: colors.bg,
   },
   homeAnchor: {
@@ -78,22 +73,5 @@ export const headerStyles = stylex.create({
     '@media (min-width: 768px)': {
       display: 'block',
     },
-  },
-  themeIcon: {
-    stroke: colors.headerText,
-  },
-  background: {
-    backgroundColor: 'rgba(15, 76, 129, 60%)',
-    backgroundImage: "url('../images/bg.jpg')",
-    backgroundPosition: '0 30%',
-    backgroundRepeat: 'no-repeat',
-    width: '100%',
-    height: '100%',
-    backgroundSize: 'cover',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    zIndex: 0,
-    opacity: 0.29,
   },
 });

@@ -1,11 +1,13 @@
 ---
 path: '/compose-in-styled-system'
 date: '2019-08-01'
-update: '2020-04-30'
+updated: '2020-04-30'
 title: '🧐 What is compose-in-styled-system ?'
 description: 'The compose utility in the styled-system is used to combine multiple style functions together into one'
 published: true
 tags: ['styled-system']
+toc: true
+tocDepth: 2
 ---
 
 ### As per the [official document](https://styled-system.com/api/#compose) of styled system

@@ -1,0 +1,47 @@
+---
+import { Card, Link, Stack, Text } from '@capper-ui/react';
+
+export interface TocHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: TocHeading[];
+  maxDepth?: number;
+  variant?: 'inline' | 'sticky';
+}
+
+const { headings, maxDepth = 2, variant = 'inline' } = Astro.props;
+
+const items = headings.filter(
+  (heading) => heading.depth >= 2 && heading.depth <= maxDepth
+);
+---
+
+{
+  items.length > 0 && (
+    <nav
+      class:list={['post-toc', variant === 'sticky' && 'post-toc--sticky']}
+      aria-label="Table of contents"
+    >
+      <Card padding="md" className="post-toc-card">
+        <Stack gap="sm">
+          <Text as="p" size="xs" weight="bold" className="post-toc-title">
+            On this page
+          </Text>
+          <Stack as="ol" gap="xs" className="post-toc-list">
+            {items.map((heading) => (
+              <li class={`post-toc-item post-toc-item--depth-${heading.depth}`}>
+                <Link href={`#${heading.slug}`} size="sm" className="post-toc-link">
+                  {heading.text}
+                </Link>
+              </li>
+            ))}
+          </Stack>
+        </Stack>
+      </Card>
+    </nav>
+  )
+}

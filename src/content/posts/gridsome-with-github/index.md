@@ -5,6 +5,8 @@ title: '💡 How Gridsome works with GitHub Pages'
 description: 'Gridsome is Vue flavoured and a powerful static site generator. It’s the Gatsby alternative for...'
 published: true
 tags: ['gridsome', 'static-site']
+toc: true
+tocDepth: 2
 ---
 
 [Gridsome](https://gridsome.org/) is Vue flavoured and a powerful static site generator. It’s the Gatsby alternative for Vue. It is data-driven meaning it uses a GraphQL layer to get data and dynamically update pages from it.

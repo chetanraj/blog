@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import * as stylex from '@stylexjs/stylex';
+import { utilityStyles } from '../styles/utilities.stylex';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<BaseLayout
+  title="Search | Blog by Chetan Raj"
+  headerTitle="Search"
+  description="Search articles on Blog by Chetan Raj."
+  path="/search/"
+>
+  <div class="blog-post-container">
+    <div class="blog-post-content static-page">
+      <p {...stylex.props(utilityStyles.textSecondary)}>Search posts by title or content.</p>
+      <div id="search" class="pagefind-search"></div>
+      <p {...stylex.props(utilityStyles.searchBack)}>
+        <a href={base}>← Back to all posts</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<link href={`${base}pagefind/pagefind-ui.css`} rel="stylesheet" />
+<script src={`${base}pagefind/pagefind-ui.js`} is:inline></script>
+<script is:inline define:vars={{ base }}>
+  function initPagefind() {
+    if (typeof PagefindUI === 'undefined') return;
+    new PagefindUI({
+      element: '#search',
+      showSubResults: true,
+      baseUrl: base,
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPagefind);
+  } else {
+    initPagefind();
+  }
+</script>

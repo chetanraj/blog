@@ -1,0 +1,48 @@
+<div class="scroll-progress" aria-hidden="true">
+  <svg class="scroll-progress-svg" viewBox="0 0 36 36">
+    <circle class="scroll-progress-track" cx="18" cy="18" r="15.5" />
+    <circle class="scroll-progress-bar" cx="18" cy="18" r="15.5" />
+  </svg>
+</div>
+
+<script>
+  const root = document.querySelector('.scroll-progress');
+  const bar = document.querySelector<SVGCircleElement>('.scroll-progress-bar');
+  const footer = document.querySelector('.site-footer');
+
+  if (root && bar) {
+    const radius = 15.5;
+    const circumference = 2 * Math.PI * radius;
+
+    bar.style.strokeDasharray = `${circumference}`;
+    bar.style.strokeDashoffset = `${circumference}`;
+
+    const overlapsFooter = () => {
+      if (!footer) return false;
+
+      const footerRect = footer.getBoundingClientRect();
+      const circleRect = root.getBoundingClientRect();
+      const circleCenterY = circleRect.top + circleRect.height / 2;
+
+      return circleCenterY >= footerRect.top;
+    };
+
+    const update = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+
+      if (scrollable <= 0) {
+        root.classList.remove('is-visible', 'is-over-footer');
+        return;
+      }
+
+      const progress = window.scrollY / scrollable;
+      bar.style.strokeDashoffset = `${circumference * (1 - progress)}`;
+      root.classList.toggle('is-visible', window.scrollY > 24);
+      root.classList.toggle('is-over-footer', overlapsFooter());
+    };
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+  }
+</script>

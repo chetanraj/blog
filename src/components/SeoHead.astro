@@ -1,0 +1,64 @@
+---
+import { SITE, absoluteUrl } from '../site.config';
+
+interface Props {
+  title: string;
+  description?: string;
+  path?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+}
+
+const {
+  title,
+  description = SITE.description,
+  path = '/',
+  image = absoluteUrl('/favicons/icon-512x512.png'),
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+} = Astro.props;
+
+const canonical = absoluteUrl(path);
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<link rel="alternate" type="application/rss+xml" title={SITE.title} href={absoluteUrl('/rss.xml')} />
+
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:type" content={type} />
+<meta property="og:image" content={image} />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content={`@${SITE.author.twitter}`} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+
+<meta name="author" content={SITE.author.name} />
+<link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+<link rel="icon" href={`${base}favicons/favicon-32.png`} sizes="32x32" type="image/png" />
+<link rel="icon" href={`${base}favicons/favicon-16.png`} sizes="16x16" type="image/png" />
+<link rel="apple-touch-icon" href={`${base}favicons/favicon-180.png`} sizes="180x180" />
+
+{
+  SITE.plausibleDomain && (
+    <script
+      defer
+      data-domain={SITE.plausibleDomain}
+      src="https://plausible.io/js/script.js"
+    />
+  )
+}
