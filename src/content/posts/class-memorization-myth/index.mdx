@@ -1,0 +1,165 @@
+---
+path: "/class-memorization-myth"
+date: "2026-09-05"
+title: "The Class-Memorization Myth: Why Tailwind's Real Problem Isn't Tailwind"
+description: "Tailwind's hard part is structure, not memorizing class names. How I extract patterns and when I write CSS instead."
+published: true
+tags: ['Tailwind', 'CSS', 'React', 'frontend']
+toc: true
+tocDepth: 2
+---
+
+Every few months a new "why I quit Tailwind" post does the rounds. Class names blur. HTML and CSS get tangled. You open the docs again because you cannot remember if you wanted `gap-2` or `gap-4`.
+
+I like Tailwind. I have shipped a lot of UI with it. I also read the quit posts. Some of them are fair. The memorization one still aims at the wrong target.
+
+> **My rule.** Tailwind is a system, not a vocabulary quiz. If I am typing the same cluster a third time, I name it. If I am fighting the framework, I write CSS.
+
+## What those posts get right
+
+The pain is not "I forgot `gap-4`." The pain is a line of classes you have to read sideways.
+
+A pull request full of `md:px-4 lg:px-6 xl:text-lg` is hard to review. Hover, focus, and "this is the current page" each add another prefix. You cannot write one `:is(:hover, :focus-visible, [aria-current="page"])` block. You copy the same tokens over and over.
+
+Tailwind taught me a reset, a color palette, a type scale. Then it became a ceiling. I hit that when I wanted layout CSS that utilities do not express well. Outer layout owning spacing. A grid that folds with `auto-fit` instead of a pile of `md:` and `lg:` prefixes. `grid-template-areas`. I did not forget a class. The tool was the wrong shape for the job.
+
+Mixing a leftover `globals.css` with Tailwind in the same feature is miserable. Two sources of truth. I have done that. Never again.
+
+None of that means Tailwind has too many class names to memorize.
+
+## The mess I actually hit
+
+A settings screen. Choice rows for plan, billing cycle, reminder time. They looked almost the same.
+
+```javascript
+<button className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-900 hover:border-slate-300">
+  Monthly
+</button>
+
+<button className="flex w-full items-center justify-between rounded-xl border border-indigo-500 bg-indigo-50 px-4 py-3 text-left text-sm font-medium text-indigo-900">
+  Yearly
+</button>
+
+<button className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-400">
+  Off
+</button>
+```
+
+Three months in, my eyes glaze over. I start second-guessing spacing I have used a hundred times. That is when people write the blog post.
+
+I am hand-typing the same string, in slightly different combinations, with no name attached to it. That is not a Tailwind problem. That is what happens to any styling approach when I never build the layer above it.
+
+Vanilla CSS gets the same mess if I copy-paste the same properties into five selectors instead of writing one `.choice-row`. Nobody would say "CSS properties are too hard to remember." They would say "you should have made a component."
+
+The utilities did not create the discipline problem. They made it visible faster. There is no stylesheet hiding it from me.
+
+## What I extract
+
+Same instinct as any React UI. Pull the pattern up. Give the root a name I can find in DevTools later.
+
+```javascript
+const styles = {
+  idle: "choice-row border-slate-200 bg-white text-slate-900",
+  selected: "choice-row border-indigo-500 bg-indigo-50 text-indigo-900",
+  disabled: "choice-row border-slate-200 bg-white text-slate-400",
+};
+
+function ChoiceRow({ state = "idle", children, ...props }) {
+  return (
+    <button
+      className={`flex w-full items-center justify-between rounded-xl border px-4 py-3 text-left text-sm font-medium ${styles[state]}`}
+      disabled={state === "disabled"}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+Shared hover and focus go in CSS, once. Utility prefixes make that part noisy.
+
+```css
+.choice-row:is(:hover, :focus-visible, [aria-pressed="true"]) {
+  border-color: var(--brand-500);
+}
+```
+
+Then the screen reads like this.
+
+```javascript
+<ChoiceRow>Monthly</ChoiceRow>
+<ChoiceRow state="selected">Yearly</ChoiceRow>
+<ChoiceRow state="disabled">Off</ChoiceRow>
+```
+
+I am not remembering seventeen tokens. I am remembering `<ChoiceRow state="selected">`. In DevTools I search for `choice-row`, not a soup of `px-4`.
+
+Sometimes I stay closer to CSS with `@apply`. I treat that as a smell. If the only reason I opened a CSS file is to dump utilities into `@apply`, I probably wanted a component. If I opened it because I needed `:is()`, grid, or spacing owned by a parent, that is a better reason.
+
+## The cost you notice vs the one you don't
+
+When I write `text-sm font-medium text-slate-700` in JSX, I see the clutter immediately. Easy to point at and call bad.
+
+When I write `.card-label` in a stylesheet, the cost moves. Which of six CSS files does it live in? Does it inherit from a parent? Is there a media query three hundred lines down that overrides it on tablet? Did someone add `!important` six months ago that is now fighting it?
+
+I do not feel that while writing. I feel it at 11pm when a button is the wrong color in production and I am grepping four files to find out why.
+
+Tailwind makes me pay today. Stylesheets often make me pay later, with interest. Fair to dislike that trade. Some people would rather pay a little friction every day than get surprised at 11pm. That is not the same claim as "Tailwind does not scale." Cascade debt scales worse. It is just quieter.
+
+Quitting can still be the right call. I want CSS that Tailwind will not express. I am tired of a build step for a tiny site. I have two styling systems in one repo. Those are structure decisions. They are not memory decisions.
+
+If I leave, I still keep a reset I trust, a short color list, a type scale with names, components that do not override each other. Those were the point. The class names were just how they showed up in HTML.
+
+## What I keep in the config
+
+The teams I have seen get real mileage did not memorize more classes. They treated Tailwind as the bottom layer, not the whole system.
+
+Component boundaries do the job `.btn` used to do. I write the utility soup once, inside the component. Everyone else uses the component.
+
+Design tokens live in one place, not in my head.
+
+```javascript
+// tailwind.config.js
+export default {
+  theme: {
+    extend: {
+      colors: {
+        ink: {
+          700: "#334155",
+          900: "#0f172a",
+        },
+        brand: {
+          50: "#eef2ff",
+          500: "#6366f1",
+        },
+      },
+      spacing: {
+        18: "4.5rem",
+      },
+    },
+  },
+};
+```
+
+Spacing, color, and type get decided once. Layout components own gaps between children. I do not sprinkle `mt-4` on every child until it "looks right."
+
+## Getting started
+
+If a Tailwind file of yours currently feels like alphabet soup:
+
+1. Pick one repeated cluster, a row or a chip or a card header. Extract that first. Put a real class on the root so DevTools can find it.
+2. Put colors and spacing you keep retyping into the config.
+3. First time, write it. Second time, notice it. Third time, name it.
+4. When a `md:` stack is doing layout, ask if CSS grid should own that instead.
+5. Do not run two systems in one feature. Tailwind or CSS for that slice, not both.
+
+This is the same instinct as componentizing React UI, long before Tailwind existed. Tailwind did not remove the need for architecture. It moved the moment I have to confront the lack of it a little earlier.
+
+## The takeaway
+
+People writing "Tailwind gets hard once you have to remember all the classes" are not wrong about the pain. They are wrong about where it comes from.
+
+The hard part is structure. Naming the row. Owning spacing in the layout. Knowing when a utility is enough and when CSS should take the job.
+
+That step exists whether I stay with Tailwind or leave. Skipping it is what made the classes feel like a myth I had to memorize.
