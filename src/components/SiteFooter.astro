@@ -1,84 +1,39 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
 import { Github, Instagram, X } from '../icons';
-import { Link, Stack, Text } from '@capper-ui/react';
-
-const base = import.meta.env.BASE_URL.endsWith('/')
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <footer class="site-footer site-chrome bg-blog-header w-full">
-  <div class="site-footer-inner p-6 sm:flex justify-between items-center">
-    <div class="left pt-6">
-      <Link
-        href="https://chetanraj.dev"
-        className="site-footer-brand"
-      >
+  <div class="site-footer-inner">
+    <p class="site-footer-copy">
+      &copy; 2016-present{' '}
+      <a href="https://chetanraj.dev" class="site-footer-brand-inline">
         Chetan Raj
-      </Link>
-      <Text as="div" size="sm" className="site-footer-copy site-footer-copy--desktop">
-        &copy; Chetan Raj. All Rights Reserved.
-      </Text>
+      </a>
+      . All Rights Reserved.
+    </p>
+    <div class="site-footer-social-links">
+      <a
+        class="site-footer-icon-link"
+        href="https://x.com/chetan_raj"
+        aria-label="X"
+      >
+        <BlogIcon icon={X} />
+      </a>
+      <a
+        class="site-footer-icon-link"
+        href="https://github.com/chetanraj"
+        aria-label="GitHub"
+      >
+        <BlogIcon icon={Github} />
+      </a>
+      <a
+        class="site-footer-icon-link"
+        href="https://www.instagram.com/thecjstream/"
+        aria-label="Instagram"
+      >
+        <BlogIcon icon={Instagram} />
+      </a>
     </div>
-    <div class="right pt-10 sm:pt-0 flex">
-      <Stack gap="sm" className="pr-20 social">
-        <Text as="h4" size="sm" className="site-footer-heading">
-          Social
-        </Text>
-        <Stack gap="sm" className="site-footer-social-links">
-          <a
-            class="site-footer-icon-link"
-            href="https://twitter.com/chetan_raj"
-            aria-label="X (Twitter)"
-          >
-            <BlogIcon icon={X} />
-          </a>
-          <a
-            class="site-footer-icon-link"
-            href="https://github.com/chetanraj"
-            aria-label="GitHub"
-          >
-            <BlogIcon icon={Github} />
-          </a>
-          <a
-            class="site-footer-icon-link"
-            href="https://www.instagram.com/thecjstream/"
-            aria-label="Instagram"
-          >
-            <BlogIcon icon={Instagram} />
-          </a>
-        </Stack>
-      </Stack>
-      <Stack gap="sm" className="links">
-        <Text as="h4" size="sm" className="site-footer-heading">
-          Links
-        </Text>
-        <Stack gap="sm" className="site-footer-nav">
-          <Link href={`${base}about/`} className="site-footer-link">
-            About
-          </Link>
-          <Link href={`${base}tags/`} className="site-footer-link">
-            Tags
-          </Link>
-          <Link href={`${base}search/`} className="site-footer-link">
-            Search
-          </Link>
-          <Link href={`${base}rss.xml`} className="site-footer-link">
-            RSS
-          </Link>
-          <Link
-            href="https://www.instagram.com/javascriptessentials/"
-            className="site-footer-link"
-          >
-            <span class="mr-2" role="img" aria-label="globe">🌏</span>
-            JavaScript Essentials
-          </Link>
-        </Stack>
-      </Stack>
-    </div>
-    <Text as="div" size="sm" className="site-footer-copy site-footer-copy--mobile">
-      &copy; Chetan Raj. All Rights Reserved.
-    </Text>
   </div>
 </footer>

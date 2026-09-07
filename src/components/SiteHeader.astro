@@ -1,6 +1,6 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
-import { ArrowLeft, Monitor, Moon, Rss, Sun } from '../icons';
+import { ArrowLeft, Monitor, Moon, Rss, Search, Sun } from '../icons';
 
 const { title } = Astro.props;
 
@@ -53,11 +53,30 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     }
   </span>
 
-  <div id="themeToggle" class="flex light cursor-pointer z-20 absolute">
-    <a class="mx-4 hidden md:block" href={`${base}rss.xml`} title="RSS" aria-label="RSS feed">
+  <div id="themeToggle" class="site-header-actions flex light z-20 absolute">
+    <a
+      class="site-header-action hidden md:inline-flex"
+      href={`${base}rss.xml`}
+      title="RSS"
+      aria-label="RSS feed"
+    >
       <BlogIcon icon={Rss} />
     </a>
-    <button class="mx-4 theme-icon-button" title="Theme" type="button" id="themeButton" aria-label="Toggle theme">
+    <a
+      class="site-header-action"
+      href={`${base}search/`}
+      title="Search"
+      aria-label="Search posts"
+    >
+      <BlogIcon icon={Search} />
+    </a>
+    <button
+      class="site-header-action theme-icon-button"
+      title="Theme"
+      type="button"
+      id="themeButton"
+      aria-label="Toggle theme"
+    >
       <span class="theme-icon" data-theme-icon="light" hidden>
         <BlogIcon icon={Moon} />
       </span>

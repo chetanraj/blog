@@ -1,17 +1,33 @@
-import { Icon } from '@capper-ui/react';
-import type { IconProps as PhosphorIconProps } from '@phosphor-icons/react';
-import React, { type ComponentType } from 'react';
+import React, { type ComponentType, type SVGProps } from 'react';
 
 type BlogIconSize = 'sm' | 'md' | 'lg';
 
+type IconComponentProps = SVGProps<SVGSVGElement> & {
+  size?: number | string;
+};
+
 type BlogIconProps = {
-  icon: ComponentType<PhosphorIconProps>;
+  icon: ComponentType<IconComponentProps>;
   label?: string;
   size?: BlogIconSize;
   className?: string;
 };
 
-/** Capper UI Icon wrapper for Astro — SSRs to static SVG, no client JS. */
-export function BlogIcon({ icon, label, size = 'lg', className }: BlogIconProps) {
-  return <Icon icon={icon} size={size} label={label} className={className} />;
+const SIZE_PX: Record<BlogIconSize, number> = {
+  sm: 16,
+  md: 18,
+  lg: 22,
+};
+
+export function BlogIcon({ icon: Icon, label, size = 'lg', className }: BlogIconProps) {
+  const px = SIZE_PX[size];
+  return (
+    <Icon
+      size={px}
+      className={className}
+      aria-hidden={label ? undefined : true}
+      aria-label={label}
+      role={label ? 'img' : undefined}
+    />
+  );
 }

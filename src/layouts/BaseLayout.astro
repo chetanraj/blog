@@ -69,10 +69,11 @@ const {
     />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <SiteHeader title={headerTitle} />
     <div class="site-content">
       <TrendToggle />
-      <main class="h-sc">
+      <main id="main" class="h-sc">
         <slot />
       </main>
     </div>

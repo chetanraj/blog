@@ -1,25 +1,51 @@
-<script>
-  function enhanceCodeBlocks() {
-    document.querySelectorAll<HTMLPreElement>('.blog-post-body pre').forEach((pre) => {
-      if (pre.querySelector('.code-copy-btn')) return;
+<script is:inline>
+  (function () {
+    var clipboardSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+    var checkSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>';
 
-      pre.classList.add('code-block');
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'code-copy-btn';
-      button.textContent = 'Copy';
-      button.addEventListener('click', async () => {
-        const code = pre.querySelector('code')?.textContent ?? pre.textContent ?? '';
-        await navigator.clipboard.writeText(code.trim());
-        button.textContent = 'Copied!';
-        window.setTimeout(() => {
-          button.textContent = 'Copy';
-        }, 1600);
+    function enhanceCodeBlocks() {
+      document.querySelectorAll('.blog-post-body pre').forEach(function (pre) {
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block-wrap')) {
+          return;
+        }
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block-wrap';
+        if (pre.parentNode) {
+          pre.parentNode.insertBefore(wrap, pre);
+        }
+        wrap.appendChild(pre);
+
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy-btn';
+        button.setAttribute('aria-label', 'Copy code');
+        button.innerHTML = clipboardSvg;
+        button.addEventListener('click', function () {
+          var codeEl = pre.querySelector('code');
+          var code = ((codeEl && codeEl.textContent) || pre.textContent || '').trim();
+          navigator.clipboard.writeText(code).then(function () {
+            button.classList.add('is-copied');
+            button.innerHTML = checkSvg;
+            button.setAttribute('aria-label', 'Copied');
+            window.setTimeout(function () {
+              button.classList.remove('is-copied');
+              button.innerHTML = clipboardSvg;
+              button.setAttribute('aria-label', 'Copy code');
+            }, 1600);
+          });
+        });
+        wrap.appendChild(button);
       });
-      pre.appendChild(button);
-    });
-  }
+    }
 
-  enhanceCodeBlocks();
-  document.addEventListener('astro:page-load', enhanceCodeBlocks);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', enhanceCodeBlocks);
+    } else {
+      enhanceCodeBlocks();
+    }
+    document.addEventListener('astro:page-load', enhanceCodeBlocks);
+  })();
 </script>
