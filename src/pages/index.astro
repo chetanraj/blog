@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { Badge, Link, Stack, Text } from '@capper-ui/react';
 import { getCollection } from 'astro:content';
 import { SITE } from '../site.config';
+import EmojiReaction from '../components/EmojiReaction.astro';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
@@ -55,6 +56,10 @@ const [latestPost, ...otherPosts] = posts;
         );
       })()
   }
+
+  <div class="index-react">
+    <EmojiReaction id="blog-home" />
+  </div>
 
   <Text as="h2" size="3xl" weight="regular" className="index-section-title">
     Other posts

@@ -31,7 +31,7 @@ None of that means Tailwind has too many class names to memorize.
 
 A settings screen. Choice rows for plan, billing cycle, reminder time. They looked almost the same.
 
-```javascript
+```javascript preview=true
 <button className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-900 hover:border-slate-300">
   Monthly
 </button>
@@ -87,7 +87,7 @@ Shared hover and focus go in CSS, once. Utility prefixes make that part noisy.
 
 Then the screen reads like this.
 
-```javascript
+```javascript preview=true
 <ChoiceRow>Monthly</ChoiceRow>
 <ChoiceRow state="selected">Yearly</ChoiceRow>
 <ChoiceRow state="disabled">Off</ChoiceRow>
@@ -119,27 +119,14 @@ Component boundaries do the job `.btn` used to do. I write the utility soup once
 
 Design tokens live in one place, not in my head.
 
-```javascript
-// tailwind.config.js
-export default {
-  theme: {
-    extend: {
-      colors: {
-        ink: {
-          700: "#334155",
-          900: "#0f172a",
-        },
-        brand: {
-          50: "#eef2ff",
-          500: "#6366f1",
-        },
-      },
-      spacing: {
-        18: "4.5rem",
-      },
-    },
+```json collapse=true
+{
+  "colors": {
+    "ink": { "700": "#334155", "900": "#0f172a" },
+    "brand": { "50": "#eef2ff", "500": "#6366f1" }
   },
-};
+  "spacing": { "18": "4.5rem" }
+}
 ```
 
 Spacing, color, and type get decided once. Layout components own gaps between children. I do not sprinkle `mt-4` on every child until it "looks right."

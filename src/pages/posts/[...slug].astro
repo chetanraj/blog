@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import PostShare from '../../components/PostShare.astro';
+import EmojiReaction from '../../components/EmojiReaction.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import CodeCopyButtons from '../../components/CodeCopyButtons.astro';
 import { BlogIcon } from '../../components/icons/BlogIcon';
@@ -113,7 +114,10 @@ const showUpdated =
             <Content />
           </div>
 
-          <PostShare title={post.data.title} url={postUrl} />
+          <div class="post-end-actions">
+            <PostShare title={post.data.title} url={postUrl} />
+            <EmojiReaction id={post.slug} />
+          </div>
           <RelatedPosts previous={previousPost} next={nextPost} base={base} />
         </div>
       </div>

@@ -44,18 +44,32 @@ const encodedTitle = encodeURIComponent(title);
   </div>
 </div>
 
-<script>
-  document.querySelectorAll<HTMLButtonElement>('[data-copy-url]').forEach((button) => {
-    button.addEventListener('click', async () => {
-      const url = button.dataset.copyUrl;
-      if (!url) return;
-      await navigator.clipboard.writeText(url);
-      button.classList.add('is-copied');
-      button.setAttribute('aria-label', 'Link copied');
-      window.setTimeout(() => {
-        button.classList.remove('is-copied');
-        button.setAttribute('aria-label', 'Copy link');
-      }, 1600);
-    });
-  });
+<script is:inline>
+  (function () {
+    function bindShareCopy() {
+      document.querySelectorAll('[data-copy-url]').forEach(function (button) {
+        if (button.dataset.copyBound === 'true') return;
+        button.dataset.copyBound = 'true';
+        button.addEventListener('click', function () {
+          var url = button.getAttribute('data-copy-url');
+          if (!url) return;
+          navigator.clipboard.writeText(url).then(function () {
+            button.classList.add('is-copied');
+            button.setAttribute('aria-label', 'Link copied');
+            window.setTimeout(function () {
+              button.classList.remove('is-copied');
+              button.setAttribute('aria-label', 'Copy link');
+            }, 1600);
+          });
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindShareCopy);
+    } else {
+      bindShareCopy();
+    }
+    document.addEventListener('astro:page-load', bindShareCopy);
+  })();
 </script>

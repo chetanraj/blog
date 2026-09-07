@@ -11,8 +11,6 @@ tocDepth: 2
 
 import AtomicDesign from '../../../posts/how-i-structure-react-app/Atomic_Design.png';
 
-# Structuring a React app
-
 Every React app starts with the same quiet question: where should this thing live?
 
 The folder structure decides how easy the app is to grow, debug, and explain to the next person. I like keeping the shape simple: scripts at the project level, small components near the UI, hooks for reusable behavior, and theme tokens in one predictable place.
@@ -23,7 +21,7 @@ The folder structure decides how easy the app is to grow, debug, and explain to 
 
 `package.json` is the control panel for the app. I keep script names short, readable, and grouped by intent.
 
-```json
+```json collapse=true
 {
   "name": "app-name",
   "version": "0.0.1",
@@ -54,7 +52,7 @@ The folder structure decides how easy the app is to grow, debug, and explain to 
 
 Scripts should be easy to remember. I prefer `:` for script groups because it reads naturally:
 
-```json
+```json collapse=true
 {
   "scripts": {
     "build": "react-scripts build",
@@ -100,7 +98,7 @@ Pages assemble atoms and organisms into complete routes. A page can handle layou
 
 Here is the structure I usually start with when the app uses React Context for shared state:
 
-```markdown
+```markdown tree=true
 src
 ├── components
 │   ├── atoms
@@ -145,7 +143,7 @@ For feature components, I like keeping the UI component light and moving reusabl
 
 ### UI component
 
-```jsx
+```jsx preview=true
 // pages/Create/index.js
 
 import React from 'react';
@@ -191,24 +189,24 @@ Tailwind works well when the team wants fast composition and shared utility rule
 
 Either way, I keep design values in one place.
 
-```js
-export const theme = {
-  breakpoints: [32, 48, 64],
-  space: [0, 4, 8, 16, 24, 32, 48, 64],
-  fontSizes: [12, 14, 16, 18, 20, 24, 36, 48],
-  fontWeights: [400, 500, 600, 700],
-  lineHeights: {
-    title: 1.25,
-    paragraph: 1.5
+```json collapse=true
+{
+  "breakpoints": [32, 48, 64],
+  "space": [0, 4, 8, 16, 24, 32, 48, 64],
+  "fontSizes": [12, 14, 16, 18, 20, 24, 36, 48],
+  "fontWeights": [400, 500, 600, 700],
+  "lineHeights": {
+    "title": 1.25,
+    "paragraph": 1.5
   },
-  colors: {
-    background: '#ffffff',
-    text: '#111827',
-    muted: '#6b7280',
-    primary: '#2563eb'
+  "colors": {
+    "background": "#ffffff",
+    "text": "#111827",
+    "muted": "#6b7280",
+    "primary": "#2563eb"
   },
-  radii: ['0px', '2px', '4px', '8px', '16px']
-};
+  "radii": ["0px", "2px", "4px", "8px", "16px"]
+}
 ```
 
 ## The takeaway
