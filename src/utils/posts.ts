@@ -1,5 +1,24 @@
 import type { CollectionEntry } from 'astro:content';
 
+export function getAdjacentPosts(
+  current: CollectionEntry<'posts'>,
+  allPosts: CollectionEntry<'posts'>[]
+): {
+  previous: CollectionEntry<'posts'> | undefined;
+  next: CollectionEntry<'posts'> | undefined;
+} {
+  const published = allPosts
+    .filter((post) => post.data.published !== false)
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+  const index = published.findIndex((post) => post.slug === current.slug);
+
+  return {
+    previous: index >= 0 ? published[index + 1] : undefined,
+    next: index > 0 ? published[index - 1] : undefined,
+  };
+}
+
 export function getRelatedPosts(
   current: CollectionEntry<'posts'>,
   allPosts: CollectionEntry<'posts'>[],

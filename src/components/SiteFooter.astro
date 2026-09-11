@@ -1,89 +1,41 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
 import { Github, Instagram, X } from '../icons';
-import { Link, Stack, Text } from '@capper-ui/react';
 import * as stylex from '@stylexjs/stylex';
 import { footerStyles } from '../styles/footer.stylex';
-
-const base = import.meta.env.BASE_URL.endsWith('/')
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <footer class:list={['site-footer', 'site-chrome', stylex.props(footerStyles.root).className]}>
-  <div class:list={['site-footer-inner', stylex.props(footerStyles.inner).className]}>
-    <div class:list={['left', stylex.props(footerStyles.left).className]}>
-      <Link
-        href="https://chetanraj.dev"
-        className="site-footer-brand"
-      >
+  <div class="site-footer-inner">
+    <p class="site-footer-copy">
+      &copy; 2016-present{' '}
+      <a href="https://chetanraj.dev" class="site-footer-brand-inline">
         Chetan Raj
-      </Link>
-      <Text as="div" size="sm" className="site-footer-copy site-footer-copy--desktop">
-        &copy; Chetan Raj. All Rights Reserved.
-      </Text>
+      </a>
+      . All Rights Reserved.
+    </p>
+    <div class="site-footer-social-links">
+      <a
+        class="site-footer-icon-link"
+        href="https://x.com/chetan_raj"
+        aria-label="X"
+      >
+        <BlogIcon icon={X} />
+      </a>
+      <a
+        class="site-footer-icon-link"
+        href="https://github.com/chetanraj"
+        aria-label="GitHub"
+      >
+        <BlogIcon icon={Github} />
+      </a>
+      <a
+        class="site-footer-icon-link"
+        href="https://www.instagram.com/thecjstream/"
+        aria-label="Instagram"
+      >
+        <BlogIcon icon={Instagram} />
+      </a>
     </div>
-    <div class:list={['right', stylex.props(footerStyles.right).className]}>
-      <Stack gap="sm" className={`social ${stylex.props(footerStyles.social).className ?? ''}`}>
-        <Text as="h4" size="sm" className="site-footer-heading">
-          Social
-        </Text>
-        <Stack gap="sm" className="site-footer-social-links">
-          <a
-            class="site-footer-icon-link"
-            href="https://twitter.com/chetan_raj"
-            aria-label="X (Twitter)"
-          >
-            <BlogIcon icon={X} />
-          </a>
-          <a
-            class="site-footer-icon-link"
-            href="https://github.com/chetanraj"
-            aria-label="GitHub"
-          >
-            <BlogIcon icon={Github} />
-          </a>
-          <a
-            class="site-footer-icon-link"
-            href="https://www.instagram.com/thecjstream/"
-            aria-label="Instagram"
-          >
-            <BlogIcon icon={Instagram} />
-          </a>
-        </Stack>
-      </Stack>
-      <Stack gap="sm" className="links">
-        <Text as="h4" size="sm" className="site-footer-heading">
-          Links
-        </Text>
-        <Stack gap="sm" className="site-footer-nav">
-          <Link href={`${base}about/`} className="site-footer-link">
-            About
-          </Link>
-          <Link href={`${base}tags/`} className="site-footer-link">
-            Tags
-          </Link>
-          <Link href={`${base}search/`} className="site-footer-link">
-            Search
-          </Link>
-          <Link href={`${base}playground/`} className="site-footer-link">
-            Playground
-          </Link>
-          <Link href={`${base}rss.xml`} className="site-footer-link">
-            RSS
-          </Link>
-          <Link
-            href="https://www.instagram.com/javascriptessentials/"
-            className="site-footer-link"
-          >
-            <span {...stylex.props(footerStyles.linkEmoji)} role="img" aria-label="globe">🌏</span>
-            JavaScript Essentials
-          </Link>
-        </Stack>
-      </Stack>
-    </div>
-    <Text as="div" size="sm" className="site-footer-copy site-footer-copy--mobile">
-      &copy; Chetan Raj. All Rights Reserved.
-    </Text>
   </div>
 </footer>

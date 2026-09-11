@@ -1,25 +1,244 @@
-<script>
-  function enhanceCodeBlocks() {
-    document.querySelectorAll<HTMLPreElement>('.blog-post-body pre').forEach((pre) => {
-      if (pre.querySelector('.code-copy-btn')) return;
+<script is:inline>
+  (function () {
+    var clipboardSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+    var checkSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>';
 
-      pre.classList.add('code-block');
-      const button = document.createElement('button');
+    function sourceOf(pre) {
+      var codeEl = pre.querySelector('code');
+      return ((codeEl && codeEl.textContent) || pre.textContent || '').trim();
+    }
+
+    function toPreviewHtml(source) {
+      var jsx = source;
+      var returned = source.match(/return\s*\(\s*([\s\S]*?)\s*\)\s*;/);
+      if (returned) jsx = returned[1];
+      var html = jsx
+        .replace(/\bclassName=/g, 'class=')
+        .replace(/\s+[\w:-]+=\{[\s\S]*?\}/g, '')
+        .replace(/\{\.\.\.props\}/g, '')
+        .replace(/\{`([\s\S]*?)`\}/g, '$1')
+        .replace(/\{[^}]+\}/g, '');
+      return html.replace(
+        /<ChoiceRow\b([^>]*)>([\s\S]*?)<\/ChoiceRow>/g,
+        function (_, attrs, children) {
+          var state = 'idle';
+          var match = attrs.match(/state=["']([^"']+)["']/);
+          if (match) state = match[1];
+          var extra = '';
+          if (state === 'selected') extra = ' aria-pressed="true"';
+          if (state === 'disabled') extra = ' disabled';
+          return (
+            '<button type="button" class="choice-demo-row is-' +
+            state +
+            '"' +
+            extra +
+            '>' +
+            children.trim() +
+            '</button>'
+          );
+        }
+      );
+    }
+
+    function jsonType(value) {
+      if (value === null) return 'null';
+      return typeof value;
+    }
+
+    function renderJson(value, name, depth) {
+      var isObject = value !== null && typeof value === 'object';
+      var isArray = Array.isArray(value);
+      if (!isObject) {
+        var leaf = document.createElement('div');
+        leaf.className = 'json-leaf';
+        if (name !== undefined) {
+          leaf.innerHTML =
+            '<span class="json-key"></span><span class="json-punct">: </span><span class="json-value"></span>';
+          leaf.querySelector('.json-key').textContent = name;
+          var val = leaf.querySelector('.json-value');
+          val.classList.add('json-value--' + jsonType(value));
+          val.textContent = JSON.stringify(value);
+        }
+        return leaf;
+      }
+
+      var keys = isArray ? value.map(function (_, i) { return String(i); }) : Object.keys(value);
+      var details = document.createElement('details');
+      details.className = 'json-node';
+      details.open = true;
+      var summary = document.createElement('summary');
+      summary.className = 'json-summary';
+      var openBracket = isArray ? '[' : '{';
+      var closeBracket = isArray ? ']' : '}';
+      var label = name !== undefined ? '<span class="json-key"></span><span class="json-punct">: </span>' : '';
+      summary.innerHTML =
+        label +
+        '<span class="json-punct">' +
+        openBracket +
+        '</span><span class="json-preview"></span><span class="json-punct json-preview-close">' +
+        closeBracket +
+        '</span>';
+      if (name !== undefined) summary.querySelector('.json-key').textContent = name;
+      summary.querySelector('.json-preview').textContent =
+        keys.length + (keys.length === 1 ? ' item' : ' items');
+      details.appendChild(summary);
+
+      var children = document.createElement('div');
+      children.className = 'json-children';
+      keys.forEach(function (key) {
+        var childValue = isArray ? value[Number(key)] : value[key];
+        children.appendChild(renderJson(childValue, key, depth + 1));
+      });
+      var close = document.createElement('div');
+      close.className = 'json-close';
+      close.innerHTML = '<span class="json-punct"></span>';
+      close.querySelector('.json-punct').textContent = closeBracket;
+      children.appendChild(close);
+      details.appendChild(children);
+      return details;
+    }
+
+    var folderSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>';
+    var fileSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>';
+
+    function parseAsciiTree(text) {
+      var lines = text.split('\n').filter(function (line) {
+        return line.trim();
+      });
+      var root = { name: 'root', children: [] };
+      var stack = [{ depth: -1, node: root }];
+
+      lines.forEach(function (line) {
+        var cleaned = line.replace(/\s+$/, '');
+        var name = cleaned.replace(/^(?:[│ ]*)(?:├── |└── )?/, '');
+        if (!name) return;
+        var prefixLen = cleaned.length - name.length;
+        var depth = Math.round(prefixLen / 4);
+        var node = { name: name, children: [] };
+        while (stack.length && stack[stack.length - 1].depth >= depth) stack.pop();
+        stack[stack.length - 1].node.children.push(node);
+        stack.push({ depth: depth, node: node });
+      });
+
+      return root.children.length === 1 ? root.children[0] : root;
+    }
+
+    function isFolderNode(node) {
+      return node.children.length > 0 || node.name.indexOf('.') === -1;
+    }
+
+    function renderFileTree(node) {
+      if (!isFolderNode(node) || node.children.length === 0) {
+        var leaf = document.createElement('div');
+        leaf.className = isFolderNode(node) ? 'file-tree-file is-folder' : 'file-tree-file';
+        leaf.innerHTML =
+          (isFolderNode(node) ? folderSvg : fileSvg) + '<span class="file-tree-name"></span>';
+        leaf.querySelector('.file-tree-name').textContent = node.name;
+        return leaf;
+      }
+
+      var details = document.createElement('details');
+      details.className = 'file-tree-node';
+      details.open = true;
+      var summary = document.createElement('summary');
+      summary.className = 'file-tree-summary';
+      summary.innerHTML = folderSvg + '<span class="file-tree-name"></span>';
+      summary.querySelector('.file-tree-name').textContent = node.name;
+      details.appendChild(summary);
+
+      if (node.children.length) {
+        var kids = document.createElement('div');
+        kids.className = 'file-tree-children';
+        node.children.forEach(function (child) {
+          kids.appendChild(renderFileTree(child));
+        });
+        details.appendChild(kids);
+      }
+
+      return details;
+    }
+
+    function addCopyButton(wrap, getText) {
+      var button = document.createElement('button');
       button.type = 'button';
       button.className = 'code-copy-btn';
-      button.textContent = 'Copy';
-      button.addEventListener('click', async () => {
-        const code = pre.querySelector('code')?.textContent ?? pre.textContent ?? '';
-        await navigator.clipboard.writeText(code.trim());
-        button.textContent = 'Copied!';
-        window.setTimeout(() => {
-          button.textContent = 'Copy';
-        }, 1600);
+      button.setAttribute('aria-label', 'Copy code');
+      button.innerHTML = clipboardSvg;
+      button.addEventListener('click', function () {
+        navigator.clipboard.writeText(getText()).then(function () {
+          button.classList.add('is-copied');
+          button.innerHTML = checkSvg;
+          button.setAttribute('aria-label', 'Copied');
+          window.setTimeout(function () {
+            button.classList.remove('is-copied');
+            button.innerHTML = clipboardSvg;
+            button.setAttribute('aria-label', 'Copy code');
+          }, 1600);
+        });
       });
-      pre.appendChild(button);
-    });
-  }
+      wrap.appendChild(button);
+    }
 
-  enhanceCodeBlocks();
-  document.addEventListener('astro:page-load', enhanceCodeBlocks);
+    function enhanceCodeBlocks() {
+      document.querySelectorAll('.blog-post-body pre').forEach(function (pre) {
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block-wrap')) {
+          return;
+        }
+
+        var source = sourceOf(pre);
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block-wrap';
+        if (pre.parentNode) pre.parentNode.insertBefore(wrap, pre);
+
+        wrap.appendChild(pre);
+
+        if (pre.getAttribute('data-preview') === 'true') {
+          wrap.classList.add('has-preview');
+          var stage = document.createElement('div');
+          stage.className = 'code-preview-stage';
+          stage.setAttribute('aria-label', 'Preview');
+          stage.innerHTML = toPreviewHtml(source);
+          wrap.appendChild(stage);
+        }
+
+        if (pre.getAttribute('data-collapse') === 'true') {
+          try {
+            var parsed = JSON.parse(source);
+            wrap.classList.add('has-json');
+            var tree = document.createElement('div');
+            tree.className = 'json-tree-body';
+            tree.appendChild(renderJson(parsed, undefined, 1));
+            wrap.appendChild(tree);
+            pre.hidden = true;
+          } catch (err) {
+            /* leave the highlighted block */
+          }
+        }
+
+        if (pre.getAttribute('data-tree') === 'true') {
+          wrap.classList.add('has-tree');
+          var fileTree = document.createElement('div');
+          fileTree.className = 'file-tree-body';
+          fileTree.appendChild(renderFileTree(parseAsciiTree(source)));
+          wrap.appendChild(fileTree);
+          pre.hidden = true;
+        }
+
+        addCopyButton(wrap, function () {
+          return source;
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', enhanceCodeBlocks);
+    } else {
+      enhanceCodeBlocks();
+    }
+    document.addEventListener('astro:page-load', enhanceCodeBlocks);
+  })();
 </script>

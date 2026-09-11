@@ -1,0 +1,207 @@
+---
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+
+const emojis = [
+  { glyph: '🔥', name: 'Fire' },
+  { glyph: '💡', name: 'Idea' },
+  { glyph: '🧠', name: 'Learned' },
+  { glyph: '✨', name: 'Nice' },
+  { glyph: '🙌', name: 'Thanks' },
+];
+---
+
+<div class="emoji-reaction" data-reaction-id={id}>
+  <button
+    type="button"
+    class="emoji-reaction-trigger"
+    aria-expanded="false"
+    aria-label="React"
+  >
+    <span class="emoji-reaction-face" data-reaction-face>+</span>
+  </button>
+  <div class="emoji-reaction-bar" hidden role="listbox" aria-label="Reactions">
+    {
+      emojis.map((emoji) => (
+        <button
+          type="button"
+          class="emoji-reaction-pick"
+          role="option"
+          data-emoji={emoji.glyph}
+          aria-label={emoji.name}
+        >
+          <span class="emoji-reaction-glyph">{emoji.glyph}</span>
+          <span class="emoji-reaction-count" data-count-for={emoji.glyph} hidden>
+            0
+          </span>
+        </button>
+      ))
+    }
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    function storageKey(id) {
+      return 'blog-react:' + id;
+    }
+
+    function loadState(id) {
+      try {
+        return JSON.parse(window.localStorage.getItem(storageKey(id)) || '{}');
+      } catch (err) {
+        return {};
+      }
+    }
+
+    function saveState(id, state) {
+      window.localStorage.setItem(storageKey(id), JSON.stringify(state));
+    }
+
+    function burst(emoji, origin) {
+      var rect = origin.getBoundingClientRect();
+      var startX = rect.left + rect.width / 2;
+      var startY = rect.top + rect.height / 2;
+      for (var i = 0; i < 5; i += 1) {
+        var fly = document.createElement('span');
+        fly.className = 'emoji-fly';
+        fly.textContent = emoji;
+        fly.style.left = startX + 'px';
+        fly.style.top = startY + 'px';
+        fly.style.setProperty('--dx', (Math.random() - 0.5) * 96 + 'px');
+        fly.style.setProperty('--delay', i * 40 + 'ms');
+        document.body.appendChild(fly);
+        fly.addEventListener('animationend', function () {
+          fly.remove();
+        });
+      }
+    }
+
+    function placeBar(root) {
+      var bar = root.querySelector('.emoji-reaction-bar');
+      var trigger = root.querySelector('.emoji-reaction-trigger');
+      if (!bar || !trigger) return;
+      bar.classList.remove('is-below');
+      var triggerRect = trigger.getBoundingClientRect();
+      var barRect = bar.getBoundingClientRect();
+      if (triggerRect.top - barRect.height < 12) {
+        bar.classList.add('is-below');
+      }
+    }
+
+    function bind(root) {
+      if (root.dataset.bound === 'true') return;
+      root.dataset.bound = 'true';
+      var id = root.getAttribute('data-reaction-id') || 'blog';
+      var trigger = root.querySelector('.emoji-reaction-trigger');
+      var face = root.querySelector('[data-reaction-face]');
+      var bar = root.querySelector('.emoji-reaction-bar');
+      var state = loadState(id);
+      state.counts = state.counts || {};
+      var holdTimer = null;
+
+      function isOpen() {
+        return trigger.getAttribute('aria-expanded') === 'true';
+      }
+
+      function renderCounts() {
+        root.querySelectorAll('[data-count-for]').forEach(function (el) {
+          var glyph = el.getAttribute('data-count-for');
+          var n = state.counts[glyph] || 0;
+          el.textContent = String(n);
+          if (n > 0) el.removeAttribute('hidden');
+          else el.setAttribute('hidden', '');
+        });
+        if (!isOpen()) {
+          face.textContent = state.last || '+';
+        }
+      }
+
+      function setOpen(open) {
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        trigger.classList.toggle('is-open', open);
+        if (open) {
+          bar.removeAttribute('hidden');
+          placeBar(root);
+          face.textContent = '×';
+          trigger.setAttribute('aria-label', 'Close reactions');
+        } else {
+          bar.setAttribute('hidden', '');
+          face.textContent = state.last || '+';
+          trigger.setAttribute('aria-label', 'React');
+        }
+      }
+
+      function react(emoji, origin) {
+        state.last = emoji;
+        state.counts[emoji] = (state.counts[emoji] || 0) + 1;
+        saveState(id, state);
+        renderCounts();
+        burst(emoji, origin);
+      }
+
+      trigger.addEventListener('click', function (event) {
+        event.stopPropagation();
+        setOpen(!isOpen());
+      });
+
+      root.querySelectorAll('.emoji-reaction-pick').forEach(function (pick) {
+        pick.addEventListener('click', function (event) {
+          event.stopPropagation();
+          react(pick.getAttribute('data-emoji'), pick);
+        });
+        pick.addEventListener('mousedown', function (event) {
+          if (event.button !== 0) return;
+          holdTimer = window.setInterval(function () {
+            react(pick.getAttribute('data-emoji'), pick);
+          }, 140);
+        });
+        pick.addEventListener('mouseup', function () {
+          window.clearInterval(holdTimer);
+        });
+        pick.addEventListener('mouseleave', function () {
+          window.clearInterval(holdTimer);
+        });
+      });
+
+      document.addEventListener('click', function (event) {
+        if (!root.contains(event.target)) setOpen(false);
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (!isOpen()) return;
+        if (event.key === 'Escape' || event.key === 'Esc') {
+          event.preventDefault();
+          setOpen(false);
+          trigger.focus();
+          return;
+        }
+        var picks = Array.prototype.slice.call(root.querySelectorAll('.emoji-reaction-pick'));
+        var index = picks.indexOf(document.activeElement);
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          picks[Math.min(index < 0 ? 0 : index + 1, picks.length - 1)].focus();
+        } else if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          picks[Math.max(index - 1, 0)].focus();
+        }
+      });
+
+      renderCounts();
+    }
+
+    function init() {
+      document.querySelectorAll('.emoji-reaction').forEach(bind);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+    document.addEventListener('astro:page-load', init);
+  })();
+</script>

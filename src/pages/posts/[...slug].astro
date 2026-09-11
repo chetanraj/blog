@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
-import AuthorBlurb from '../../components/AuthorBlurb.astro';
 import PostShare from '../../components/PostShare.astro';
+import EmojiReaction from '../../components/EmojiReaction.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import CodeCopyButtons from '../../components/CodeCopyButtons.astro';
 import { BlogIcon } from '../../components/icons/BlogIcon';
@@ -10,7 +10,7 @@ import { Badge, Inline, Link } from '@capper-ui/react';
 import { Calendar, Clock } from '../../icons';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { absoluteUrl } from '../../site.config';
-import { getRelatedPosts } from '../../utils/posts';
+import { getAdjacentPosts } from '../../utils/posts';
 import { tagToSlug } from '../../utils/tags';
 import * as stylex from '@stylexjs/stylex';
 import { utilityStyles } from '../../styles/utilities.stylex';
@@ -37,7 +37,10 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 const allPublished = (await getCollection('posts')).filter(
   (entry) => entry.data.published !== false
 );
-const relatedPosts = getRelatedPosts(post, allPublished);
+const { previous: previousPost, next: nextPost } = getAdjacentPosts(
+  post,
+  allPublished
+);
 const postUrl = absoluteUrl(`/posts/${post.slug}/`);
 const modifiedTime = post.data.updated?.toISOString();
 const publishedTime = post.data.date.toISOString();
@@ -113,9 +116,11 @@ const showUpdated =
             <Content />
           </div>
 
-          <PostShare title={post.data.title} url={postUrl} />
-          <AuthorBlurb />
-          <RelatedPosts posts={relatedPosts} base={base} />
+          <div class="post-end-actions">
+            <PostShare title={post.data.title} url={postUrl} />
+            <EmojiReaction id={post.slug} />
+          </div>
+          <RelatedPosts previous={previousPost} next={nextPost} base={base} />
         </div>
       </div>
     </div>

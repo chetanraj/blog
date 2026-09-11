@@ -21,13 +21,31 @@ export default defineConfig({
       dedupe: ['react', 'react-dom'],
     },
     ssr: {
-      noExternal: ['@capper-ui/react', '@phosphor-icons/react'],
+      noExternal: ['@capper-ui/react'],
     },
   },
   markdown: {
     remarkPlugins: [remarkReadingTime],
     shikiConfig: {
       theme: 'dracula',
+      transformers: [
+        {
+          name: 'blog-code-flags',
+          pre(hast) {
+            const raw = this.options.meta?.__raw ?? '';
+            hast.properties ??= {};
+            if (/(?:^|\s)preview(?:\s*=\s*true)?(?:\s|$)/.test(raw)) {
+              hast.properties['data-preview'] = 'true';
+            }
+            if (/(?:^|\s)collapse(?:\s*=\s*true)?(?:\s|$)/.test(raw)) {
+              hast.properties['data-collapse'] = 'true';
+            }
+            if (/(?:^|\s)tree(?:\s*=\s*true)?(?:\s|$)/.test(raw)) {
+              hast.properties['data-tree'] = 'true';
+            }
+          },
+        },
+      ],
     },
   },
 });
