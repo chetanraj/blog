@@ -1,9 +1,11 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
 import { Github, Instagram, X } from '../icons';
+import * as stylex from '@stylexjs/stylex';
+import { footerStyles } from '../styles/footer.stylex';
 ---
 
-<footer class="site-footer site-chrome bg-blog-header w-full">
+<footer class:list={['site-footer', 'site-chrome', stylex.props(footerStyles.root).className]}>
   <div class="site-footer-inner">
     <p class="site-footer-copy">
       &copy; 2016-present{' '}

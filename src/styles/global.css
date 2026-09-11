@@ -2,10 +2,6 @@
 @import '@capper-ui/react/styles';
 @import './trends.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* ─── BLOG COLOR PALETTE ───────────────────────────────────────── */
 
 :root {
@@ -63,46 +59,44 @@ html[data-color-mode='dark'] {
   transform: translateY(0);
 }
 
-@layer base {
-  html {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
 
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-  }
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 
-  body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-    font-family: var(
-      --trend-font-body,
-      'Geist',
-      ui-sans-serif,
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      sans-serif
-    );
-    background-color: var(--bg-color);
-    transition: color 0.6s, background-color 0.6s;
-  }
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  font-family: var(
+    --trend-font-body,
+    'Geist',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif
+  );
+  background-color: var(--bg-color);
+  transition: color 0.6s, background-color 0.6s;
+}
 
-  header {
-    transition: color 0.6s, background-color 0.6s;
-  }
+header {
+  transition: color 0.6s, background-color 0.6s;
+}
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 .site-chrome {
@@ -175,8 +169,10 @@ html[data-color-mode='dark'] {
 header .dark,
 header .light,
 .site-header-actions {
+  position: absolute;
   top: 1em;
   right: 1em;
+  z-index: 20;
 }
 
 .site-header-actions {
@@ -184,6 +180,12 @@ header .light,
   align-items: center;
   gap: 1rem;
   cursor: default;
+}
+
+@media (max-width: 767px) {
+  .site-header-action--rss {
+    display: none;
+  }
 }
 
 .site-header-action {
@@ -1453,6 +1455,43 @@ header .light,
 .blog-post-content .json-summary {
   text-decoration: none;
 }
+
+/* MDX content utilities (replaces Tailwind classes used in posts) */
+.text-blog-secondary {
+  color: var(--secondary-color);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.my-6 {
+  margin-block: 1.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.grid {
+  display: grid;
+}
+
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 
 .new {
   background: var(--yellow);

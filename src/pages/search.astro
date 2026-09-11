@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import * as stylex from '@stylexjs/stylex';
+import { utilityStyles } from '../styles/utilities.stylex';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
@@ -14,9 +16,9 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 >
   <div class="blog-post-container">
     <div class="blog-post-content static-page">
-      <p class="text-blog-secondary">Search posts by title or content.</p>
+      <p {...stylex.props(utilityStyles.textSecondary)}>Search posts by title or content.</p>
       <div id="search" class="pagefind-search"></div>
-      <p class="mt-6">
+      <p {...stylex.props(utilityStyles.searchBack)}>
         <a href={base}>← Back to all posts</a>
       </p>
     </div>
