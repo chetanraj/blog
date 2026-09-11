@@ -3,7 +3,6 @@ import ScrollProgress from '../components/ScrollProgress.astro';
 import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import TrendToggle from '../components/TrendToggle.astro';
 import SeoHead from '../components/SeoHead.astro';
 import { SITE } from '../site.config';
 
@@ -71,7 +70,6 @@ const {
   <body>
     <SiteHeader title={headerTitle} />
     <div class="site-content">
-      <TrendToggle />
       <main class="h-sc">
         <slot />
       </main>
