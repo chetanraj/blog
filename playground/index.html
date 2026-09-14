@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script>
+      (() => {
+        const root = document.documentElement;
+        const storedTheme = window.localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const themePreference =
+          storedTheme === 'dark' || storedTheme === 'light' || storedTheme === 'system'
+            ? storedTheme
+            : prefersDark
+              ? 'dark'
+              : 'light';
+        const colorMode =
+          themePreference === 'system' ? (prefersDark ? 'dark' : 'light') : themePreference;
+        const storedEra = window.localStorage.getItem('blog-design-era');
+        const designEra = storedEra || 'default';
+
+        root.dataset.colorMode = colorMode;
+        root.dataset.themePreference = themePreference;
+        root.dataset.trend = designEra;
+      })();
+    </script><title>Playground | Blog by Chetan Raj</title><meta name="description" content="Try different design eras on the blog — from flat Material to liquid glass and brutalism."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap"><link rel="canonical" href="https://chetanraj.dev/blog/playground/"><link rel="alternate" type="application/rss+xml" title="Blog by Chetan Raj" href="https://chetanraj.dev/blog/rss.xml"><meta property="og:site_name" content="Blog by Chetan Raj"><meta property="og:title" content="Playground | Blog by Chetan Raj"><meta property="og:description" content="Try different design eras on the blog — from flat Material to liquid glass and brutalism."><meta property="og:url" content="https://chetanraj.dev/blog/playground/"><meta property="og:type" content="website"><meta property="og:image" content="https://chetanraj.dev/blog/favicons/icon-512x512.png"><meta name="twitter:card" content="summary"><meta name="twitter:site" content="@chetan_raj"><meta name="twitter:title" content="Playground | Blog by Chetan Raj"><meta name="twitter:description" content="Try different design eras on the blog — from flat Material to liquid glass and brutalism."><meta name="twitter:image" content="https://chetanraj.dev/blog/favicons/icon-512x512.png"><meta name="author" content="Chetan Raj"><link rel="icon" href="/blog/favicon.svg" type="image/svg+xml"><link rel="icon" href="/blog/favicons/favicon-32.png" sizes="32x32" type="image/png"><link rel="icon" href="/blog/favicons/favicon-16.png" sizes="16x16" type="image/png"><link rel="apple-touch-icon" href="/blog/favicons/favicon-180.png" sizes="180x180"><script defer data-domain="chetanraj.dev" src="https://plausible.io/js/script.js"></script><link rel="stylesheet" href="/blog/_astro/about.m5exLRSG.css"></head> <body> <a class="skip-link" href="#main">Skip to content</a> <header class="site-header site-chrome header__headerStyles.root x1n2onr6 xh8yej3 xr004xx xlbkikk"> <div class="hero-text header__headerStyles.hero x1n2onr6 x1n327nk x78zum5 xdt5ytf x6s0dn4 xl56j7k xr004xx x2b8uid x18nhot6"> <div class="header__headerStyles.title x1vpbbxe xnxx81d xngnso2 x132q4wb xt3l3uh x1wsgiic" data-style-src="blog-by-chetanraj:src/styles/header.stylex.ts:22"> Playground </div>  </div> <span class="home header__headerStyles.homeLink x18nhot6"> <a class="header__headerStyles.homeAnchor x1ypdohk xt3l3uh x1wsgiic" data-style-src="blog-by-chetanraj:src/styles/header.stylex.ts:54" href="/blog/" aria-label="Back to blog home"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Back to blog home" role="img"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> </a> </span> <div id="themeToggle" class="site-header-actions light"> <a class="site-header-action site-header-action--rss" href="/blog/rss.xml" title="RSS" aria-label="RSS feed"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg> </a> <a class="site-header-action" href="/blog/search/" title="Search" aria-label="Search posts"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> </a> <button class="site-header-action theme-icon-button" title="Theme" type="button" id="themeButton" aria-label="Toggle theme"> <span class="theme-icon" data-theme-icon="light" hidden> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> </span> <span class="theme-icon" data-theme-icon="dark" hidden> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> </span> <span class="theme-icon" data-theme-icon="system" hidden> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> </span> </button> </div> <div class="bg"></div> </header> <script>
+  const root = document.documentElement;
+  const body = document.body;
+  const wrap = document.getElementById('themeToggle');
+  const btn = document.getElementById('themeButton');
+  const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function getInitialTheme() {
+    const persisted = window.localStorage.getItem('theme');
+    if (persisted === 'dark' || persisted === 'light' || persisted === 'system')
+      return persisted;
+    return colorSchemeQuery.matches ? 'dark' : 'light';
+  }
+
+  function playSound() {
+    const audioContext = new (
+      window.AudioContext || window.webkitAudioContext
+    )();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      audioContext.currentTime + 0.1
+    );
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  }
+
+  function showThemeIcon(preference) {
+    document.querySelectorAll('[data-theme-icon]').forEach((el) => {
+      const match = el.getAttribute('data-theme-icon') === preference;
+      if (match) el.removeAttribute('hidden');
+      else el.setAttribute('hidden', '');
+    });
+
+    const labels = {
+      light: 'Switch to dark theme',
+      dark: 'Switch to system theme',
+      system: 'Switch to light theme',
+    };
+    if (btn) btn.setAttribute('aria-label', labels[preference] || 'Toggle theme');
+  }
+
+  function setTheme(next) {
+    const themeToApply =
+      next === 'system' ? (colorSchemeQuery.matches ? 'dark' : 'light') : next;
+
+    root.dataset.colorMode = themeToApply;
+    root.dataset.themePreference = next;
+    body.classList.remove('dark', 'light');
+    body.classList.add(themeToApply);
+    wrap?.classList.remove('dark', 'light');
+    wrap?.classList.add(themeToApply);
+
+    showThemeIcon(next);
+    window.localStorage.setItem('theme', next);
+    playSound();
+  }
+
+  const initial = typeof window !== 'undefined' ? getInitialTheme() : 'light';
+  const stored = typeof window !== 'undefined' ? window.localStorage.getItem('theme') : null;
+  const initialPreference =
+    stored === 'dark' || stored === 'light' || stored === 'system'
+      ? stored
+      : initial === 'dark'
+        ? 'dark'
+        : 'light';
+
+  setTheme(initialPreference);
+
+  btn?.addEventListener('click', () => {
+    const current = window.localStorage.getItem('theme') || initialPreference;
+    const next =
+      current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
+    setTheme(next);
+  });
+
+  colorSchemeQuery.addEventListener('change', () => {
+    if (window.localStorage.getItem('theme') === 'system') {
+      setTheme('system');
+    }
+  });
+</script> <div class="site-content"> <main id="main" class="h-sc">  <article class="blog-post-container"> <div class="blog-post-content static-page"> <script type="module">const l="blog-design-era",r="default",i={default:"Default · Original Blog","liquid-glass":"Liquid Glass · 2025–26",glassmorphism:"Glassmorphism · 2021–24",brutalism:"Brutalism · Timeless",skeuomorphism:"Skeuomorphism · 2007–13",flat:"Flat / Material · 2013–20"};function o(e){document.documentElement.setAttribute("data-trend",e),localStorage.setItem(l,e),document.querySelectorAll(".trend-swatch[data-era]").forEach(t=>{const s=t.dataset.era===e;t.classList.toggle("active",s),t.setAttribute("aria-pressed",String(s))});const a=document.getElementById("trend-badge-label");a&&(a.textContent=i[e]??e)}const c=localStorage.getItem(l)??r;o(c);document.querySelectorAll(".trend-swatch[data-era]").forEach(e=>{e.addEventListener("click",()=>{e.dataset.era&&o(e.dataset.era)})});</script><div class="_stack_c5747_1 _gap-md_c5747_19"> <p class="_text_3nuxx_1 _size-md_3nuxx_16 _weight-regular_3nuxx_50 _color-default_3nuxx_67">
+Pick a design era below and the whole blog restyles. Your choice is saved in the browser
+          and applies on every page until you change it again.
+</p> <p class="_text_3nuxx_1 _size-sm_3nuxx_12 _weight-regular_3nuxx_50 _color-muted_3nuxx_71">
+Use the theme toggle in the header for light, dark, or system mode. Design era and color
+          mode work together.
+</p> <section class="design-era-picker" aria-label="Design era selector"> <header class="design-era-picker-header"> <p class="trend-toggle-kicker">Design Era</p> <p class="trend-toggle-current" id="trend-badge-label">Default · Original Blog</p> </header> <div class="trend-toggle-swatches" role="toolbar" aria-label="Choose a design era"> <button type="button" class="trend-swatch" data-era="default" aria-pressed="false" aria-label="Default, Original" title="Default · Original"> <span class="trend-swatch-preview trend-swatch-preview--default" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Default</span> <span class="trend-swatch-years">Original</span> </span> </button><button type="button" class="trend-swatch" data-era="liquid-glass" aria-pressed="false" aria-label="Liquid Glass, 2025–26" title="Liquid Glass · 2025–26"> <span class="trend-swatch-preview trend-swatch-preview--liquid-glass" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Liquid Glass</span> <span class="trend-swatch-years">2025–26</span> </span> </button><button type="button" class="trend-swatch" data-era="glassmorphism" aria-pressed="false" aria-label="Glassmorphism, 2021–24" title="Glassmorphism · 2021–24"> <span class="trend-swatch-preview trend-swatch-preview--glassmorphism" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Glassmorphism</span> <span class="trend-swatch-years">2021–24</span> </span> </button><button type="button" class="trend-swatch" data-era="brutalism" aria-pressed="false" aria-label="Brutalism, Timeless" title="Brutalism · Timeless"> <span class="trend-swatch-preview trend-swatch-preview--brutalism" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Brutalism</span> <span class="trend-swatch-years">Timeless</span> </span> </button><button type="button" class="trend-swatch" data-era="skeuomorphism" aria-pressed="false" aria-label="Skeuomorphism, 2007–13" title="Skeuomorphism · 2007–13"> <span class="trend-swatch-preview trend-swatch-preview--skeuomorphism" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Skeuomorphism</span> <span class="trend-swatch-years">2007–13</span> </span> </button><button type="button" class="trend-swatch" data-era="flat" aria-pressed="false" aria-label="Flat, 2013–20" title="Flat · 2013–20"> <span class="trend-swatch-preview trend-swatch-preview--flat" aria-hidden="true"> <span class="trend-swatch-chrome"></span> <span class="trend-swatch-body"></span> <span class="trend-swatch-accent"></span> </span> <span class="trend-swatch-meta"> <span class="trend-swatch-name">Flat</span> <span class="trend-swatch-years">2013–20</span> </span> </button> </div> </section>  <p class="_text_3nuxx_1 _size-md_3nuxx_16 _weight-regular_3nuxx_50 _color-default_3nuxx_67"> <a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-md_1q5lx_45" href="/blog/">← Back to all posts</a> </p> </div> </div> </article>  </main> </div> <footer class="site-footer site-chrome footer__footerStyles.root xh8yej3 xlbkikk"> <div class="site-footer-inner"> <p class="site-footer-copy">
+&copy; 2016-present  <a href="https://chetanraj.dev" class="site-footer-brand-inline">
+Chetan Raj
+</a>
+. All Rights Reserved.
+</p> <div class="site-footer-social-links"> <a class="site-footer-icon-link" href="https://x.com/chetan_raj" aria-label="X"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.822L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg> </a> <a class="site-footer-icon-link" href="https://github.com/chetanraj" aria-label="GitHub"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg> </a> <a class="site-footer-icon-link" href="https://www.instagram.com/thecjstream/" aria-label="Instagram"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> </a> </div> </div> </footer>  </body></html>
