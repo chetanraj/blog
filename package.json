@@ -17,10 +17,12 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",
-    "@astrojs/react": "^6.0.2",
+    "@astrojs/react": "^6.0.5",
     "@capper-ui/react": "^0.0.1",
     "@capper-ui/tokens": "^0.0.1",
     "@phosphor-icons/react": "^2.1.10",
+    "@stylexjs/stylex": "^0.19.0",
+    "@stylexjs/unplugin": "^0.19.0",
     "astro": "^5.2.0",
     "gh-pages": "^6.1.1",
     "mdast-util-to-string": "^4.0.0",
@@ -31,11 +33,9 @@
   "devDependencies": {
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
-    "@astrojs/tailwind": "^6.0.2",
-    "autoprefixer": "^10.5.0",
-    "pagefind": "^1.5.2",
-    "postcss": "^8.5.12",
-    "tailwindcss": "^3.4.19"
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "pagefind": "^1.5.2"
   },
   "engines": {
     "node": ">=20"

@@ -12,6 +12,8 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { absoluteUrl } from '../../site.config';
 import { getAdjacentPosts } from '../../utils/posts';
 import { tagToSlug } from '../../utils/tags';
+import * as stylex from '@stylexjs/stylex';
+import { utilityStyles } from '../../styles/utilities.stylex';
 
 export const prerender = true;
 
@@ -110,7 +112,7 @@ const showUpdated =
             )
           }
 
-          <div class="text-blog-primary blog-post-body">
+          <div class:list={['blog-post-body', stylex.props(utilityStyles.textPrimary).className]}>
             <Content />
           </div>
 

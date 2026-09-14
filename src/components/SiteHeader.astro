@@ -1,6 +1,8 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
 import { ArrowLeft, Monitor, Moon, Rss, Search, Sun } from '../icons';
+import * as stylex from '@stylexjs/stylex';
+import { headerStyles } from '../styles/header.stylex';
 
 const { title } = Astro.props;
 
@@ -11,22 +13,20 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
 ---
 
-<header class="site-header site-chrome bg-blog-header h-64 relative w-full">
-  <div
-    class="flex flex-col items-center h-64 hero-text justify-center text-center text-blog-bg relative z-10"
-  >
-    <div class="text-2xl max-w-3xl px-4 transition-colors duration-500">
+<header class:list={['site-header', 'site-chrome', stylex.props(headerStyles.root).className]}>
+  <div class:list={['hero-text', stylex.props(headerStyles.hero).className]}>
+    <div {...stylex.props(headerStyles.title)}>
       {headerTitle}
     </div>
     {
       !title && (
-        <div class="text-lg font-light md:w-2/5 lg:w-3/5 xl:w-2/5 mt-4 mx-6 lg:mx-0 md:mx-0 transition-colors duration-500">
+        <div {...stylex.props(headerStyles.tagline)}>
           Web Designer & Developer,{' '}
           <a
             target="_blank"
             rel="noopener noreferrer"
             href="https://www.instagram.com/javascriptessentials/"
-            class="underline"
+            {...stylex.props(headerStyles.taglineLink)}
           >
             Tech Instagrammer
           </a>
@@ -36,26 +36,26 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     }
   </div>
 
-  <span class="text-blog-bg home">
+  <span class:list={['home', stylex.props(headerStyles.homeLink).className]}>
     {
       !title ? (
         <a
-          class="pointer transition-colors duration-500"
+          {...stylex.props(headerStyles.homeAnchor)}
           href="https://chetanraj.dev"
         >
           HOME
         </a>
       ) : (
-        <a class="pointer transition-colors duration-500" href={base} aria-label="Back to blog home">
+        <a {...stylex.props(headerStyles.homeAnchor)} href={base} aria-label="Back to blog home">
           <BlogIcon icon={ArrowLeft} label="Back to blog home" />
         </a>
       )
     }
   </span>
 
-  <div id="themeToggle" class="site-header-actions flex light z-20 absolute">
+  <div id="themeToggle" class:list={['site-header-actions', 'light']}>
     <a
-      class="site-header-action hidden md:inline-flex"
+      class="site-header-action site-header-action--rss"
       href={`${base}rss.xml`}
       title="RSS"
       aria-label="RSS feed"

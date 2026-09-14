@@ -1,0 +1,109 @@
+---
+const eras = [
+  {
+    id: 'default',
+    name: 'Default',
+    years: 'Original',
+    label: 'Default · Original Blog',
+  },
+  {
+    id: 'liquid-glass',
+    name: 'Liquid Glass',
+    years: '2025–26',
+    label: 'Liquid Glass · 2025–26',
+  },
+  {
+    id: 'glassmorphism',
+    name: 'Glassmorphism',
+    years: '2021–24',
+    label: 'Glassmorphism · 2021–24',
+  },
+  {
+    id: 'brutalism',
+    name: 'Brutalism',
+    years: 'Timeless',
+    label: 'Brutalism · Timeless',
+  },
+  {
+    id: 'skeuomorphism',
+    name: 'Skeuomorphism',
+    years: '2007–13',
+    label: 'Skeuomorphism · 2007–13',
+  },
+  {
+    id: 'flat',
+    name: 'Flat',
+    years: '2013–20',
+    label: 'Flat / Material · 2013–20',
+  },
+] as const;
+---
+
+<section class="design-era-picker" aria-label="Design era selector">
+  <header class="design-era-picker-header">
+    <p class="trend-toggle-kicker">Design Era</p>
+    <p class="trend-toggle-current" id="trend-badge-label">Default · Original Blog</p>
+  </header>
+
+  <div class="trend-toggle-swatches" role="toolbar" aria-label="Choose a design era">
+    {
+      eras.map((era) => (
+        <button
+          type="button"
+          class="trend-swatch"
+          data-era={era.id}
+          aria-pressed="false"
+          aria-label={`${era.name}, ${era.years}`}
+          title={`${era.name} · ${era.years}`}
+        >
+          <span class={`trend-swatch-preview trend-swatch-preview--${era.id}`} aria-hidden="true">
+            <span class="trend-swatch-chrome" />
+            <span class="trend-swatch-body" />
+            <span class="trend-swatch-accent" />
+          </span>
+          <span class="trend-swatch-meta">
+            <span class="trend-swatch-name">{era.name}</span>
+            <span class="trend-swatch-years">{era.years}</span>
+          </span>
+        </button>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const STORAGE_KEY = 'blog-design-era';
+  const DEFAULT_TREND = 'default';
+
+  const trendLabels: Record<string, string> = {
+    default: 'Default · Original Blog',
+    'liquid-glass': 'Liquid Glass · 2025–26',
+    glassmorphism: 'Glassmorphism · 2021–24',
+    brutalism: 'Brutalism · Timeless',
+    skeuomorphism: 'Skeuomorphism · 2007–13',
+    flat: 'Flat / Material · 2013–20',
+  };
+
+  function applyTrend(trend: string) {
+    document.documentElement.setAttribute('data-trend', trend);
+    localStorage.setItem(STORAGE_KEY, trend);
+
+    document.querySelectorAll<HTMLButtonElement>('.trend-swatch[data-era]').forEach((btn) => {
+      const isActive = btn.dataset.era === trend;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', String(isActive));
+    });
+
+    const badge = document.getElementById('trend-badge-label');
+    if (badge) badge.textContent = trendLabels[trend] ?? trend;
+  }
+
+  const saved = localStorage.getItem(STORAGE_KEY) ?? DEFAULT_TREND;
+  applyTrend(saved);
+
+  document.querySelectorAll<HTMLButtonElement>('.trend-swatch[data-era]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.era) applyTrend(btn.dataset.era);
+    });
+  });
+</script>
