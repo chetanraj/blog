@@ -32,7 +32,7 @@ const [latestPost, ...otherPosts] = posts;
         );
         const isNew = daysSince < 35;
         return (
-          <Link href={`${base}posts/${latestPost.slug}/`} className="index-post-link">
+          <Link href={`${base}posts/${latestPost.id}/`} className="index-post-link">
             <Stack gap="sm" className="index-post-preview">
               <Text as="span" size="2xl" weight="regular" className="index-post-title">
                 {latestPost.data.title}
@@ -75,7 +75,7 @@ const [latestPost, ...otherPosts] = posts;
           const isNew = daysSince < 35;
           return (
             <li>
-              <Link href={`${base}posts/${post.slug}/`} className="index-post-link">
+              <Link href={`${base}posts/${post.id}/`} className="index-post-link">
                 <Stack gap="sm" className="index-post-preview">
                   <Text as="span" size="2xl" weight="regular" className="index-post-title">
                     {post.data.title}

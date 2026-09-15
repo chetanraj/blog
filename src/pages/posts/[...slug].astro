@@ -20,7 +20,7 @@ export const prerender = true;
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: { post },
   }));
 }
@@ -41,7 +41,7 @@ const { previous: previousPost, next: nextPost } = getAdjacentPosts(
   post,
   allPublished
 );
-const postUrl = absoluteUrl(`/posts/${post.slug}/`);
+const postUrl = absoluteUrl(`/posts/${post.id}/`);
 const modifiedTime = post.data.updated?.toISOString();
 const publishedTime = post.data.date.toISOString();
 const showUpdated =
@@ -52,7 +52,7 @@ const showUpdated =
   title={post.data.title}
   headerTitle={post.data.title}
   description={post.data.description}
-  path={`/posts/${post.slug}/`}
+  path={`/posts/${post.id}/`}
   type="article"
   publishedTime={publishedTime}
   modifiedTime={modifiedTime}
@@ -118,7 +118,7 @@ const showUpdated =
 
           <div class="post-end-actions">
             <PostShare title={post.data.title} url={postUrl} />
-            <EmojiReaction id={post.slug} />
+            <EmojiReaction id={post.id} />
           </div>
           <RelatedPosts previous={previousPost} next={nextPost} base={base} />
         </div>

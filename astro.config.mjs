@@ -3,6 +3,7 @@ import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import stylex from '@stylexjs/unplugin';
+import { unified } from '@astrojs/markdown-remark';
 import { remarkReadingTime } from './remark-reading-time.mjs';
 
 export default defineConfig({
@@ -25,7 +26,9 @@ export default defineConfig({
     },
   },
   markdown: {
-    remarkPlugins: [remarkReadingTime],
+    processor: unified({
+      remarkPlugins: [remarkReadingTime],
+    }),
     shikiConfig: {
       theme: 'dracula',
       transformers: [
