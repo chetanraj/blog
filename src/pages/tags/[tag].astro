@@ -46,7 +46,7 @@ const posts = getPostsByTag(allPosts, resolvedTag);
         {
           posts.map((post) => (
             <li>
-              <Link href={`${base}posts/${post.slug}/`} className="archive-link">
+              <Link href={`${base}posts/${post.id}/`} className="archive-link">
                 <Stack gap="xs">
                   <Text as="span" weight="semibold" className="archive-title">
                     {post.data.title}

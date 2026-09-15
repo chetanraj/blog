@@ -17,7 +17,7 @@ const { previous, next, base } = Astro.props;
     <nav class="post-pager" aria-label="Previous and next posts">
       {previous ? (
         <a
-          href={`${base}posts/${previous.slug}/`}
+          href={`${base}posts/${previous.id}/`}
           class="post-pager-link post-pager-prev"
           aria-label={`Previous: ${previous.data.title}`}
         >
@@ -29,7 +29,7 @@ const { previous, next, base } = Astro.props;
       )}
       {next ? (
         <a
-          href={`${base}posts/${next.slug}/`}
+          href={`${base}posts/${next.id}/`}
           class="post-pager-link post-pager-next"
           aria-label={`Next: ${next.data.title}`}
         >
