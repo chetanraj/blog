@@ -29,11 +29,17 @@ export const headerStyles = stylex.create({
   },
   tagline: {
     marginTop: '1rem',
-    marginInline: '1.5rem',
+    marginInline: '2.75rem',
     fontSize: '1.125rem',
     fontWeight: 300,
+    lineHeight: 1.45,
+    textWrap: 'balance',
     transitionProperty: 'color',
     transitionDuration: '500ms',
+    '@media (max-width: 767px)': {
+      fontSize: '1rem',
+      marginTop: '0.75rem',
+    },
     '@media (min-width: 768px)': {
       width: '40%',
       marginInline: 0,
@@ -46,12 +52,17 @@ export const headerStyles = stylex.create({
     },
   },
   taglineLink: {
+    color: colors.headerText,
     textDecoration: 'underline',
+    textUnderlineOffset: '0.15em',
+    whiteSpace: 'nowrap',
   },
   homeLink: {
-    color: colors.bg,
+    color: colors.headerText,
   },
   homeAnchor: {
+    color: colors.headerText,
+    textDecoration: 'none',
     cursor: 'pointer',
     transitionProperty: 'color',
     transitionDuration: '500ms',

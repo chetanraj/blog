@@ -1,9 +1,11 @@
 ---
 interface Props {
   id: string;
+  variant?: 'compact' | 'bar';
 }
 
-const { id } = Astro.props;
+const { id, variant = 'compact' } = Astro.props;
+const isBar = variant === 'bar';
 
 const emojis = [
   { glyph: '🔥', name: 'Fire' },
@@ -14,16 +16,25 @@ const emojis = [
 ];
 ---
 
-<div class="emoji-reaction" data-reaction-id={id}>
-  <button
-    type="button"
-    class="emoji-reaction-trigger"
-    aria-expanded="false"
-    aria-label="React"
+<div class:list={['emoji-reaction', isBar && 'emoji-reaction--bar']} data-reaction-id={id}>
+  {
+    !isBar && (
+      <button
+        type="button"
+        class="emoji-reaction-trigger"
+        aria-expanded="false"
+        aria-label="React"
+      >
+        <span class="emoji-reaction-face" data-reaction-face>+</span>
+      </button>
+    )
+  }
+  <div
+    class="emoji-reaction-bar"
+    hidden={!isBar}
+    role="listbox"
+    aria-label="Reactions"
   >
-    <span class="emoji-reaction-face" data-reaction-face>+</span>
-  </button>
-  <div class="emoji-reaction-bar" hidden role="listbox" aria-label="Reactions">
     {
       emojis.map((emoji) => (
         <button
@@ -99,12 +110,14 @@ const emojis = [
       var trigger = root.querySelector('.emoji-reaction-trigger');
       var face = root.querySelector('[data-reaction-face]');
       var bar = root.querySelector('.emoji-reaction-bar');
+      var alwaysOpen = root.classList.contains('emoji-reaction--bar');
       var state = loadState(id);
       state.counts = state.counts || {};
       var holdTimer = null;
 
       function isOpen() {
-        return trigger.getAttribute('aria-expanded') === 'true';
+        if (alwaysOpen) return true;
+        return trigger && trigger.getAttribute('aria-expanded') === 'true';
       }
 
       function renderCounts() {
@@ -115,22 +128,23 @@ const emojis = [
           if (n > 0) el.removeAttribute('hidden');
           else el.setAttribute('hidden', '');
         });
-        if (!isOpen()) {
+        if (face && !isOpen()) {
           face.textContent = state.last || '+';
         }
       }
 
       function setOpen(open) {
+        if (alwaysOpen || !trigger) return;
         trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
         trigger.classList.toggle('is-open', open);
         if (open) {
           bar.removeAttribute('hidden');
           placeBar(root);
-          face.textContent = '×';
+          if (face) face.textContent = '×';
           trigger.setAttribute('aria-label', 'Close reactions');
         } else {
           bar.setAttribute('hidden', '');
-          face.textContent = state.last || '+';
+          if (face) face.textContent = state.last || '+';
           trigger.setAttribute('aria-label', 'React');
         }
       }
@@ -143,10 +157,12 @@ const emojis = [
         burst(emoji, origin);
       }
 
-      trigger.addEventListener('click', function (event) {
-        event.stopPropagation();
-        setOpen(!isOpen());
-      });
+      if (trigger) {
+        trigger.addEventListener('click', function (event) {
+          event.stopPropagation();
+          setOpen(!isOpen());
+        });
+      }
 
       root.querySelectorAll('.emoji-reaction-pick').forEach(function (pick) {
         pick.addEventListener('click', function (event) {
@@ -176,7 +192,7 @@ const emojis = [
         if (event.key === 'Escape' || event.key === 'Esc') {
           event.preventDefault();
           setOpen(false);
-          trigger.focus();
+          if (trigger) trigger.focus();
           return;
         }
         var picks = Array.prototype.slice.call(root.querySelectorAll('.emoji-reaction-pick'));
