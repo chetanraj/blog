@@ -1,5 +1,7 @@
 name: Deploy blog to GitHub Pages
 
+# Production: GitHub Pages. PR previews: Vercel. Netlify is not used.
+
 on:
   push:
     branches: [main]
