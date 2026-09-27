@@ -21,7 +21,7 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     {
       !title && (
         <div {...stylex.props(headerStyles.tagline)}>
-          Web Designer & Developer,{' '}
+          Web Designer & Developer,<wbr />{' '}
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -30,7 +30,7 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
           >
             Tech Instagrammer
           </a>
-          , Music, Movies, Gadgets, Iron Man & Batman lover.
+          , Music, Movies, Gadgets,<wbr /> Iron Man & Batman lover.
         </div>
       )
     }

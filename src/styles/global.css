@@ -216,6 +216,23 @@ header .light,
   z-index: 10;
 }
 
+.site-header .home a,
+.site-header .home a:visited,
+.site-header .home a:hover {
+  color: var(--header-text);
+  text-decoration: none;
+}
+
+.site-header .hero-text a,
+.site-header .hero-text a:visited {
+  color: var(--header-text);
+}
+
+.site-header .hero-text a:hover {
+  color: var(--header-text);
+  opacity: 0.85;
+}
+
 .hero-text {
   font-family: var(--trend-font-heading);
 }
@@ -697,6 +714,16 @@ header .light,
   align-items: center;
   gap: 0.75rem;
   margin: 1.5rem 0 2rem;
+}
+
+.emoji-reaction--bar .emoji-reaction-bar {
+  position: static;
+  right: auto;
+  bottom: auto;
+}
+
+.emoji-reaction--bar .emoji-reaction-bar[hidden] {
+  display: flex;
 }
 
 .index-react-label {

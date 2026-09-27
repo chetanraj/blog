@@ -19,7 +19,7 @@ export async function GET(context: { site: string | URL }) {
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description ?? '',
-      link: absoluteUrl(`/posts/${post.slug}/`),
+      link: absoluteUrl(`/posts/${post.id}/`),
       categories: post.data.tags,
     })),
   });

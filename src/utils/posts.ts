@@ -11,7 +11,7 @@ export function getAdjacentPosts(
     .filter((post) => post.data.published !== false)
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-  const index = published.findIndex((post) => post.slug === current.slug);
+  const index = published.findIndex((post) => post.id === current.id);
 
   return {
     previous: index >= 0 ? published[index + 1] : undefined,
@@ -25,7 +25,7 @@ export function getRelatedPosts(
   limit = 3
 ): CollectionEntry<'posts'>[] {
   const others = allPosts.filter(
-    (post) => post.slug !== current.slug && post.data.published !== false
+    (post) => post.id !== current.id && post.data.published !== false
   );
 
   const tagged = others
@@ -48,7 +48,7 @@ export function getRelatedPosts(
 
   const recent = others
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-    .filter((post) => !tagged.some((picked) => picked.slug === post.slug));
+    .filter((post) => !tagged.some((picked) => picked.id === post.id));
 
   return [...tagged, ...recent].slice(0, limit);
 }
