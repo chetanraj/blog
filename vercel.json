@@ -1,27 +1,13 @@
 {
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/blog/",
-      "permanent": false
-    }
-  ],
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd portfolio && npm install && npm run build",
+  "installCommand": "cd portfolio && npm install",
+  "outputDirectory": "portfolio/dist",
+  "framework": "vite",
   "rewrites": [
     {
-      "source": "/blog",
+      "source": "/(.*)",
       "destination": "/index.html"
-    },
-    {
-      "source": "/blog/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/blog/:path*/",
-      "destination": "/:path*/index.html"
-    },
-    {
-      "source": "/blog/:path*",
-      "destination": "/:path*"
     }
   ]
 }
