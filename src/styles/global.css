@@ -709,32 +709,6 @@ header .light,
   border-top: 0;
 }
 
-.index-react {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 1.5rem 0 2rem;
-}
-
-.emoji-reaction--bar .emoji-reaction-bar {
-  position: static;
-  right: auto;
-  bottom: auto;
-}
-
-.emoji-reaction--bar .emoji-reaction-bar[hidden] {
-  display: flex;
-}
-
-.index-react-label {
-  margin: 0;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  font-size: 0.75rem;
-  line-height: 1rem;
-}
-
 .emoji-reaction {
   position: relative;
   display: inline-flex;
