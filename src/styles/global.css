@@ -515,13 +515,15 @@ header .light,
 }
 
 .index-post-meta {
-  color: var(--color-lightgray);
+  color: var(--color-secondary);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
-.index-post-new {
+.index-post-date {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.35rem;
 }
 
 .index-post-list {
@@ -709,13 +711,6 @@ header .light,
   border-top: 0;
 }
 
-.index-react {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 1.5rem 0 2rem;
-}
-
 .emoji-reaction--bar .emoji-reaction-bar {
   position: static;
   right: auto;
@@ -724,15 +719,6 @@ header .light,
 
 .emoji-reaction--bar .emoji-reaction-bar[hidden] {
   display: flex;
-}
-
-.index-react-label {
-  margin: 0;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  font-size: 0.75rem;
-  line-height: 1rem;
 }
 
 .emoji-reaction {
