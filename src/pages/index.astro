@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Badge, Link, Stack, Text } from '@capper-ui/react';
+import { Badge, Inline, Link, Stack, Text } from '@capper-ui/react';
 import { getCollection } from 'astro:content';
 import { SITE } from '../site.config';
+import { BlogIcon } from '../components/icons/BlogIcon';
+import { Calendar } from '../icons';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
@@ -12,6 +14,14 @@ const posts = (await getCollection('posts'))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const [latestPost, ...otherPosts] = posts;
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
 ---
 
 <BaseLayout
@@ -39,17 +49,17 @@ const [latestPost, ...otherPosts] = posts;
               <Text as="span" color="muted" className="index-post-description">
                 {latestPost.data.description}
               </Text>
-              <Text as="span" size="sm" color="subtle" className="index-post-meta">
-                wrote on {latestPost.data.date.toISOString().slice(0, 10)}
-                {isNew ? (
-                  <span class="index-post-new">
-                    {' '}
-                    · <Badge variant="accent" size="sm">New</Badge>
-                  </span>
-                ) : (
-                  ''
+              <Inline as="span" gap="sm" align="center" wrap className="index-post-meta">
+                <time datetime={latestPost.data.date.toISOString()} class="index-post-date">
+                  <BlogIcon icon={Calendar} size="sm" className="post-meta-icon" />
+                  {formatDate(latestPost.data.date)}
+                </time>
+                {isNew && (
+                  <Badge variant="accent" size="sm">
+                    New
+                  </Badge>
                 )}
-              </Text>
+              </Inline>
             </Stack>
           </Link>
         );
@@ -78,17 +88,17 @@ const [latestPost, ...otherPosts] = posts;
                   <Text as="span" color="muted" className="index-post-description">
                     {post.data.description}
                   </Text>
-                  <Text as="span" size="sm" color="subtle" className="index-post-meta">
-                    wrote on {post.data.date.toISOString().slice(0, 10)}
-                    {isNew ? (
-                      <span class="index-post-new">
-                        {' '}
-                        · <Badge variant="accent" size="sm">New</Badge>
-                      </span>
-                    ) : (
-                      ''
+                  <Inline as="span" gap="sm" align="center" wrap className="index-post-meta">
+                    <time datetime={post.data.date.toISOString()} class="index-post-date">
+                      <BlogIcon icon={Calendar} size="sm" className="post-meta-icon" />
+                      {formatDate(post.data.date)}
+                    </time>
+                    {isNew && (
+                      <Badge variant="accent" size="sm">
+                        New
+                      </Badge>
                     )}
-                  </Text>
+                  </Inline>
                 </Stack>
               </Link>
             </li>
