@@ -20,7 +20,9 @@ export const headerStyles = stylex.create({
     color: colors.bg,
   },
   title: {
+    margin: 0,
     maxWidth: '48rem',
+    fontWeight: 'normal',
     paddingInline: '1rem',
     fontSize: '1.5rem',
     lineHeight: 1.25,

@@ -15,9 +15,9 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
 
 <header class:list={['site-header', 'site-chrome', stylex.props(headerStyles.root).className]}>
   <div class:list={['hero-text', stylex.props(headerStyles.hero).className]}>
-    <div {...stylex.props(headerStyles.title)}>
+    <h1 {...stylex.props(headerStyles.title)}>
       {headerTitle}
-    </div>
+    </h1>
     {
       !title && (
         <div {...stylex.props(headerStyles.tagline)}>

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Link, Stack, Text } from '@capper-ui/react';
 import { getCollection } from 'astro:content';
 import { findTagBySlug, getPostsByTag, tagToSlug } from '../../utils/tags';
+import { formatDate } from '../../utils/date';
 
 export const prerender = true;
 
@@ -52,7 +53,7 @@ const posts = getPostsByTag(allPosts, resolvedTag);
                     {post.data.title}
                   </Text>
                   <Text as="span" size="sm" color="subtle" className="archive-date">
-                    {post.data.date.toISOString().slice(0, 10)}
+                    {formatDate(post.data.date)}
                   </Text>
                 </Stack>
               </Link>

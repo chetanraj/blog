@@ -12,6 +12,7 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { absoluteUrl } from '../../site.config';
 import { getAdjacentPosts } from '../../utils/posts';
 import { tagToSlug } from '../../utils/tags';
+import { formatDate } from '../../utils/date';
 import * as stylex from '@stylexjs/stylex';
 import { utilityStyles } from '../../styles/utilities.stylex';
 
@@ -73,13 +74,13 @@ const showUpdated =
           <Inline gap="md" wrap align="center" className="post-meta">
             <time datetime={publishedTime} class="post-meta-item">
               <BlogIcon icon={Calendar} size="md" className="post-meta-icon" />
-              {post.data.date.toISOString().slice(0, 10)}
+              {formatDate(post.data.date)}
             </time>
 
             {
               showUpdated && post.data.updated && (
                 <span class="post-meta-item post-meta-updated">
-                  updated {post.data.updated.toISOString().slice(0, 10)}
+                  updated {formatDate(post.data.updated)}
                 </span>
               )
             }
