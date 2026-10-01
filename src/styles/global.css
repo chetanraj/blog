@@ -43,7 +43,9 @@ html[data-color-mode='dark'] {
   color: var(--bg-color);
 }
 
-.skip-link {
+.skip-link,
+.skip-link:link,
+.skip-link:visited {
   position: absolute;
   left: 0.75rem;
   top: 0.75rem;
@@ -97,6 +99,12 @@ header {
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+/* Same color for unvisited and visited; defeat UA purple / -webkit-link. */
+a:link,
+a:visited {
+  color: var(--color-accent);
 }
 
 .site-chrome {
@@ -188,7 +196,9 @@ header .light,
   }
 }
 
-.site-header-action {
+.site-header-action,
+.site-header-action:link,
+.site-header-action:visited {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -392,7 +402,11 @@ header .light,
 }
 
 .post-toc-item a,
-.post-toc-link {
+.post-toc-item a:link,
+.post-toc-item a:visited,
+.post-toc-link,
+.post-toc-link:link,
+.post-toc-link:visited {
   display: block;
   padding: 0.3rem 0;
   color: var(--on-surface-text, var(--primary-text));
@@ -408,7 +422,9 @@ header .light,
   color: var(--on-surface-accent, var(--color-accent));
 }
 
-.blog-post-content .post-toc .post-toc-link {
+.blog-post-content .post-toc .post-toc-link,
+.blog-post-content .post-toc .post-toc-link:link,
+.blog-post-content .post-toc .post-toc-link:visited {
   color: var(--on-surface-text, var(--primary-text));
   text-decoration: none;
 }
@@ -542,7 +558,9 @@ header .light,
   text-align: inherit;
 }
 
-.site-footer-brand-inline {
+.site-footer-brand-inline,
+.site-footer-brand-inline:link,
+.site-footer-brand-inline:visited {
   color: inherit;
   text-decoration: none;
 }
@@ -553,7 +571,9 @@ header .light,
   text-underline-offset: 0.18em;
 }
 
-.site-footer-icon-link {
+.site-footer-icon-link,
+.site-footer-icon-link:link,
+.site-footer-icon-link:visited {
   color: var(--header-text);
   text-decoration: none;
   display: inline-flex;
@@ -1014,6 +1034,8 @@ header .light,
   }
 
   .post-pager-link,
+  .post-pager-link:link,
+  .post-pager-link:visited,
   .post-pager-link:hover,
   .post-pager-link:focus-visible {
     display: flex;
@@ -1238,7 +1260,9 @@ header .light,
   margin-bottom: 1rem;
 }
 
-.blog-post-content a:not(.text-base):not(.tag-pill):not(.post-tag):not(.post-toc-link) {
+.blog-post-content a:not(.text-base):not(.tag-pill):not(.post-tag):not(.post-toc-link),
+.blog-post-content a:not(.text-base):not(.tag-pill):not(.post-tag):not(.post-toc-link):link,
+.blog-post-content a:not(.text-base):not(.tag-pill):not(.post-tag):not(.post-toc-link):visited {
   color: var(--color-accent);
   text-decoration: underline;
   text-decoration-color: var(--trend-border-accent);
