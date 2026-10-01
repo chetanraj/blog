@@ -200,6 +200,28 @@ header .light,
   text-decoration: none;
 }
 
+.site-header-action--accent {
+  position: relative;
+  cursor: pointer;
+}
+
+.site-header-accent-icon {
+  display: inline-flex;
+  pointer-events: none;
+}
+
+.site-header-accent-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
 .site-header,
 .site-header .text-blog-bg {
   color: var(--header-text);

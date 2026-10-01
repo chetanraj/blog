@@ -1,6 +1,6 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
-import { ArrowLeft, Monitor, Moon, Rss, Search, Sun } from '../icons';
+import { ArrowLeft, Droplet, Monitor, Moon, Rss, Search, Sun } from '../icons';
 import * as stylex from '@stylexjs/stylex';
 import { headerStyles } from '../styles/header.stylex';
 
@@ -70,6 +70,21 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     >
       <BlogIcon icon={Search} />
     </a>
+    <label
+      class="site-header-action site-header-action--accent"
+      title="Accent color"
+    >
+      <span class="site-header-accent-icon" aria-hidden="true">
+        <BlogIcon icon={Droplet} />
+      </span>
+      <input
+        class="site-header-accent-input"
+        type="color"
+        id="accentColorInput"
+        value="#0f4c81"
+        aria-label="Choose accent color"
+      />
+    </label>
     <button
       class="site-header-action theme-icon-button"
       title="Theme"
@@ -97,7 +112,56 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
   const body = document.body;
   const wrap = document.getElementById('themeToggle');
   const btn = document.getElementById('themeButton');
+  const accentInput = document.getElementById('accentColorInput');
+  const ACCENT_STORAGE_KEY = 'blog-accent-color';
+  const DEFAULT_ACCENT = '#0f4c81';
   const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function normalizeAccent(value) {
+    if (typeof value !== 'string') return null;
+    const hex = value.trim();
+    if (/^#[0-9a-fA-F]{6}$/.test(hex)) return hex.toLowerCase();
+    if (/^#[0-9a-fA-F]{3}$/.test(hex)) {
+      return (
+        '#' +
+        hex
+          .slice(1)
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      ).toLowerCase();
+    }
+    return null;
+  }
+
+  function applyAccent(color) {
+    const next = normalizeAccent(color);
+    if (!next) return;
+    root.style.setProperty('--color-accent', next);
+    root.style.setProperty('--on-surface-accent', next);
+    if (accentInput) accentInput.value = next;
+    window.localStorage.setItem(ACCENT_STORAGE_KEY, next);
+  }
+
+  function syncAccentInput() {
+    if (!accentInput) return;
+    const stored = normalizeAccent(window.localStorage.getItem(ACCENT_STORAGE_KEY));
+    if (stored) {
+      accentInput.value = stored;
+      return;
+    }
+    const computed = getComputedStyle(root).getPropertyValue('--color-accent').trim();
+    accentInput.value = normalizeAccent(computed) || DEFAULT_ACCENT;
+  }
+
+  const storedAccent = normalizeAccent(window.localStorage.getItem(ACCENT_STORAGE_KEY));
+  if (storedAccent) applyAccent(storedAccent);
+  else syncAccentInput();
+
+  accentInput?.addEventListener('input', (event) => {
+    applyAccent(event.target.value);
+  });
+  accentInput?.addEventListener('focus', syncAccentInput);
 
   function getInitialTheme() {
     const persisted = window.localStorage.getItem('theme');

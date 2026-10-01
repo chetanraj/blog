@@ -91,6 +91,14 @@ export function Clock(props: FeatherIconProps) {
   );
 }
 
+export function Droplet(props: FeatherIconProps) {
+  return (
+    <FeatherIcon {...props}>
+      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+    </FeatherIcon>
+  );
+}
+
 export function Github(props: FeatherIconProps) {
   return (
     <FeatherIcon {...props}>

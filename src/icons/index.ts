@@ -6,6 +6,7 @@ export {
   Check,
   Clipboard,
   Clock,
+  Droplet,
   Github,
   Instagram,
   Linkedin,
