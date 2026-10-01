@@ -74,3 +74,6 @@ yarn-error.log
 
 # Vercel
 .vercel
+
+# Netlify
+.netlify
