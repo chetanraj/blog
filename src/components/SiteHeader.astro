@@ -137,8 +137,29 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
   function applyAccent(color) {
     const next = normalizeAccent(color);
     if (!next) return;
+    const isDark = root.dataset.colorMode === 'dark';
+    const mixBase = isDark ? 'black' : 'white';
     root.style.setProperty('--color-accent', next);
     root.style.setProperty('--on-surface-accent', next);
+    root.style.setProperty('--c-accent', next);
+    root.style.setProperty('--c-accent-emphasis', next);
+    root.style.setProperty('--c-focus-ring', next);
+    root.style.setProperty(
+      '--c-accent-hover',
+      `color-mix(in srgb, ${next} 82%, ${isDark ? 'white' : 'black'})`
+    );
+    root.style.setProperty(
+      '--c-accent-active',
+      `color-mix(in srgb, ${next} 68%, ${isDark ? 'white' : 'black'})`
+    );
+    root.style.setProperty(
+      '--c-accent-subtle',
+      `color-mix(in srgb, ${next} 14%, ${mixBase})`
+    );
+    root.style.setProperty(
+      '--c-accent-muted',
+      `color-mix(in srgb, ${next} 24%, ${mixBase})`
+    );
     if (accentInput) accentInput.value = next;
     window.localStorage.setItem(ACCENT_STORAGE_KEY, next);
   }
@@ -222,6 +243,8 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     showThemeIcon(next);
     window.localStorage.setItem('theme', next);
     playSound();
+    const storedAccent = normalizeAccent(window.localStorage.getItem(ACCENT_STORAGE_KEY));
+    if (storedAccent) applyAccent(storedAccent);
   }
 
   const initial = typeof window !== 'undefined' ? getInitialTheme() : 'light';
