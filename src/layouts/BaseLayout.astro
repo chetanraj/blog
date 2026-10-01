@@ -50,37 +50,10 @@ const {
           themePreference === 'system' ? (prefersDark ? 'dark' : 'light') : themePreference;
         const storedEra = window.localStorage.getItem('blog-design-era');
         const designEra = storedEra || 'default';
-        const storedAccent = window.localStorage.getItem('blog-accent-color');
 
         root.dataset.colorMode = colorMode;
         root.dataset.themePreference = themePreference;
         root.dataset.trend = designEra;
-
-        if (storedAccent && /^#[0-9a-fA-F]{6}$/.test(storedAccent)) {
-          const isDark = colorMode === 'dark';
-          const mixBase = isDark ? 'black' : 'white';
-          root.style.setProperty('--color-accent', storedAccent);
-          root.style.setProperty('--on-surface-accent', storedAccent);
-          root.style.setProperty('--c-accent', storedAccent);
-          root.style.setProperty('--c-accent-emphasis', storedAccent);
-          root.style.setProperty('--c-focus-ring', storedAccent);
-          root.style.setProperty(
-            '--c-accent-hover',
-            `color-mix(in srgb, ${storedAccent} 82%, ${isDark ? 'white' : 'black'})`
-          );
-          root.style.setProperty(
-            '--c-accent-active',
-            `color-mix(in srgb, ${storedAccent} 68%, ${isDark ? 'white' : 'black'})`
-          );
-          root.style.setProperty(
-            '--c-accent-subtle',
-            `color-mix(in srgb, ${storedAccent} 14%, ${mixBase})`
-          );
-          root.style.setProperty(
-            '--c-accent-muted',
-            `color-mix(in srgb, ${storedAccent} 24%, ${mixBase})`
-          );
-        }
       })();
     </script>
     <title>{title}</title>

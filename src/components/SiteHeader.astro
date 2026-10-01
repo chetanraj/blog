@@ -113,7 +113,6 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
   const wrap = document.getElementById('themeToggle');
   const btn = document.getElementById('themeButton');
   const accentInput = document.getElementById('accentColorInput');
-  const ACCENT_STORAGE_KEY = 'blog-accent-color';
   const DEFAULT_ACCENT = '#0f4c81';
   const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -161,23 +160,22 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
       `color-mix(in srgb, ${next} 24%, ${mixBase})`
     );
     if (accentInput) accentInput.value = next;
-    window.localStorage.setItem(ACCENT_STORAGE_KEY, next);
   }
 
   function syncAccentInput() {
     if (!accentInput) return;
-    const stored = normalizeAccent(window.localStorage.getItem(ACCENT_STORAGE_KEY));
-    if (stored) {
-      accentInput.value = stored;
+    const inline = normalizeAccent(root.style.getPropertyValue('--color-accent'));
+    if (inline) {
+      accentInput.value = inline;
       return;
     }
     const computed = getComputedStyle(root).getPropertyValue('--color-accent').trim();
     accentInput.value = normalizeAccent(computed) || DEFAULT_ACCENT;
   }
 
-  const storedAccent = normalizeAccent(window.localStorage.getItem(ACCENT_STORAGE_KEY));
-  if (storedAccent) applyAccent(storedAccent);
-  else syncAccentInput();
+  // Session-only: clear any older persisted accent so refresh uses the design default.
+  window.localStorage.removeItem('blog-accent-color');
+  syncAccentInput();
 
   accentInput?.addEventListener('input', (event) => {
     applyAccent(event.target.value);
@@ -243,8 +241,9 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     showThemeIcon(next);
     window.localStorage.setItem('theme', next);
     playSound();
-    const storedAccent = normalizeAccent(window.localStorage.getItem(ACCENT_STORAGE_KEY));
-    if (storedAccent) applyAccent(storedAccent);
+    if (root.style.getPropertyValue('--color-accent')) {
+      applyAccent(accentInput?.value || DEFAULT_ACCENT);
+    }
   }
 
   const initial = typeof window !== 'undefined' ? getInitialTheme() : 'light';
