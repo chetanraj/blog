@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 import { SITE } from '../site.config';
 import { BlogIcon } from '../components/icons/BlogIcon';
 import { Calendar } from '../icons';
+import { formatDate } from '../utils/date';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
@@ -14,14 +15,6 @@ const posts = (await getCollection('posts'))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const [latestPost, ...otherPosts] = posts;
-
-const formatDate = (date: Date) =>
-  date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
 ---
 
 <BaseLayout
@@ -29,7 +22,7 @@ const formatDate = (date: Date) =>
   description={SITE.description}
   path="/"
 >
-  <Text as="h2" size="3xl" weight="regular" className="index-section-title">
+  <Text as="h2" size="sm" weight="bold" className="index-section-title">
     Latest post
   </Text>
 
@@ -66,7 +59,7 @@ const formatDate = (date: Date) =>
       })()
   }
 
-  <Text as="h2" size="3xl" weight="regular" className="index-section-title">
+  <Text as="h2" size="sm" weight="bold" className="index-section-title">
     Other posts
   </Text>
 

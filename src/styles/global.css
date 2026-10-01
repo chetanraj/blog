@@ -79,7 +79,7 @@ body {
   overflow-x: hidden;
   font-family: var(
     --trend-font-body,
-    'Geist',
+    'Mona Sans Variable',
     ui-sans-serif,
     system-ui,
     -apple-system,
@@ -161,7 +161,7 @@ a:visited {
 
 .bg {
   background-color: rgba(15, 76, 129, 60%);
-  background-image: url('../images/bg.jpg');
+  background-image: url('../images/bg.webp');
   background-position: 0 30%;
   background-repeat: no-repeat;
   width: 100%;
@@ -496,9 +496,10 @@ header .light,
 }
 
 .index-section-title {
-  margin: 1.5rem 0 1rem;
-  color: var(--color-lightgray);
-  text-wrap: balance;
+  margin: 2rem 0 1rem;
+  color: var(--color-accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .index-post-link {
