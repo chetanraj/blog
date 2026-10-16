@@ -1,6 +1,6 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
-import { ArrowLeft, Monitor, Moon, Rss, Search, Sun } from '../icons';
+import { ArrowLeft, ChevronDown, Monitor, Moon, Rss, Search, Sun } from '../icons';
 import * as stylex from '@stylexjs/stylex';
 import { headerStyles } from '../styles/header.stylex';
 
@@ -36,22 +36,45 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     }
   </div>
 
-  <span class:list={['home', stylex.props(headerStyles.homeLink).className]}>
-    {
-      !title ? (
-        <a
-          {...stylex.props(headerStyles.homeAnchor)}
-          href="https://chetanraj.dev"
+  <nav class="site-header-nav" aria-label="Site">
+    <span class:list={['home', stylex.props(headerStyles.homeLink).className]}>
+      {
+        !title ? (
+          <a
+            {...stylex.props(headerStyles.homeAnchor)}
+            href="https://chetanraj.dev"
+          >
+            HOME
+          </a>
+        ) : (
+          <a {...stylex.props(headerStyles.homeAnchor)} href={base} aria-label="Back to blog home">
+            <BlogIcon icon={ArrowLeft} label="Back to blog home" />
+          </a>
+        )
+      }
+    </span>
+
+    <details class="site-header-menu" id="playgroundMenu">
+      <summary class="site-header-menu-trigger">
+        PLAYGROUND
+        <BlogIcon icon={ChevronDown} size="sm" />
+      </summary>
+      <div class="site-header-menu-panel" role="menu" aria-label="Playground">
+        <a class="site-header-menu-item" role="menuitem" href={`${base}playground/`}>
+          Design Eras
+        </a>
+        <button
+          class="site-header-menu-item"
+          role="menuitemcheckbox"
+          type="button"
+          id="ironManFontToggle"
+          aria-checked="false"
         >
-          HOME
-        </a>
-      ) : (
-        <a {...stylex.props(headerStyles.homeAnchor)} href={base} aria-label="Back to blog home">
-          <BlogIcon icon={ArrowLeft} label="Back to blog home" />
-        </a>
-      )
-    }
-  </span>
+          Iron Man Font
+        </button>
+      </div>
+    </details>
+  </nav>
 
   <div id="themeToggle" class:list={['site-header-actions', 'light']}>
     <a
@@ -176,6 +199,34 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     const next =
       current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
     setTheme(next);
+  });
+
+  const menu = document.getElementById('playgroundMenu');
+  const fontToggle = document.getElementById('ironManFontToggle');
+
+  function applyFont(font) {
+    if (font === 'iron-man') root.dataset.font = 'iron-man';
+    else delete root.dataset.font;
+    fontToggle?.setAttribute('aria-checked', String(font === 'iron-man'));
+  }
+
+  applyFont(window.localStorage.getItem('blog-font'));
+
+  fontToggle?.addEventListener('click', () => {
+    const next = root.dataset.font === 'iron-man' ? 'default' : 'iron-man';
+    window.localStorage.setItem('blog-font', next);
+    applyFont(next);
+  });
+
+  document.addEventListener('click', (event) => {
+    if (menu?.open && !menu.contains(event.target)) menu.open = false;
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && menu?.open) {
+      menu.open = false;
+      menu.querySelector('summary')?.focus();
+    }
   });
 
   colorSchemeQuery.addEventListener('change', () => {
