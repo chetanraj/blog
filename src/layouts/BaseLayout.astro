@@ -62,6 +62,7 @@ const {
         root.dataset.colorMode = colorMode;
         root.dataset.themePreference = themePreference;
         root.dataset.trend = designEra;
+        if (window.localStorage.getItem('blog-font') === 'iron-man') root.dataset.font = 'iron-man';
       })();
     </script>
     <title>{title}</title>

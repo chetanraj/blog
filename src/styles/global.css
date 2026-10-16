@@ -2,6 +2,17 @@
 @import '@capper-ui/react/styles';
 @import './trends.css';
 
+@font-face {
+  font-family: 'Iron Man Font';
+  src: url('/blog/fonts/iron-man.woff2') format('woff2');
+  font-display: swap;
+}
+
+html[data-font='iron-man']:root {
+  --trend-font-heading: 'Iron Man Font', ui-sans-serif, system-ui, sans-serif;
+  --trend-font-body: 'Iron Man Font', ui-sans-serif, system-ui, sans-serif;
+}
+
 /* ─── BLOG COLOR PALETTE ───────────────────────────────────────── */
 
 :root {
@@ -220,11 +231,82 @@ header .light,
   stroke: var(--header-text);
 }
 
-.home {
+.site-header-nav {
   position: absolute;
   top: 1em;
   left: 1em;
-  z-index: 10;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.home {
+  display: inline-flex;
+  align-items: center;
+}
+
+.site-header-menu {
+  position: relative;
+  color: var(--header-text);
+}
+
+.site-header-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.site-header-menu-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.site-header-menu[open] .site-header-menu-trigger svg {
+  transform: rotate(180deg);
+}
+
+.site-header-menu-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 11rem;
+  padding: 0.375rem;
+  background: var(--color-bg);
+  border: 1px solid var(--trend-border);
+  border-radius: var(--trend-radius);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+}
+
+.site-header .site-header-menu-item,
+.site-header .site-header-menu-item:visited {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  font: inherit;
+  font-size: 0.9375rem;
+  text-align: left;
+  color: var(--color-primary);
+  text-decoration: none;
+  background: none;
+  border: 0;
+  border-radius: var(--trend-radius-sm);
+  cursor: pointer;
+}
+
+.site-header .site-header-menu-item:hover,
+.site-header .site-header-menu-item:focus-visible {
+  background: var(--trend-surface);
+}
+
+.site-header-menu-item[aria-checked='true']::after {
+  content: '✓';
+  color: var(--color-accent);
 }
 
 .site-header .home a,
