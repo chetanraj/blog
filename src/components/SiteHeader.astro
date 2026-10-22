@@ -1,97 +1,36 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
-import { ArrowLeft, Monitor, Moon, Rss, Search, Sun } from '../icons';
+import { Monitor, Moon, Sun } from '../icons';
 import * as stylex from '@stylexjs/stylex';
 import { headerStyles } from '../styles/header.stylex';
-
+import OrbitalArt from './OrbitalArt.astro';
 const { title } = Astro.props;
-
-const base = import.meta.env.BASE_URL.endsWith('/')
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-
-const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const currentPath = Astro.url.pathname;
 ---
-
-<header class:list={['site-header', 'site-chrome', stylex.props(headerStyles.root).className]}>
-  <div class:list={['hero-text', stylex.props(headerStyles.hero).className]}>
-    <h1 {...stylex.props(headerStyles.title)}>
-      {headerTitle}
-    </h1>
-    {
-      !title && (
-        <div {...stylex.props(headerStyles.tagline)}>
-          Web Designer & Developer,<wbr />{' '}
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.instagram.com/javascriptessentials/"
-            {...stylex.props(headerStyles.taglineLink)}
-          >
-            Tech Instagrammer
-          </a>
-          , Music, Movies, Gadgets,<wbr /> Iron Man & Batman lover.
-        </div>
-      )
-    }
+<header class:list={['studio-header', stylex.props(headerStyles.root).className, { 'studio-header--home': !title }]} id="top">
+  <div class="studio-shell">
+    <nav class:list={["studio-nav", stylex.props(headerStyles.nav).className]} aria-label="Main navigation">
+      <a class="studio-brand" href={base}><span class="brand-mark">cr.</span><span>Chetan Raj</span></a>
+      <div class="studio-links">
+        <a href={base} aria-current={currentPath === base ? 'page' : undefined}>Writing</a>
+        <a href={`${base}about/`} aria-current={currentPath.includes('/about') ? 'page' : undefined}>About</a>
+        <a href={`${base}search/`} aria-label="Search posts">Search</a>
+        <a href={`${base}rss.xml`} class="nav-rss">RSS ↗</a>
+        <div id="themeToggle"><button class="studio-theme" type="button" id="themeButton" aria-label="Toggle theme"><span data-theme-icon="light" hidden><BlogIcon icon={Moon} /></span><span data-theme-icon="dark" hidden><BlogIcon icon={Sun} /></span><span data-theme-icon="system" hidden><BlogIcon icon={Monitor} /></span></button></div>
+      </div>
+    </nav>
+    <div class:list={["studio-hero", stylex.props(headerStyles.hero).className]}>
+      <div class="studio-intro">
+        <p class="eyebrow">{title ? 'THE NOTEBOOK / CHETAN RAJ' : 'FRONTEND / TOOLS / THINGS LEARNED'}</p>
+        <h1 {...stylex.props(headerStyles.title)}>{title || <>Notes from<br />the build.</>}</h1>
+        {!title && <><div class="hero-rule"></div><p class:list={["studio-description", stylex.props(headerStyles.tagline).className]}>I’m Chetan. I build for the web, question the defaults, and write about what I figure out.</p><a class="hero-explore" href="#writing">EXPLORE THE WRITING ↓</a></>}
+        {title && <a class="hero-back" href={base}>← All notes</a>}
+      </div>
+      <OrbitalArt />
+    </div>
   </div>
-
-  <span class:list={['home', stylex.props(headerStyles.homeLink).className]}>
-    {
-      !title ? (
-        <a
-          {...stylex.props(headerStyles.homeAnchor)}
-          href="https://chetanraj.dev"
-        >
-          HOME
-        </a>
-      ) : (
-        <a {...stylex.props(headerStyles.homeAnchor)} href={base} aria-label="Back to blog home">
-          <BlogIcon icon={ArrowLeft} label="Back to blog home" />
-        </a>
-      )
-    }
-  </span>
-
-  <div id="themeToggle" class:list={['site-header-actions', 'light']}>
-    <a
-      class="site-header-action site-header-action--rss"
-      href={`${base}rss.xml`}
-      title="RSS"
-      aria-label="RSS feed"
-    >
-      <BlogIcon icon={Rss} />
-    </a>
-    <a
-      class="site-header-action"
-      href={`${base}search/`}
-      title="Search"
-      aria-label="Search posts"
-    >
-      <BlogIcon icon={Search} />
-    </a>
-    <button
-      class="site-header-action theme-icon-button"
-      title="Theme"
-      type="button"
-      id="themeButton"
-      aria-label="Toggle theme"
-    >
-      <span class="theme-icon" data-theme-icon="light" hidden>
-        <BlogIcon icon={Moon} />
-      </span>
-      <span class="theme-icon" data-theme-icon="dark" hidden>
-        <BlogIcon icon={Sun} />
-      </span>
-      <span class="theme-icon" data-theme-icon="system" hidden>
-        <BlogIcon icon={Monitor} />
-      </span>
-    </button>
-  </div>
-
-  <div class="bg"></div>
 </header>
-
 <script is:inline>
   const root = document.documentElement;
   const body = document.body;
@@ -104,29 +43,6 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
     if (persisted === 'dark' || persisted === 'light' || persisted === 'system')
       return persisted;
     return colorSchemeQuery.matches ? 'dark' : 'light';
-  }
-
-  function playSound() {
-    const audioContext = new (
-      window.AudioContext || window.webkitAudioContext
-    )();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    oscillator.frequency.value = 800;
-    oscillator.type = 'sine';
-
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(
-      0.01,
-      audioContext.currentTime + 0.1
-    );
-
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.1);
   }
 
   function showThemeIcon(preference) {
@@ -157,7 +73,7 @@ const headerTitle = title ? String(title) : 'Blog by Chetan Raj';
 
     showThemeIcon(next);
     window.localStorage.setItem('theme', next);
-    playSound();
+
   }
 
   const initial = typeof window !== 'undefined' ? getInitialTheme() : 'light';

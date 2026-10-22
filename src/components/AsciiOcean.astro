@@ -1,0 +1,124 @@
+---
+// Original procedural artwork. No source or assets copied from ascii-sharks.
+---
+<section class="ascii-ocean" aria-label="ASCII ocean illustration">
+  <div class="ocean-caption">
+    <span>STILL EXPLORING / BELOW THE SURFACE</span>
+    <button class="ocean-toggle" type="button" aria-pressed="false">Pause ocean</button>
+  </div>
+  <canvas class="ocean-canvas" aria-hidden="true"></canvas>
+  <div class="ocean-credit">An ocean of possibilities. <a href="https://github.com/stackedlol/ascii-sharks" target="_blank" rel="noopener noreferrer">Inspired by stackedlol’s ASCII sharks ↗</a></div>
+</section>
+
+<style>
+  .ascii-ocean { background: #0a1625; color: #8fa5b7; border-top: 1px solid #284252; padding: 24px clamp(20px, 5vw, 72px) 20px; overflow: hidden; }
+  .ocean-caption { display: flex; align-items: center; justify-content: space-between; gap: 18px; max-width: 1240px; margin: auto; font: 10px/1.6 ui-monospace, monospace; letter-spacing: .16em; }
+  .ocean-toggle { appearance: none; flex-shrink: 0; border: 1px solid #526775; border-radius: 100px; background: transparent; color: #bce6e6; padding: 7px 12px; cursor: pointer; font: 11px/1.2 ui-monospace, monospace; letter-spacing: 0; }
+  .ocean-toggle:hover { border-color: #d5f36b; color: #d5f36b; }
+  .ocean-toggle:focus-visible, .ocean-credit a:focus-visible { outline: 2px solid #d5f36b; outline-offset: 5px; }
+  .ocean-canvas { display: block; width: 100%; max-width: 1240px; height: 240px; margin: auto; }
+  .ocean-credit { max-width: 1240px; margin: auto; display: flex; justify-content: space-between; gap: 12px; font: 11px/1.8 ui-monospace, monospace; }
+  .ocean-credit a { color: #8fa5b7; text-underline-offset: 4px; }
+  @media (max-width: 600px) { .ocean-caption { font-size: 8px; letter-spacing: .08em; } .ocean-canvas { height: 190px; } .ocean-credit { flex-direction: column; gap: 3px; font-size: 10px; } }
+</style>
+
+<script>
+  // Original, deterministic character-field renderer. Geometry is drawn from
+  // simple ellipses and triangles, not source code or artwork from the reference.
+  document.querySelectorAll<HTMLElement>('.ascii-ocean').forEach((section) => {
+    const canvas = section.querySelector<HTMLCanvasElement>('canvas')!;
+    const button = section.querySelector<HTMLButtonElement>('button')!;
+    const context = canvas.getContext('2d');
+    if (!context) return;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let paused = reduced.matches;
+    let visible = false;
+    let frame = 0;
+    let last = 0;
+    let elapsed = 0;
+    let width = 0;
+    let height = 0;
+    const chars = '.:;=+*#%@';
+    function triangle(x: number, y: number, ax: number, ay: number, bx: number, by: number, cx: number, cy: number) {
+      const d1 = (x-bx)*(ay-by)-(ax-bx)*(y-by);
+      const d2 = (x-cx)*(by-cy)-(bx-cx)*(y-cy);
+      const d3 = (x-ax)*(cy-ay)-(cx-ax)*(y-ay);
+      return !((d1 < 0 || d2 < 0 || d3 < 0) && (d1 > 0 || d2 > 0 || d3 > 0));
+    }
+    function shark(x: number, y: number, phase: number, hammerhead: boolean) {
+      const tail = Math.sin(phase) * .10;
+      // Nose faces right; flared pectoral fins and a forked caudal fin.
+      const body = (x/.79)**2 + (y/.145)**2 < 1 && x > -.64;
+      const fins = triangle(x,y,-.22,-.07,-.53,-.43,.10,-.09) || triangle(x,y,-.22,.07,-.53,.43,.10,.09);
+      const stem = triangle(x,y,-.53,-.09,-.95,tail,-.53,.09);
+      const fork = triangle(x,y,-.90,tail,-1.15,-.30+tail,-1.04,tail) || triangle(x,y,-.90,tail,-1.15,.30+tail,-1.04,tail);
+      const hammer = hammerhead && ((x-.65)/.105)**2 + (y/.31)**2 < 1;
+      return body || fins || stem || fork || hammer;
+    }
+    function draw() {
+      if (!context || !width) return;
+      context.clearRect(0,0,width,height);
+      const cell = width < 600 ? 5 : 6;
+      context.font = `${cell+1}px ui-monospace, monospace`;
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      const t = elapsed / 1000;
+      const scale = Math.min(width*.22, 147);
+      const creatures = [
+        {x: width*.34 + Math.sin(t*.11)*width*.13, y: height*.48 + Math.sin(t*.19)*12, s: scale, angle: -.10 + Math.sin(t*.13)*.13, phase: t*1.7, alpha: 1, hammer: true},
+        {x: width*.76 + Math.sin(t*.13+2)*width*.10, y: height*.58 + Math.cos(t*.17)*17, s: scale*.60, angle: Math.PI+.17+Math.cos(t*.11)*.14, phase: t*2.1+3, alpha: .60, hammer: false},
+      ];
+      // A quiet school orbits below the sharks, each fish a two-character mark.
+      context.fillStyle = 'rgba(183, 163, 112, .43)';
+      for (let i=0; i<32; i++) {
+        const a=i*.37+t*.12;
+        const radius=25+(i%7)*5;
+        const sx=width*.64+Math.cos(a)*radius*1.8;
+        const sy=height*.35+Math.sin(a)*radius*.65;
+        context.fillText(i%3 ? '··' : ':',sx,sy);
+      }
+      for (const fish of creatures) {
+        const cos = Math.cos(fish.angle), sin = Math.sin(fish.angle);
+        for (let y=cell; y<height; y+=cell*1.25) for (let x=cell; x<width; x+=cell) {
+          const dx=(x-fish.x)/fish.s, dy=(y-fish.y)/fish.s;
+          const u=dx*cos+dy*sin, v=-dx*sin+dy*cos;
+          if (!shark(u,v,fish.phase,fish.hammer)) continue;
+          const texture = (Math.sin(u*44+v*17)*Math.cos(v*39-u*8)+1)/2;
+          const shade = Math.max(.15, 1-Math.abs(v)*2.3);
+          const index = Math.min(chars.length-1, Math.floor((texture*.55+shade*.45)*(chars.length-1)));
+          context.fillStyle = `rgba(126, 218, 218, ${fish.alpha*(.35+shade*.6)})`;
+          context.fillText(chars[index],x,y);
+        }
+      }
+    }
+    function tick(now: number) {
+      if (last && now-last < 65) { frame=requestAnimationFrame(tick); return; }
+      elapsed += last ? Math.min(now-last,100) : 0;
+      last=now;
+      draw();
+      frame=requestAnimationFrame(tick);
+    }
+    function sync() {
+      cancelAnimationFrame(frame);
+      last=0;
+      button.textContent=paused ? 'Play ocean' : 'Pause ocean';
+      button.setAttribute('aria-pressed',String(paused));
+      if (visible && !paused && !document.hidden) frame=requestAnimationFrame(tick);
+      else draw();
+    }
+    const resize = new ResizeObserver(() => {
+      const rect=canvas.getBoundingClientRect();
+      width=rect.width; height=rect.height;
+      const ratio=Math.min(devicePixelRatio || 1,2);
+      canvas.width=Math.round(width*ratio); canvas.height=Math.round(height*ratio);
+      context.setTransform(ratio,0,0,ratio,0,0);
+      draw();
+    });
+    resize.observe(canvas);
+    new IntersectionObserver(([entry]) => { visible=entry.isIntersecting; sync(); }).observe(section);
+    button.addEventListener('click',()=>{ paused=!paused; sync(); });
+    reduced.addEventListener('change',()=>{ paused=reduced.matches; sync(); });
+    document.addEventListener('visibilitychange',sync);
+    sync();
+  });
+</script>
