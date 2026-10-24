@@ -1,4 +1,4 @@
-import React, { type ComponentType, type SVGProps } from 'react';
+import type { ComponentType, SVGProps } from 'react';
 
 type BlogIconSize = 'sm' | 'md' | 'lg';
 
@@ -24,6 +24,8 @@ export function BlogIcon({ icon: Icon, label, size = 'lg', className }: BlogIcon
   return (
     <Icon
       size={px}
+      strokeWidth={2}
+      style={{ display: 'block', flexShrink: 0 }}
       className={className}
       aria-hidden={label ? undefined : true}
       aria-label={label}

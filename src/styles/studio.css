@@ -30,12 +30,11 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 
 .studio-header a.hero-explore { color:#d5ee84; font-size:.7rem; font-weight:800; letter-spacing:.1em; }
 .hero-back { display:inline-block; margin-top:1.8rem; font-size:.8rem; color:#bac8d4!important; }
+.orbital-art { display:block; }
 .orbital-art svg { display:block; width:100%; }
 .orbital-art>span { display:block; color:#96a9b9; font-size:.45rem; letter-spacing:.13em; margin:.65rem 0 0 .5rem; }
-.orbital-rings { transform-origin:center; animation:orbit-arrive 900ms ease-out both; }
 .studio-intro { animation:studio-arrive 500ms ease-out both; }
 @keyframes studio-arrive { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
-@keyframes orbit-arrive { from { opacity:0; transform:rotate(-14deg); } to { opacity:1; transform:rotate(0); } }
 .site-content { padding-inline:clamp(1.25rem,5vw,3rem); }
 /* Capper Text uses --c-text; keep archive typography on the blog's theme token. */
 .studio-writing, .archive-list { --c-text:var(--color-content); }
@@ -70,7 +69,6 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .blog-post-content p,.blog-post-content>ul,.blog-post-content>ol { font-family:inherit; font-size:1.12rem; line-height:1.8; }
 .blog-post-content h2,.blog-post-content h3 { font-weight:750; letter-spacing:-.025em; }
 .blog-post-content .post-meta { font-family:inherit; font-size:.8rem; padding-bottom:1.5rem; border-bottom:1px solid var(--trend-border); }
-.post-meta-icon { display:none!important; }
 .post-toc-aside { font-size:.8rem; }
 .static-page { min-height:22rem; }
 .tag-cloud { gap:.8rem!important; margin:2rem 0!important; }

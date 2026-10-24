@@ -483,10 +483,6 @@ a:visited {
   gap: 0.35rem;
 }
 
-.post-meta-icon {
-  flex-shrink: 0;
-}
-
 .post-meta-updated {
   font-size: 0.875rem;
 }
