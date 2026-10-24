@@ -13,17 +13,17 @@ const currentPath = Astro.url.pathname;
     <nav class:list={["studio-nav", stylex.props(headerStyles.nav).className]} aria-label="Main navigation">
       <a class="studio-brand" href={base}><span class="brand-mark">cr.</span><span>Chetan Raj</span></a>
       <div class="studio-links">
-        <a href={base} aria-current={currentPath === base ? 'page' : undefined}>Writing</a>
-        <a href={`${base}about/`} aria-current={currentPath.includes('/about') ? 'page' : undefined}>About</a>
+        <div class="studio-page-links"><a href={base} aria-current={currentPath === base ? 'page' : undefined}>Writing</a><span aria-hidden="true">|</span>
+        <a href={`${base}about/`} aria-current={currentPath.includes('/about') ? 'page' : undefined}>About</a></div><div class="studio-utilities">
         <a href={`${base}rss.xml`} class="nav-rss">RSS ↗</a>
-        <div id="themeToggle" class="studio-theme-wrap"><button class="studio-theme" type="button" id="themeButton" aria-label="Toggle theme"><span data-theme-icon="light" hidden><BlogIcon icon={Moon} /></span><span data-theme-icon="dark" hidden><BlogIcon icon={Sun} /></span><span data-theme-icon="system" hidden><BlogIcon icon={Monitor} /></span></button></div>
+        <div id="themeToggle" class="studio-theme-wrap"><button class="studio-theme" type="button" id="themeButton" aria-label="Toggle theme"><span data-theme-icon="light" hidden><BlogIcon icon={Moon} /></span><span data-theme-icon="dark" hidden><BlogIcon icon={Sun} /></span><span data-theme-icon="system" hidden><BlogIcon icon={Monitor} /></span></button></div></div>
       </div>
     </nav>
     <div class:list={["studio-hero", stylex.props(headerStyles.hero).className]}>
       <div class="studio-intro">
-        <p class="eyebrow">{title ? 'THE NOTEBOOK / CHETAN RAJ' : 'FRONTEND / TOOLS / THINGS LEARNED'}</p>
+        {title && <p class="eyebrow">THE NOTEBOOK / CHETAN RAJ</p>}
         <h1 {...stylex.props(headerStyles.title)}>{title || <>Notes from<br />the build.</>}</h1>
-        {!title && <><div class="hero-rule"></div><p class:list={["studio-description", stylex.props(headerStyles.tagline).className]}>I’m Chetan. I build for the web, question the defaults, and write about what I figure out.</p><a class="hero-explore" href="#writing">EXPLORE THE WRITING ↓</a></>}
+        {!title && <p class:list={["studio-description", stylex.props(headerStyles.tagline).className]}>I’m Chetan. I build for the web, question the defaults, and write about what I figure out.</p>}
         {title && <a class="hero-back" href={base}>← All notes</a>}
       </div>
       <OrbitalArt />
