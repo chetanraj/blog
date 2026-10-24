@@ -147,15 +147,6 @@ export function Rss(props: FeatherIconProps) {
   );
 }
 
-export function Search(props: FeatherIconProps) {
-  return (
-    <FeatherIcon {...props}>
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </FeatherIcon>
-  );
-}
-
 export function Sun(props: FeatherIconProps) {
   return (
     <FeatherIcon {...props}>

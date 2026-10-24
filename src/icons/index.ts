@@ -12,7 +12,6 @@ export {
   Monitor,
   Moon,
   Rss,
-  Search,
   Sun,
   X,
 } from './feather';

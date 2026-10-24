@@ -15,9 +15,10 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .studio-theme-wrap { position:static; display:flex; flex:0 0 auto; }
 .studio-links a { transition:color .18s; }
 .studio-links a:hover,.studio-links a[aria-current] { color:#d5ee84; }
-.studio-theme { width:2.5rem; height:2.5rem; display:grid; place-items:center; border:1px solid #3b4b60; color:#cbd7de; background:transparent; border-radius:50%; cursor:pointer; }
+.studio-theme { width:2.5rem; height:2.5rem; padding:0; appearance:none; flex-shrink:0; line-height:0; display:grid; place-items:center; border:1px solid #3b4b60; color:#cbd7de; background:transparent; border-radius:50%; cursor:pointer; }
 .studio-theme:hover { border-color:#d5ee84; color:#d5ee84; }
-.studio-theme svg { width:1rem; height:1rem; }
+.studio-theme [data-theme-icon] { display:flex; align-items:center; justify-content:center; width:1rem; height:1rem; line-height:0; }
+.studio-theme svg { display:block; width:1rem; height:1rem; flex-shrink:0; }
 .studio-theme [hidden] { display:none; }
 
 .studio-header--home .studio-hero { padding:3.4rem 0 3rem; }
@@ -73,7 +74,6 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .tag-cloud { gap:.8rem!important; margin:2rem 0!important; }
 .tag-pill-link { display:inline-block; padding:.6rem .2rem; }
 .archive-link { border-bottom:1px solid var(--trend-border); padding:1.2rem 0; }
-.pagefind-search { --pagefind-ui-primary:var(--color-accent); --pagefind-ui-text:var(--color-content); --pagefind-ui-background:var(--bg-color); --pagefind-ui-border:var(--trend-border); --pagefind-ui-tag:var(--trend-surface); --pagefind-ui-border-radius:0px; }
 .site-footer { background:#101d32!important; color:#b2c2cf!important; border-top:1px solid #2a374b; }
 .site-footer a:link,.site-footer a:visited { color:#c8dadf; }
 /* Copyright must inherit footer contrast, not body.dark header tokens. */

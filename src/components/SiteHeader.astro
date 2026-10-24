@@ -15,7 +15,6 @@ const currentPath = Astro.url.pathname;
       <div class="studio-links">
         <a href={base} aria-current={currentPath === base ? 'page' : undefined}>Writing</a>
         <a href={`${base}about/`} aria-current={currentPath.includes('/about') ? 'page' : undefined}>About</a>
-        <a href={`${base}search/`} aria-label="Search posts">Search</a>
         <a href={`${base}rss.xml`} class="nav-rss">RSS ↗</a>
         <div id="themeToggle" class="studio-theme-wrap"><button class="studio-theme" type="button" id="themeButton" aria-label="Toggle theme"><span data-theme-icon="light" hidden><BlogIcon icon={Moon} /></span><span data-theme-icon="dark" hidden><BlogIcon icon={Sun} /></span><span data-theme-icon="system" hidden><BlogIcon icon={Monitor} /></span></button></div>
       </div>
