@@ -9,7 +9,7 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 
 .studio-header a:link,.studio-header a:visited { color:inherit; text-decoration:none; }
 .studio-brand { display:flex; align-items:center; gap:.8rem; font-size:1rem; font-weight:750; white-space:nowrap; }
-.brand-mark { display:grid; place-items:center; width:2.35rem; height:2.35rem; color:#101d32; background:#d5ee84; font-size:1.45rem; font-weight:850; letter-spacing:-.08em; padding-right:.1em; }
+.brand-mark { display:grid; place-items:center; width:2.35rem; height:2.35rem; color:#101d32; background:#F7DF1E; font-size:1.45rem; font-weight:850; letter-spacing:-.08em; padding-right:.1em; }
 .studio-links { display:flex; align-items:center; flex-wrap:wrap; min-width:0; max-width:100%; gap:1.7rem; font-size:.8rem; }
 /* Keep theme controls in navigation flow, independent of legacy theme classes. */
 .studio-theme-wrap { position:static; display:flex; flex:0 0 auto; }
@@ -28,7 +28,7 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .studio-header--home h1 { font-size:clamp(3.2rem,6.1vw,5.7rem); }
 .hero-rule { width:3.5rem; height:4px; background:#d5ee84; margin:1.8rem 0; }
 
-.studio-header a.hero-explore { color:#d5ee84; font-size:.7rem; font-weight:800; letter-spacing:.1em; }
+.studio-header a.hero-explore { color:#F7DF1E; font-size:.7rem; font-weight:800; letter-spacing:.1em; }
 .hero-back { display:inline-block; margin-top:1.8rem; font-size:.8rem; color:#bac8d4!important; }
 .orbital-art { display:block; }
 .orbital-art svg { display:block; width:100%; }
