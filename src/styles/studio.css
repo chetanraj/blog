@@ -43,6 +43,7 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .studio-writing { padding-top:2.4rem; padding-bottom:2rem; }
 .featured-note { padding:0 0 2rem; border-bottom:1px solid var(--trend-border); }
 .note-topline,.note-bottomline { display:flex; justify-content:space-between; align-items:center; gap:1rem; }
+.latest-note-label { text-transform:none; }
 .note-topline time { font-size:.75rem; color:var(--color-secondary); }
 .featured-note h2 { font-size:clamp(1.75rem,3.1vw,2.8rem); line-height:1.23; letter-spacing:-.025em; max-width:52rem; margin:1.3rem 0; }
 .featured-note h2 a,.notebook-row a { color:var(--color-content); text-decoration:none; }

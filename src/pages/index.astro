@@ -12,14 +12,14 @@ const topics = [...new Set(posts.flatMap(post => post.data.tags))];
 <BaseLayout title={`Notes from the build | ${SITE.title}`} description={SITE.description} path="/">
   <section id="writing" class="studio-writing" aria-label="Writing">
     {latest && <article class="featured-note">
-      <Inline gap="md" align="center" className="note-topline"><span class="eyebrow">01 / LATEST NOTE</span><time datetime={latest.data.date.toISOString()}>{formatDate(latest.data.date)}</time></Inline>
+      <Inline gap="md" align="center" className="note-topline"><span class="eyebrow latest-note-label">01 • Latest</span><time datetime={latest.data.date.toISOString()}>{formatDate(latest.data.date)}</time></Inline>
       <Text as="h2" weight="bold"><Link href={`${base}posts/${latest.id}/`}>{latest.data.title}</Link></Text>
       {latest.data.description && <p class="featured-description">{latest.data.description}</p>}
-      <div class="note-bottomline"><span class="note-topics">{latest.data.tags.join(' / ') || 'NOTES'}</span><Link href={`${base}posts/${latest.id}/`}>Read the note ↗</Link></div>
+      <div class="note-bottomline"><span class="note-topics">{latest.data.tags.join(' • ') || 'NOTES'}</span><Link href={`${base}posts/${latest.id}/`}>Read the note ↗</Link></div>
     </article>}
     <div class="notebook-heading"><Text as="h2" weight="bold">The notebook</Text><Link href={`${base}tags/`}>Browse all topics ↗</Link></div>
     <div class="notebook-filters" role="group" aria-label="Filter notes by topic"><button type="button" data-topic="all" aria-pressed="true">All</button>{topics.map(topic => <button type="button" data-topic={topic} aria-pressed="false">{topic}</button>)}</div>
-    <Stack as="ul" gap="none" className="notebook-list">{others.map(post => <li data-topics={JSON.stringify(post.data.tags)}><article class="notebook-row"><div class="notebook-meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time><span>{post.data.tags.join(' / ') || 'Notes'}</span></div><Text as="h3" weight="bold"><Link href={`${base}posts/${post.id}/`}>{post.data.title}<span aria-hidden="true">↗</span></Link></Text></article></li>)}</Stack>
+    <Stack as="ul" gap="none" className="notebook-list">{others.map(post => <li data-topics={JSON.stringify(post.data.tags)}><article class="notebook-row"><div class="notebook-meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time><span>{post.data.tags.join(' • ') || 'Notes'}</span></div><Text as="h3" weight="bold"><Link href={`${base}posts/${post.id}/`}>{post.data.title}<span aria-hidden="true">↗</span></Link></Text></article></li>)}</Stack>
     <p class="filter-empty" hidden>No archive notes in this topic yet. Check the latest note above.</p>
     <p class="notebook-caption">Always learning. Occasionally writing.</p>
   </section>
