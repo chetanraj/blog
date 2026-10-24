@@ -175,8 +175,8 @@ a:visited {
   opacity: 0.29;
 }
 
-header .dark,
-header .light,
+.site-header .dark,
+.site-header .light,
 .site-header-actions {
   position: absolute;
   top: 1em;

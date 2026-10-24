@@ -17,7 +17,7 @@ const currentPath = Astro.url.pathname;
         <a href={`${base}about/`} aria-current={currentPath.includes('/about') ? 'page' : undefined}>About</a>
         <a href={`${base}search/`} aria-label="Search posts">Search</a>
         <a href={`${base}rss.xml`} class="nav-rss">RSS ↗</a>
-        <div id="themeToggle"><button class="studio-theme" type="button" id="themeButton" aria-label="Toggle theme"><span data-theme-icon="light" hidden><BlogIcon icon={Moon} /></span><span data-theme-icon="dark" hidden><BlogIcon icon={Sun} /></span><span data-theme-icon="system" hidden><BlogIcon icon={Monitor} /></span></button></div>
+        <div id="themeToggle" class="studio-theme-wrap"><button class="studio-theme" type="button" id="themeButton" aria-label="Toggle theme"><span data-theme-icon="light" hidden><BlogIcon icon={Moon} /></span><span data-theme-icon="dark" hidden><BlogIcon icon={Sun} /></span><span data-theme-icon="system" hidden><BlogIcon icon={Monitor} /></span></button></div>
       </div>
     </nav>
     <div class:list={["studio-hero", stylex.props(headerStyles.hero).className]}>
@@ -34,7 +34,6 @@ const currentPath = Astro.url.pathname;
 <script is:inline>
   const root = document.documentElement;
   const body = document.body;
-  const wrap = document.getElementById('themeToggle');
   const btn = document.getElementById('themeButton');
   const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -68,8 +67,6 @@ const currentPath = Astro.url.pathname;
     root.dataset.themePreference = next;
     body.classList.remove('dark', 'light');
     body.classList.add(themeToApply);
-    wrap?.classList.remove('dark', 'light');
-    wrap?.classList.add(themeToApply);
 
     showThemeIcon(next);
     window.localStorage.setItem('theme', next);
