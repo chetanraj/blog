@@ -37,6 +37,8 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 @keyframes studio-arrive { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
 @keyframes orbit-arrive { from { opacity:0; transform:rotate(-14deg); } to { opacity:1; transform:rotate(0); } }
 .site-content { padding-inline:clamp(1.25rem,5vw,3rem); }
+/* Capper Text uses --c-text; keep archive typography on the blog's theme token. */
+.studio-writing, .archive-list { --c-text:var(--color-content); }
 .studio-writing { padding-top:2.4rem; padding-bottom:2rem; }
 .featured-note { padding:0 0 2rem; border-bottom:1px solid var(--trend-border); }
 .note-topline,.note-bottomline { display:flex; justify-content:space-between; align-items:center; gap:1rem; }
