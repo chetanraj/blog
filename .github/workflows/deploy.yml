@@ -28,8 +28,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version-file: .nvmrc
           cache: npm
+
+      - name: Check npm version (min-release-age needs npm >= 11.10)
+        run: |
+          npm --version
+          node -e "const [a,b]=process.argv[1].split('.').map(Number); if (a<11||(a===11&&b<10)) { console.error('npm '+process.argv[1]+' < 11.10: .npmrc min-release-age would be ignored'); process.exit(1) }" "$(npm --version)"
 
       - name: Install dependencies
         run: npm ci
