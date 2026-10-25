@@ -18,9 +18,9 @@ export const headerStyles = stylex.create({
     '@media (max-width: 640px)': { gridTemplateColumns: 'minmax(0,1fr)', gap: '1.5rem', paddingBlock: '2.5rem' },
   },
   title: {
-    margin: 0, color: colors.headerText, fontWeight: 780,
+    margin: 0, color: colors.headerText, fontWeight: 700,
     fontSize: 'clamp(2.4rem,4.5vw,4.4rem)', lineHeight: 1.09,
-    letterSpacing: '-.035em', textWrap: 'balance',
+    letterSpacing: '-.015em', textWrap: 'balance',
     fontFamily: 'var(--trend-font-heading)',
   },
   tagline: {

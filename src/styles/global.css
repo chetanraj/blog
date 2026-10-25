@@ -1,10 +1,13 @@
 @import '@capper-ui/tokens';
 @import '@capper-ui/react/styles';
 @import './trends.css';
+@import './fonts.css';
 
 /* ─── BLOG COLOR PALETTE ───────────────────────────────────────── */
 
 :root {
+  --c-font-body: var(--trend-font-body);
+  --c-font-heading: var(--trend-font-heading);
   --bg-color: var(--color-bg);
   --blockquote-color: var(--trend-surface);
   --blockquote-border: var(--trend-border-accent);
@@ -87,6 +90,7 @@ body {
     'Segoe UI Symbol',
     'Noto Color Emoji'
   );
+  font-weight: 400;
   background-color: var(--bg-color);
   transition: color 0.6s, background-color 0.6s;
 }
@@ -268,20 +272,23 @@ a:visited {
 
 .blog-post-container h3 {
   color: var(--primary-color);
+  font-family: var(--trend-font-heading);
   font-size: 1.24em;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .blog-post-container h4 {
   color: var(--primary-color);
+  font-family: var(--trend-font-heading);
   font-size: 1.166em;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .blog-post-container h5 {
   color: var(--primary-color);
+  font-family: var(--trend-font-heading);
   font-size: 1.125em;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .blog-post-container h1,
