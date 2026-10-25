@@ -3,7 +3,6 @@
 ---
 <section class="ascii-ocean" aria-label="ASCII ocean illustration">
   <div class="ocean-caption">
-    <span>STILL EXPLORING / BELOW THE SURFACE</span>
     <button class="ocean-toggle" type="button" aria-pressed="false">Pause ocean</button>
   </div>
   <canvas class="ocean-canvas" aria-hidden="true"></canvas>
@@ -11,17 +10,17 @@
 </section>
 
 <style>
-  .ascii-ocean { background: #0a1625; color: #8fa5b7; border-top: 1px solid #284252; padding: 24px clamp(20px, 5vw, 72px) 20px; overflow: hidden; }
-  .ocean-caption { display: flex; align-items: center; justify-content: space-between; gap: 18px; max-width: 1240px; margin: auto; font: 10px/1.6 ui-monospace, monospace; letter-spacing: .16em; }
-  .ocean-toggle, .ocean-random { appearance: none; flex-shrink: 0; border: 1px solid #526775; border-radius: 100px; background: transparent; color: #bce6e6; padding: 7px 12px; cursor: pointer; font: 11px/1.2 ui-monospace, monospace; letter-spacing: 0; }
+  .ascii-ocean { background: #0a1625; color: #8fa5b7; border-top: 1px solid #284252; padding: 24px 0 20px; overflow: hidden; }
+  .ocean-caption { display: flex; align-items: center; justify-content: flex-end; gap: 18px; width: 100%; max-width: var(--studio-container); padding-inline: var(--studio-gutter); margin: auto; font: 12px/1.6 ui-monospace, monospace; }
+  .ocean-toggle, .ocean-random { appearance: none; flex-shrink: 0; border: 1px solid #526775; border-radius: 100px; background: transparent; color: #bce6e6; min-height: 44px; min-width: 44px; padding: 10px 14px; cursor: pointer; font: 14px/1.2 ui-monospace, monospace; letter-spacing: 0; }
   .ocean-toggle:hover, .ocean-random:hover { border-color: #d5f36b; color: #d5f36b; }
   .ocean-toggle:focus-visible, .ocean-random:focus-visible, .ocean-credit a:focus-visible { outline: 2px solid #d5f36b; outline-offset: 5px; }
   .ocean-canvas { display: block; width: 100%; max-width: 1240px; height: 240px; margin: auto; }
-  .ocean-credit { max-width: 1240px; margin: auto; display: flex; justify-content: space-between; gap: 12px; font: 11px/1.8 ui-monospace, monospace; }
+  .ocean-credit { width: 100%; max-width: var(--studio-container); padding-inline: var(--studio-gutter); margin: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; font: 12px/1.8 ui-monospace, monospace; }
   .ocean-random-group { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 12px; }
   .ocean-status { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .ocean-credit a { color: #8fa5b7; text-underline-offset: 4px; }
-  @media (max-width: 600px) { .ocean-caption { font-size: 8px; letter-spacing: .08em; } .ocean-canvas { height: 190px; } .ocean-credit { flex-direction: column; gap: 3px; font-size: 10px; } }
+  @media (max-width: 600px) { .ocean-canvas { height: 190px; } .ocean-credit { align-items: flex-start; flex-direction: column; gap: 12px; } }
 </style>
 
 <script>

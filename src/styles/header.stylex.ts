@@ -5,7 +5,7 @@ export const headerStyles = stylex.create({
   root: {
     position: 'relative', width: '100%',
     backgroundColor: colors.headerBg, color: colors.headerText,
-    paddingInline: 'clamp(1.25rem,5vw,4rem)',
+    paddingInline: 0,
   },
   nav: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
