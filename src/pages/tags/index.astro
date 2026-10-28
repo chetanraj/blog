@@ -26,7 +26,7 @@ const tags = getAllTags(posts);
           tags.map((tag) => (
             <li>
               <Link href={`${base}tags/${tagToSlug(tag)}/`} className="tag-pill-link">
-                <Badge variant="accent" size="sm">
+                <Badge variant="accent" size="sm" className="topic-label">
                   {tag}
                 </Badge>
               </Link>

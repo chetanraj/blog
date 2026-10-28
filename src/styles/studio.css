@@ -52,14 +52,14 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .featured-note h2 a,.notebook-row a { color:var(--color-content); text-decoration:none; }
 .featured-note h2 a:hover { text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:5px; }
 .featured-description { color:var(--color-secondary); max-width:48rem; line-height:1.65; font-size:.96rem; margin-bottom:1.6rem; }
-.note-topics { font-size:.75rem; text-transform:uppercase; letter-spacing:.1em; font-weight:750; color:var(--color-secondary); }
+.note-topics { font-size:.75rem; text-transform:uppercase; letter-spacing:.1em; color:var(--color-secondary); }
 .note-bottomline>a { color:var(--color-content); font-size:.875rem; font-weight:750; text-decoration:none; }
 .notebook-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; margin:0 0 1rem; }
 .notebook-heading h2 { font-size:1.65rem; letter-spacing:-.01em; margin:0; }
 .notebook-heading>a { font-size:.8125rem; color:var(--color-secondary); text-underline-offset:4px; }
 .notebook-filters { display:flex; flex-wrap:wrap; gap:.25rem 1.2rem; margin-bottom:.8rem; }
 .notebook-filters button { background:none; border:0; border-bottom:2px solid transparent; padding:.6rem 0; min-height:44px; cursor:pointer; color:var(--color-secondary); font-size:.875rem; }
-.notebook-filters button[aria-pressed='true'] { color:var(--color-content); border-bottom-color:currentColor; font-weight:750; }
+.notebook-filters button[aria-pressed='true'] { color:var(--color-content); border-bottom-color:currentColor; }
 .notebook-filters button:disabled { opacity:.4; cursor:not-allowed; }
 .notebook-list { list-style:none; padding:0; margin:0; }
 .studio-writing [data-topics][hidden] { display:none; }
@@ -81,6 +81,9 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .static-page { min-height:22rem; }
 .tag-cloud { gap:.8rem!important; margin:2rem 0!important; }
 .tag-pill-link { display:inline-block; padding:.6rem .2rem; }
+/* Keep tags distinct from prose, using the existing code-font token. */
+.notebook-filters button,.note-topics,.notebook-meta>span,
+.post-tag-link,.tag-pill-link,.topic-label { font-family:var(--c-font-code); font-weight:400; }
 .archive-link { border-bottom:1px solid var(--trend-border); padding:1.2rem 0; }
 .site-footer { background:#101d32!important; color:#b2c2cf!important; border-top:1px solid #2a374b; }
 .site-footer a:link,.site-footer a:visited { color:#c8dadf; }

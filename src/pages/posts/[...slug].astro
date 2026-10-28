@@ -91,7 +91,7 @@ const showUpdated =
                 <Inline gap="sm" wrap className="post-meta-item post-meta-tags">
                   {post.data.tags.map((tag) => (
                     <Link href={`${base}tags/${tagToSlug(tag)}/`} className="post-tag-link">
-                      <Badge variant="accent" size="sm">
+                      <Badge variant="accent" size="sm" className="topic-label">
                         {tag}
                       </Badge>
                     </Link>
