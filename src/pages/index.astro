@@ -12,7 +12,7 @@ const topics = [...new Set(posts.flatMap(post => post.data.tags))];
 <BaseLayout title={`Notes from the build | ${SITE.title}`} description={SITE.description} path="/">
   <section id="writing" class="studio-writing" aria-label="Writing">
     <div class="notebook-heading"><Text as="h2" weight="bold">The notebook</Text><Link href={`${base}tags/`}>Browse all topics ↗</Link></div>
-    <div class="notebook-filters" role="group" aria-label="Filter notes by topic"><button type="button" data-topic="all" aria-pressed="true" aria-controls="note-results">All</button>{topics.map(topic => <button type="button" data-topic={topic} aria-pressed="false" aria-controls="note-results">{topic}</button>)}</div>
+    <div class="notebook-filters" role="group" aria-label="Filter notes by topic"><button type="button" data-topic-reset aria-pressed="true" aria-controls="note-results">All</button>{topics.map(topic => <button type="button" data-topic={topic} aria-pressed="false" aria-controls="note-results">{topic}</button>)}</div>
     <p class="filter-results" role="status" aria-live="polite" aria-atomic="true">{posts.length} note{posts.length === 1 ? '' : 's'}</p>
     <div id="note-results">
     {latest && <article class="featured-note" data-note data-topics={JSON.stringify(latest.data.tags)}>
@@ -22,31 +22,12 @@ const topics = [...new Set(posts.flatMap(post => post.data.tags))];
       <div class="note-bottomline"><span class="note-topics">{latest.data.tags.join(' • ') || 'NOTES'}</span><Link href={`${base}posts/${latest.id}/`}>Read the note ↗</Link></div>
     </article>}
     <Stack as="ul" gap="none" className="notebook-list">{others.map(post => <li data-note data-topics={JSON.stringify(post.data.tags)}><article class="notebook-row"><div class="notebook-meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time><span>{post.data.tags.join(' • ') || 'Notes'}</span></div><Text as="h3" weight="bold"><Link href={`${base}posts/${post.id}/`}>{post.data.title}<span aria-hidden="true">↗</span></Link></Text></article></li>)}</Stack>
-    <p class="filter-empty" hidden>No notes match this topic. Choose All to reset.</p>
+    <p class="filter-empty" hidden>No notes match these topics. Choose All to reset.</p>
     </div>
   </section>
 </BaseLayout>
 <script>
+  import { initTopicFilters } from '../utils/topic-filter';
   const writing = document.querySelector<HTMLElement>('#writing');
-  if (writing) {
-    const buttons = writing.querySelectorAll<HTMLButtonElement>('[data-topic]');
-    const notes = writing.querySelectorAll<HTMLElement>('[data-note]');
-    const results = writing.querySelector<HTMLElement>('.filter-results');
-    const empty = writing.querySelector<HTMLElement>('.filter-empty');
-
-    buttons.forEach(button => button.addEventListener('click', () => {
-      const topic = button.dataset.topic || 'all';
-      buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-      let shown = 0;
-      notes.forEach(note => {
-        const tags: string[] = JSON.parse(note.dataset.topics || '[]');
-        note.hidden = topic !== 'all' && !tags.includes(topic);
-        if (!note.hidden) shown++;
-      });
-      if (empty) empty.hidden = shown > 0;
-      if (results) {
-        results.textContent = `${shown} note${shown === 1 ? '' : 's'}${topic === 'all' ? '' : ` tagged ${topic}`}`;
-      }
-    }));
-  }
+  if (writing) initTopicFilters(writing);
 </script>
