@@ -9,9 +9,10 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && pagefind --site dist",
+    "build": "astro build",
     "preview": "astro preview",
-    "deploy": "npm run build && gh-pages -d dist --dotfiles"
+    "deploy": "npm run build && gh-pages -d dist --dotfiles",
+    "test": "node --experimental-strip-types --test tests/*.test.ts"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",
@@ -19,22 +20,22 @@
     "@astrojs/react": "^6.0.5",
     "@capper-ui/react": "^0.0.1",
     "@capper-ui/tokens": "^0.0.1",
-    "@phosphor-icons/react": "^2.1.10",
     "@stylexjs/stylex": "^0.19.0",
     "@stylexjs/unplugin": "^0.19.0",
     "astro": "^7.3.2",
     "gh-pages": "^6.1.1",
+    "gsap": "^3.15.0",
     "mdast-util-to-string": "^4.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-feather": "^2.0.10",
     "reading-time": "^1.5.0"
   },
   "devDependencies": {
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
-    "pagefind": "^1.5.2"
+    "@types/react-dom": "^19.2.7"
   },
   "engines": {
     "node": ">=24.14.1",

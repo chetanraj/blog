@@ -1,10 +1,13 @@
 @import '@capper-ui/tokens';
 @import '@capper-ui/react/styles';
 @import './trends.css';
+@import './fonts.css';
 
 /* ─── BLOG COLOR PALETTE ───────────────────────────────────────── */
 
 :root {
+  --c-font-body: var(--trend-font-body);
+  --c-font-heading: var(--trend-font-heading);
   --bg-color: var(--color-bg);
   --blockquote-color: var(--trend-surface);
   --blockquote-border: var(--trend-border-accent);
@@ -79,14 +82,15 @@ body {
   overflow-x: hidden;
   font-family: var(
     --trend-font-body,
-    'Mona Sans Variable',
     ui-sans-serif,
     system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji'
   );
+  font-weight: 400;
   background-color: var(--bg-color);
   transition: color 0.6s, background-color 0.6s;
 }
@@ -175,8 +179,8 @@ a:visited {
   opacity: 0.29;
 }
 
-header .dark,
-header .light,
+.site-header .dark,
+.site-header .light,
 .site-header-actions {
   position: absolute;
   top: 1em;
@@ -268,20 +272,23 @@ header .light,
 
 .blog-post-container h3 {
   color: var(--primary-color);
+  font-family: var(--trend-font-heading);
   font-size: 1.24em;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .blog-post-container h4 {
   color: var(--primary-color);
+  font-family: var(--trend-font-heading);
   font-size: 1.166em;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .blog-post-container h5 {
   color: var(--primary-color);
+  font-family: var(--trend-font-heading);
   font-size: 1.125em;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .blog-post-container h1,
@@ -481,10 +488,6 @@ header .light,
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-}
-
-.post-meta-icon {
-  flex-shrink: 0;
 }
 
 .post-meta-updated {
@@ -1183,9 +1186,6 @@ header .light,
   outline-offset: 2px;
 }
 
-.pagefind-search {
-  margin-top: 1rem;
-}
 
 .blog-post-content > *:not(img) {
   margin-left: 0;

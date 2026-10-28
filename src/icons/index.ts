@@ -1,18 +1,15 @@
+// Feather icons are provided by the MIT-licensed official React package.
 export {
   ArrowLeft,
   ArrowRight,
-  Calendar,
   ChevronDown,
   Check,
   Clipboard,
-  Clock,
-  Github,
+  GitHub as Github,
   Instagram,
   Linkedin,
   Monitor,
   Moon,
-  Rss,
-  Search,
   Sun,
-  X,
-} from './feather';
+  Twitter as X,
+} from 'react-feather';
