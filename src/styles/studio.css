@@ -1,5 +1,5 @@
 /* Editorial styling, sharing the existing blog typography and color tokens. */
-:root { --studio-container:72rem; --studio-gutter:clamp(1.25rem,5vw,3rem); }
+:root { --studio-title-font:'Geist Serif', Georgia, 'Times New Roman', serif; --studio-tag-font:'Geist Mono', var(--c-font-code); --studio-container:72rem; --studio-gutter:clamp(1.25rem,5vw,3rem); }
 :root:not([data-trend]), html[data-trend='default'] { --header-bg:#101d32; --header-text:#f8f7ef; --color-bg:#f8f7ef; --color-primary:#14233a; --color-content:#14233a; --color-secondary:#66736f; --color-lightgray:#687570; --color-accent:#245c64; --trend-surface:#eef0e7; --trend-border:#d9ddd0; --trend-border-accent:#577d7b; --on-surface-text:#14233a; --on-surface-accent:#245c64; --bg-color:#f8f7ef; --primary-color:#14233a; --primary-text:#14233a; --secondary-color:#66736f; --site-column-max:72rem; --site-column-ratio:100%; }
 html[data-color-mode='dark']:not([data-trend]), html[data-color-mode='dark'][data-trend='default'] { --header-bg:#101d32; --header-text:#f8f7ef; --color-bg:#142033; --color-primary:#f4f3e9; --color-content:#f4f3e9; --color-secondary:#a9b6b5; --color-lightgray:#a9b6b5; --color-accent:#a1d9d6; --trend-surface:#1d3043; --trend-border:#354659; --trend-border-accent:#73aaa9; --on-surface-text:#f4f3e9; --on-surface-accent:#a1d9d6; --bg-color:#142033; --primary-color:#f4f3e9; --primary-text:#f4f3e9; --secondary-color:#a9b6b5; }
 body { color:var(--color-content); background:var(--bg-color); transition:background-color .2s,color .2s; }
@@ -47,6 +47,13 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .latest-note-label { text-transform:none; }
 .note-topline time { font-size:.8125rem; color:var(--color-secondary); }
 .featured-note h2 { font-size:clamp(2rem,4vw,3.5rem); line-height:1.23; letter-spacing:-.01em; max-width:52rem; margin:1.3rem 0; }
+/* Display Regular is the only released Serif weight; never synthesize bold. */
+.studio-intro h1,.featured-note h2,.notebook-row h3,.archive-title,.post-pager-title {
+  font-family:var(--studio-title-font); font-weight:400; font-synthesis:none;
+  overflow-wrap:anywhere;
+}
+/* Capper Link sets its own family/weight as well as size. Inherit all title typography. */
+.featured-note h2 a,.notebook-row h3 a { font-family:inherit; font-weight:inherit; font-synthesis:none; }
 /* Capper Link's default size must not shrink post-title headings. */
 .featured-note h2 a,.notebook-row h3 a { font-size:inherit; }
 .featured-note h2 a,.notebook-row a { color:var(--color-content); text-decoration:none; }
@@ -83,7 +90,7 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .tag-pill-link { display:inline-block; padding:.6rem .2rem; }
 /* Keep tags distinct from prose, using the existing code-font token. */
 .notebook-filters button,.note-topics,.notebook-meta>span,
-.post-tag-link,.tag-pill-link,.topic-label { font-family:var(--c-font-code); font-weight:400; }
+.post-tag-link,.tag-pill-link,.topic-label { font-family:var(--studio-tag-font); font-weight:400; }
 .archive-link { border-bottom:1px solid var(--trend-border); padding:1.2rem 0; }
 .site-footer { background:#101d32!important; color:#b2c2cf!important; border-top:1px solid #2a374b; }
 .site-footer a:link,.site-footer a:visited { color:#c8dadf; }

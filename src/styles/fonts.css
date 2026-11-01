@@ -14,3 +14,20 @@
   font-weight: 200 800;
   font-display: swap;
 }
+
+/* Unmodified Vercel geist@1.9.0 files; see assets/fonts/GEIST-OFL.txt. */
+@font-face {
+  font-family: 'Geist Serif';
+  src: url('../assets/fonts/geist-serif-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('../assets/fonts/geist-mono-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}

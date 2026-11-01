@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const css = readFileSync(new URL('../src/styles/studio.css', import.meta.url), 'utf8');
-test('tags share existing monospace token and normal weight, not their surrounding metadata', () => {
-  assert.match(css, /\.notebook-filters button,\.note-topics,\.notebook-meta>span,\s*\.post-tag-link,\.tag-pill-link,\.topic-label \{ font-family:var\(--c-font-code\); font-weight:400; \}/);
+test('tags share dedicated Geist Mono token and normal weight, not their surrounding metadata', () => {
+  assert.match(css, /\.notebook-filters button,\.note-topics,\.notebook-meta>span,\s*\.post-tag-link,\.tag-pill-link,\.topic-label \{ font-family:var\(--studio-tag-font\); font-weight:400; \}/);
   assert.doesNotMatch(css, /button\[aria-pressed='true'\][^}]*font-weight/);
   assert.doesNotMatch(css, /\.note-topics \{[^}]*font-weight:750/);
   assert.match(css, /\.notebook-meta \{[^}]*font-size:\.8125rem/);
