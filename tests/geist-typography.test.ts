@@ -8,6 +8,8 @@ test('Serif is scoped to titles, uses real regular weight and inherits through C
   assert.match(css, /\.featured-note h2 a,\.notebook-row h3 a \{ font-family:inherit; font-weight:inherit; font-synthesis:none; \}/);
   assert.match(read('../src/styles/header.stylex.ts'), /fontFamily: 'var\(--studio-title-font\)'/);
   assert.doesNotMatch(css, /--c-font-code\s*:/);
+  assert.match(css, /\.featured-note h2 a:is\(:hover,:focus-visible\) \{ color:var\(--color-accent\); text-decoration:none; \}/);
+  assert.match(css, /\.featured-note h2 a:focus-visible \{ outline:2px solid var\(--color-accent\);/);
   assert.match(read('../src/styles/trends.css'), /--trend-font-body: 'Plus Jakarta Sans'/);
 });
 test('both self-hosted Geist faces are present, declared at 400 and licensed', () => {
