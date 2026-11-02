@@ -13,8 +13,6 @@ export {
   Instagram,
   Linkedin,
   Monitor,
-  Play,
-  Pause,
   Moon,
   Sun,
   Share2,
