@@ -1,69 +1,44 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Link, Stack, Text } from '@capper-ui/react';
+import AboutStory from '../components/AboutStory.astro';
 import { SITE } from '../site.config';
-
-const base = import.meta.env.BASE_URL.endsWith('/')
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 ---
-
-<BaseLayout
-  title={`About | ${SITE.title}`}
-  headerTitle="About"
-  description="About Chetan Raj — web designer, developer, and writer behind this blog and JavaScript Essentials."
-  path="/about/"
->
-  <article class="blog-post-container">
-    <div class="blog-post-content static-page about-page">
-      <Stack gap="md">
-        <Text as="p">
-          I'm <strong>{SITE.author.name}</strong> — a web designer and developer based in Bangalore.
-          I write about JavaScript, React, CSS, Node.js, and the small details that make developer
-          tools pleasant to use.
-        </Text>
-        <Text as="p">
-          This blog is my long-form home for tutorials, notes, and opinions. Shorter snapshots and
-          code snippets live on{' '}
-          <Link
-            href="https://www.instagram.com/javascriptessentials/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            JavaScript Essentials
-          </Link>
-          .
-        </Text>
-        <Text as="p">
-          When I'm not coding, you'll find me chasing music, movies, gadgets, and the occasional
-          debate about Iron Man vs Batman.
-        </Text>
-        <Text as="h2" size="2xl" weight="semibold">
-          Find me
-        </Text>
-        <Stack as="ul" gap="xs">
-          <li><Link href="https://chetanraj.dev">chetanraj.dev</Link></li>
-          <li><Link href="https://github.com/chetanraj">GitHub</Link></li>
-          <li>
-            <Link href={`https://x.com/${SITE.author.twitter}`}>X</Link>
-          </li>
-          <li>
-            <Link href={`https://www.instagram.com/${SITE.author.instagram}/`}>Instagram</Link>
-          </li>
-        </Stack>
-        <Text as="p">
-          <Link href={base}>← Back to all posts</Link>
-        </Text>
-      </Stack>
-    </div>
+<BaseLayout title={`About | ${SITE.title}`} headerTitle="About" compactHeader description="About Chetan Raj — web designer and developer in Bangalore, and the person behind JavaScript Essentials." path="/about/">
+  <article class="about-page">
+    <header class="about-intro">
+      <p class="about-kicker">THE PERSON BEHIND THE NOTES</p>
+      <h1>Hi, I’m Chetan.</h1>
+      <p class="about-lead">A web designer and developer based in Bangalore. I write tutorials, notes, and opinions on JavaScript, React, CSS, and Node.js.</p>
+      <a class="about-scroll" href="#about-story">A few things that make me, me <span aria-hidden="true">↓</span></a>
+    </header>
+    <AboutStory />
+    <section class="about-connect" aria-labelledby="find-me">
+      <div><p class="about-kicker">BACK IN THE REAL WORLD</p><h2 id="find-me">Let’s connect.</h2><p>More notes, code, and the occasional tangent.</p></div>
+      <ul>
+        <li><a href={SITE.author.url}>Portfolio <span aria-hidden="true">↗</span></a></li>
+        <li><a href={`https://github.com/${SITE.author.github}`}>GitHub <span aria-hidden="true">↗</span></a></li>
+        <li><a href={`https://x.com/${SITE.author.twitter}`}>X <span aria-hidden="true">↗</span></a></li>
+        <li><a href={`https://www.instagram.com/${SITE.author.instagram}/`}>JavaScript Essentials <span aria-hidden="true">↗</span></a></li>
+      </ul>
+    </section>
+    <a class="about-back" href={base}>← Back to all posts</a>
   </article>
 </BaseLayout>
-
-
 <style>
-  /* Capper Text has its own color; keep this page on the active theme tokens. */
-  .about-page :global(p),
-  .about-page :global(li) { color: var(--color-content); }
-  .about-page :global(h2),
-  .about-page :global(a) { color: var(--color-accent); }
+  .about-page { padding-block:clamp(2.5rem,6vw,5rem) 3rem; color:var(--color-content); }
+  .about-intro { max-width:55rem; margin-bottom:clamp(3rem,6vw,5rem); }
+  .about-kicker { font-family:var(--studio-tag-font); font-size:.7rem; letter-spacing:.12em; line-height:1.6; color:var(--color-secondary); }
+  h1,h2 { font-family:var(--studio-title-font); font-weight:400; font-synthesis:none; color:var(--color-content); }
+  h1 { font-size:clamp(3.1rem,7vw,6rem); line-height:1.06; margin:1.3rem 0; letter-spacing:-.035em; }
+  .about-lead { font-size:clamp(1rem,1.6vw,1.2rem); line-height:1.8; max-width:58ch; color:var(--color-content); }
+  .about-scroll,.about-back { display:inline-flex; gap:1rem; align-items:center; min-height:44px; font-size:.875rem; color:var(--color-accent); }
+  .about-scroll { margin-top:1rem; }
+  .about-connect { display:grid; grid-template-columns:1fr 1fr; gap:3rem; padding-block:3rem; border-top:1px solid var(--trend-border); }
+  .about-connect h2 { font-size:clamp(2rem,4vw,3.5rem); margin:.7rem 0; }
+  .about-connect p { color:var(--color-content); line-height:1.7; }
+  .about-connect ul { list-style:none; padding:0; margin:0; }
+  .about-connect li { border-bottom:1px solid var(--trend-border); }
+  .about-connect a { min-height:56px; display:flex; justify-content:space-between; align-items:center; color:var(--color-accent); font-size:1rem; text-decoration:none; }
+  @media(max-width:650px) { .about-connect { grid-template-columns:1fr; gap:1.5rem; } }
 </style>

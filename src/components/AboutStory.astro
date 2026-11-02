@@ -1,0 +1,103 @@
+---
+const chapters = [
+  { id:'noir', number:'01', label:'BATMAN / AFTER DARK', title:'A little dark. A little curious.', text:'Music, movies, and the occasional debate about Iron Man vs Batman. There’s room here for more than code.', aside:'Charcoal, sharp edges, and a city after dark.' },
+  { id:'arc', number:'02', label:'IRON MAN / IN THE WORKSHOP', title:'A soft spot for gadgets.', text:'When I’m not coding, you’ll find me chasing gadgets. This is the other side of the superhero debate: bright interfaces, intricate machines, and the fun of figuring things out.', aside:'Red, gold, and a little electric blue.' },
+  { id:'code', number:'03', label:'JAVASCRIPT / BACK TO THE EDITOR', title:'And always, back to the web.', text:'This blog is my long-form home for tutorials, notes, and opinions on JavaScript, React, CSS, and Node.js. Shorter snapshots and code snippets live on JavaScript Essentials.', aside:'Less cinematic universe. More browser console.' },
+];
+---
+<about-scroll-story id="about-story">
+  <div class="story-art" aria-hidden="true">
+    <div class="story-art-top"><span>CHETAN / PERSONAL FREQUENCIES</span><span class="story-counter">01 — 03</span></div>
+    <div class="story-stage">
+      <div class="story-pane noir" data-art="noir">
+        <svg viewBox="0 0 600 560" fill="none"><defs><radialGradient id="noir-haze"><stop stop-color="#cbd5e1" stop-opacity=".25"/><stop offset="1" stop-color="#080b13" stop-opacity="0"/></radialGradient><pattern id="noir-grid" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#4b5263"/></pattern></defs><path fill="#080b13" d="M0 0h600v560H0z"/><path fill="url(#noir-grid)" opacity=".4" d="M0 0h600v560H0z"/><circle cx="352" cy="200" r="205" fill="url(#noir-haze)"/><circle cx="353" cy="183" r="63" stroke="#8d98ac" opacity=".6"/><path class="story-beam" d="m300 460-85-390 244 18Z" fill="#c9d4e4" opacity=".065"/><g stroke="#758196" stroke-width="1.3"><path d="M50 470V335h54v-70h36v-45h22v45h45v125h46V288h38v-75h24v75h32v104h41V242h45v-51h16v51h36v151h36v-77h35v154"/><path d="M0 470h600M0 495h600" opacity=".35"/></g><path d="m219 194 42 24 39-85 40 85 42-24-34 82-48 25-48-25Z" stroke="#d2d9e5" stroke-width="2"/><path d="m263 246 24 6m26 0 24-6" stroke="#e3c766" stroke-width="3"/><text x="38" y="525" fill="#9ca7b8" font-family="monospace" font-size="11" letter-spacing="3">NOIR STUDY / 01</text></svg>
+      </div>
+      <div class="story-pane arc" data-art="arc">
+        <svg viewBox="0 0 600 560" fill="none"><defs><radialGradient id="arc-haze"><stop stop-color="#5bdde7" stop-opacity=".22"/><stop offset="1" stop-color="#151014" stop-opacity="0"/></radialGradient></defs><path fill="#160f14" d="M0 0h600v560H0z"/><path d="M30 30h150l25 25h190l25-25h150v500H30Z" stroke="#754039"/><path d="m50 150 70-40v340l-70-40Zm500 0-70-40v340l70-40Z" fill="#6c2529"/><circle cx="300" cy="275" r="205" fill="url(#arc-haze)"/><g class="story-hud" stroke="#d6ae60"><circle cx="300" cy="275" r="155" stroke-dasharray="90 12 4 12"/><circle cx="300" cy="275" r="130" opacity=".5"/><path d="M300 95v35m0 290v35M120 275H85m430 0h-35"/></g><g stroke="#8bf4f5"><circle cx="300" cy="275" r="99" stroke-width="2"/><circle cx="300" cy="275" r="84" stroke-dasharray="2 10" stroke-width="5"/><path d="m300 205 64 112H236Z" stroke-width="4"/><path d="m300 224 48 83h-96Z" fill="#8bf4f5" fill-opacity=".12"/></g><path d="M52 75h90m316 0h90M52 485h90m316 0h90" stroke="#deab62"/><text x="38" y="525" fill="#dab786" font-family="monospace" font-size="11" letter-spacing="3">WORKSHOP STUDY / 02</text></svg>
+      </div>
+      <div class="story-pane code" data-art="code">
+        <svg viewBox="0 0 600 560" fill="none"><defs><pattern id="code-grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0v40" stroke="#534e25" stroke-opacity=".35"/></pattern></defs><path fill="#f2d84b" d="M0 0h600v560H0z"/><path fill="url(#code-grid)" d="M0 0h600v560H0z"/><rect x="64" y="104" width="472" height="332" rx="8" fill="#171b23"/><path d="M64 145h472" stroke="#4d5260"/><circle cx="85" cy="125" r="4" fill="#f2d84b"/><circle cx="101" cy="125" r="4" fill="#909ba8"/><circle cx="117" cy="125" r="4" fill="#909ba8"/><text x="155" y="130" fill="#aab5c3" font-family="monospace" font-size="12">notes-from-the-build.js</text><text x="100" y="224" fill="#f7e584" font-family="monospace" font-size="26">const curiosity = true;</text><text x="100" y="276" fill="#b7c6d8" font-family="monospace" font-size="22">build();</text><text x="100" y="318" fill="#b7c6d8" font-family="monospace" font-size="22">learn();</text><text x="100" y="360" fill="#b7c6d8" font-family="monospace" font-size="22">write();</text><text x="436" y="410" fill="#f2d84b" font-family="monospace" font-size="38">JS</text><text x="38" y="525" fill="#39361e" font-family="monospace" font-size="11" letter-spacing="3">BROWSER STUDY / 03</text></svg>
+      </div>
+    </div>
+    <div class="story-art-bottom"><span>THREE INTERESTS. ONE PERSON.</span><span aria-hidden="true">↓</span></div>
+  </div>
+  <div class="story-chapters">
+    {chapters.map(chapter => <section id={`about-${chapter.id}`} data-chapter={chapter.id} aria-labelledby={`title-${chapter.id}`}>
+      <p class="chapter-label"><span>{chapter.number}</span>{chapter.label}</p>
+      <h2 id={`title-${chapter.id}`}>{chapter.title}</h2>
+      <p>{chapter.text}</p>
+      {chapter.id === 'code' && <a href="https://www.instagram.com/javascriptessentials/">Explore JavaScript Essentials ↗</a>}
+      <p class="chapter-aside">{chapter.aside}</p>
+    </section>)}
+  </div>
+</about-scroll-story>
+<style>
+  :global(body:has(about-scroll-story)) { overflow-x:clip; }
+  about-scroll-story { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.85fr); gap:clamp(2rem,5vw,5rem); position:relative; padding-bottom:3rem; }
+  .story-art { align-self:start; border:1px solid var(--trend-border); overflow:hidden; border-radius:3px; background:#080b13; }
+  .story-art-top,.story-art-bottom { display:flex; justify-content:space-between; align-items:center; gap:1rem; background:#0c121e; color:#c4cedb; padding:1rem; font-family:var(--studio-tag-font); font-size:.55rem; letter-spacing:.07em; }
+  .story-stage { display:grid; }
+  .story-pane svg { display:block; width:100%; height:auto; }
+  .story-counter { white-space:nowrap; }
+  .story-chapters section { padding-block:3rem; border-top:1px solid var(--trend-border); scroll-margin-top:2rem; }
+  .story-chapters h2 { font-family:var(--studio-title-font); font-size:clamp(2rem,3.4vw,3.2rem); line-height:1.16; font-weight:400; font-synthesis:none; color:var(--color-content); letter-spacing:-.02em; margin:1.4rem 0; }
+  .story-chapters p { font-size:1rem; line-height:1.85; max-width:58ch; color:var(--color-content); }
+  .story-chapters .chapter-label { display:flex; gap:1rem; align-items:baseline; font-family:var(--studio-tag-font); font-size:.65rem; letter-spacing:.06em; color:var(--color-accent); line-height:1.7; }
+  .chapter-label span { font-size:.9rem; }
+  .story-chapters .chapter-aside { font-family:var(--studio-tag-font); color:var(--color-secondary); font-size:.72rem; padding-top:1rem; }
+  .story-chapters a { display:inline-flex; min-height:44px; align-items:center; color:var(--color-accent); font-size:.9rem; }
+  /* Progressive enhancement only: without JS, all three artwork studies stay visible. */
+  about-scroll-story[data-motion] .story-art { position:sticky; top:1.5rem; }
+  about-scroll-story[data-motion] .story-stage { position:relative; aspect-ratio:600/560; display:block; }
+  about-scroll-story[data-motion] .story-pane { position:absolute; inset:0; }
+  about-scroll-story[data-motion] .story-pane:not(:first-child) { opacity:0; }
+  about-scroll-story[data-motion] .story-chapters section { min-height:65vh; display:flex; flex-direction:column; justify-content:center; padding-block:4rem; }
+  @media(max-width:760px) {
+    about-scroll-story { display:flex; flex-direction:column; gap:1.5rem; }
+    .story-stage { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .story-art-top,.story-art-bottom { font-size:.5rem; padding:.75rem; }
+    .story-chapters section { padding:2rem 0; }
+    about-scroll-story[data-motion] .story-art { top:0; z-index:2; width:100%; }
+    about-scroll-story[data-motion] .story-stage { height:210px; aspect-ratio:auto; }
+    about-scroll-story[data-motion] .story-pane svg { height:100%; width:100%; }
+    about-scroll-story[data-motion] .story-chapters section { min-height:65svh; padding-block:2.5rem; scroll-margin-top:290px; }
+    about-scroll-story[data-motion] .story-art-top,about-scroll-story[data-motion] .story-art-bottom { padding:.55rem .75rem; }
+
+  }
+  @media(prefers-reduced-motion:reduce) {
+    .story-stage { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  }
+</style>
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+  class AboutScrollStory extends HTMLElement {
+    private cleanup?: () => void;
+    connectedCallback() {
+      if (this.cleanup) return;
+      const media = gsap.matchMedia();
+      media.add('(prefers-reduced-motion: no-preference)', () => {
+        const panes = [...this.querySelectorAll<HTMLElement>('[data-art]')];
+        const chapters = [...this.querySelectorAll<HTMLElement>('[data-chapter]')];
+        const counter = this.querySelector('.story-counter');
+        this.setAttribute('data-motion', '');
+        const activate = (index: number) => {
+          panes.forEach((pane, i) => gsap.to(pane, { opacity:i === index ? 1 : 0, duration:.55, ease:'power2.out', overwrite:true }));
+          if (counter) counter.textContent = `${String(index + 1).padStart(2, '0')} — 03`;
+        };
+        chapters.forEach((chapter, index) => ScrollTrigger.create({ trigger:chapter, start:'top center', end:'bottom center', onEnter:() => activate(index), onEnterBack:() => activate(index) }));
+        ScrollTrigger.refresh();
+        return () => {
+          gsap.killTweensOf(panes);
+          panes.forEach(pane => pane.style.removeProperty('opacity'));
+          this.removeAttribute('data-motion');
+          if (counter) counter.textContent = '01 — 03';
+        };
+      });
+      this.cleanup = () => media.revert();
+    }
+    disconnectedCallback() { this.cleanup?.(); this.cleanup = undefined; }
+  }
+  if (!customElements.get('about-scroll-story')) customElements.define('about-scroll-story', AboutScrollStory);
+</script>

@@ -6,7 +6,7 @@ import { headerStyles } from '../styles/header.stylex';
 import OrbitalArt from './OrbitalArt.astro';
 import PostCover from './PostCover.astro';
 import SoundToggle from './SoundToggle.astro';
-const { title, postCoverId } = Astro.props;
+const { title, postCoverId, compact = false } = Astro.props;
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 const currentPath = Astro.url.pathname;
 ---
@@ -23,7 +23,7 @@ const currentPath = Astro.url.pathname;
       </div>
     </nav>
     {postCoverId && <PostCover postId={postCoverId} />}
-    <div class:list={["studio-hero", stylex.props(headerStyles.hero).className]}>
+    {!compact && <div class:list={["studio-hero", stylex.props(headerStyles.hero).className]}>
       <div class="studio-intro">
         {title && <p class="eyebrow">THE NOTEBOOK / CHETAN RAJ</p>}
         <h1 {...stylex.props(headerStyles.title)}>{title || <>Notes from<br />the build.</>}</h1>
@@ -31,7 +31,7 @@ const currentPath = Astro.url.pathname;
         {title && <a class="hero-back" href={base}>← All notes</a>}
       </div>
       {!postCoverId && <OrbitalArt />}
-    </div>
+    </div>}
   </div>
 </header>
 <script is:inline>
