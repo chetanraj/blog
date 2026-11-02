@@ -1,0 +1,600 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script>
+      (() => {
+        const root = document.documentElement;
+        const storedTheme = window.localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const themePreference =
+          storedTheme === 'dark' || storedTheme === 'light' || storedTheme === 'system'
+            ? storedTheme
+            : prefersDark
+              ? 'dark'
+              : 'light';
+        const colorMode =
+          themePreference === 'system' ? (prefersDark ? 'dark' : 'light') : themePreference;
+        const storedEra = window.localStorage.getItem('blog-design-era');
+        const designEra = storedEra || 'default';
+
+        root.dataset.colorMode = colorMode;
+        root.dataset.themePreference = themePreference;
+        root.dataset.trend = designEra;
+      })();
+    </script><title>How I make npm wait a day before installing</title><meta name="description" content="What one line of .npmrc, min-release-age=1, actually does. What it filters, when it errors, and what it does not check."><link rel="canonical" href="https://chetanraj.dev/blog/posts/how-i-make-npm-wait-a-day-before-installing/"><link rel="alternate" type="application/rss+xml" title="Blog by Chetan Raj" href="https://chetanraj.dev/blog/rss.xml"><meta property="og:site_name" content="Blog by Chetan Raj"><meta property="og:title" content="How I make npm wait a day before installing"><meta property="og:description" content="What one line of .npmrc, min-release-age=1, actually does. What it filters, when it errors, and what it does not check."><meta property="og:url" content="https://chetanraj.dev/blog/posts/how-i-make-npm-wait-a-day-before-installing/"><meta property="og:type" content="article"><meta property="og:image" content="https://chetanraj.dev/blog/favicons/icon-512x512.png"><meta name="twitter:card" content="summary"><meta name="twitter:site" content="@chetan_raj"><meta name="twitter:title" content="How I make npm wait a day before installing"><meta name="twitter:description" content="What one line of .npmrc, min-release-age=1, actually does. What it filters, when it errors, and what it does not check."><meta name="twitter:image" content="https://chetanraj.dev/blog/favicons/icon-512x512.png"><meta property="article:published_time" content="2026-11-02T00:00:00.000Z"><meta name="author" content="Chetan Raj"><link rel="icon" href="/blog/favicon.svg" type="image/svg+xml"><link rel="icon" href="/blog/favicons/favicon-32.png" sizes="32x32" type="image/png"><link rel="icon" href="/blog/favicons/favicon-16.png" sizes="16x16" type="image/png"><link rel="apple-touch-icon" href="/blog/favicons/favicon-180.png" sizes="180x180"><script defer data-domain="chetanraj.dev" src="https://plausible.io/js/script.js"></script><link rel="stylesheet" href="/blog/_astro/BaseLayout.DY9--uSn.css"></head><body><a class="skip-link" href="#main">Skip to content</a><header class="site-header site-chrome header__headerStyles.root x1n2onr6 xh8yej3 xr004xx xlbkikk"><div class="hero-text header__headerStyles.hero x1n2onr6 x1n327nk x78zum5 xdt5ytf x6s0dn4 xl56j7k xr004xx x2b8uid x18nhot6"><h1 class="header__headerStyles.title x1ghz6dp x1vpbbxe x1fcty0u xnxx81d xngnso2 x132q4wb xt3l3uh x1wsgiic" data-style-src="blog-by-chetanraj:src/styles/header.stylex.ts:22">How I make npm wait a day before installing</h1></div><span class="home header__headerStyles.homeLink xvlbb8m"><a class="header__headerStyles.homeAnchor xvlbb8m x1hl2dhg x1ypdohk xt3l3uh x1wsgiic" data-style-src="blog-by-chetanraj:src/styles/header.stylex.ts:65" href="/blog/" aria-label="Back to blog home"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Back to blog home" role="img"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></a></span><div id="themeToggle" class="site-header-actions light"><a class="site-header-action site-header-action--rss" href="/blog/rss.xml" title="RSS" aria-label="RSS feed"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a><a class="site-header-action" href="/blog/search/" title="Search" aria-label="Search posts"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></a><button class="site-header-action theme-icon-button" title="Theme" type="button" id="themeButton" aria-label="Toggle theme"><span class="theme-icon" data-theme-icon="light" hidden><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span><span class="theme-icon" data-theme-icon="dark" hidden><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span><span class="theme-icon" data-theme-icon="system" hidden><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span></button></div><div class="bg"></div></header><script>
+  const root = document.documentElement;
+  const body = document.body;
+  const wrap = document.getElementById('themeToggle');
+  const btn = document.getElementById('themeButton');
+  const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function getInitialTheme() {
+    const persisted = window.localStorage.getItem('theme');
+    if (persisted === 'dark' || persisted === 'light' || persisted === 'system')
+      return persisted;
+    return colorSchemeQuery.matches ? 'dark' : 'light';
+  }
+
+  function playSound() {
+    const audioContext = new (
+      window.AudioContext || window.webkitAudioContext
+    )();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      audioContext.currentTime + 0.1
+    );
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  }
+
+  function showThemeIcon(preference) {
+    document.querySelectorAll('[data-theme-icon]').forEach((el) => {
+      const match = el.getAttribute('data-theme-icon') === preference;
+      if (match) el.removeAttribute('hidden');
+      else el.setAttribute('hidden', '');
+    });
+
+    const labels = {
+      light: 'Switch to dark theme',
+      dark: 'Switch to system theme',
+      system: 'Switch to light theme',
+    };
+    if (btn) btn.setAttribute('aria-label', labels[preference] || 'Toggle theme');
+  }
+
+  function setTheme(next) {
+    const themeToApply =
+      next === 'system' ? (colorSchemeQuery.matches ? 'dark' : 'light') : next;
+
+    root.dataset.colorMode = themeToApply;
+    root.dataset.themePreference = next;
+    body.classList.remove('dark', 'light');
+    body.classList.add(themeToApply);
+    wrap?.classList.remove('dark', 'light');
+    wrap?.classList.add(themeToApply);
+
+    showThemeIcon(next);
+    window.localStorage.setItem('theme', next);
+    playSound();
+  }
+
+  const initial = typeof window !== 'undefined' ? getInitialTheme() : 'light';
+  const stored = typeof window !== 'undefined' ? window.localStorage.getItem('theme') : null;
+  const initialPreference =
+    stored === 'dark' || stored === 'light' || stored === 'system'
+      ? stored
+      : initial === 'dark'
+        ? 'dark'
+        : 'light';
+
+  setTheme(initialPreference);
+
+  btn?.addEventListener('click', () => {
+    const current = window.localStorage.getItem('theme') || initialPreference;
+    const next =
+      current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
+    setTheme(next);
+  });
+
+  colorSchemeQuery.addEventListener('change', () => {
+    if (window.localStorage.getItem('theme') === 'system') {
+      setTheme('system');
+    }
+  });
+</script><div class="site-content"><main id="main" class="h-sc"><article class="blog-post-container"><div class="post-layout"><aside class="post-toc-aside" aria-label="Table of contents sidebar"><nav class="post-toc post-toc--sticky" aria-label="Table of contents"><details class="post-toc-details" open><summary class="post-toc-summary"><span class="post-toc-title">On this page</span><span class="post-toc-toggle" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary><ol class="post-toc-list"><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#what-the-setting-is">What the setting is</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#what-it-filters">What it filters</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#what-happens-when-nothing-is-old-enough">What happens when nothing is old enough</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#what-it-does-not-do">What it does not do</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#when-i-need-a-fresh-version">When I need a fresh version</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#other-package-managers">Other package managers</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#the-takeaway">The takeaway</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#sources">Sources</a></li></ol></details></nav></aside><div class="post-layout-main"><div class="blog-post-content"><div class="_inline_5sdma_1 _gap-md_5sdma_23 _align-center_5sdma_44 _wrap_5sdma_6 post-meta"><time datetime="2026-11-02T00:00:00.000Z" class="post-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="post-meta-icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>Nov 2, 2026</time><span class="post-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="post-meta-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>5 min read</span><div class="_inline_5sdma_1 _gap-sm_5sdma_19 _wrap_5sdma_6 post-meta-item post-meta-tags"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-md_1q5lx_45 post-tag-link" href="/blog/tags/npm/"><span class="_badge_xyecj_1 _variant-accent_xyecj_20 _size-sm_xyecj_38">npm</span></a><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-md_1q5lx_45 post-tag-link" href="/blog/tags/security/"><span class="_badge_xyecj_1 _variant-accent_xyecj_20 _size-sm_xyecj_38">security</span></a><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-md_1q5lx_45 post-tag-link" href="/blog/tags/supply-chain/"><span class="_badge_xyecj_1 _variant-accent_xyecj_20 _size-sm_xyecj_38">supply chain</span></a></div></div><div class="post-toc-mobile"><nav class="post-toc" aria-label="Table of contents"><details class="post-toc-details" open><summary class="post-toc-summary"><span class="post-toc-title">On this page</span><span class="post-toc-toggle" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary><ol class="post-toc-list"><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#what-the-setting-is">What the setting is</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#what-it-filters">What it filters</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#what-happens-when-nothing-is-old-enough">What happens when nothing is old enough</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#what-it-does-not-do">What it does not do</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#when-i-need-a-fresh-version">When I need a fresh version</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#other-package-managers">Other package managers</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#the-takeaway">The takeaway</a></li><li class="post-toc-item post-toc-item--depth-2"><a class="_link_1q5lx_1 _variant-default_1q5lx_14 _size-sm_1q5lx_41 post-toc-link" href="#sources">Sources</a></li></ol></details></nav></div><div class="blog-post-body utilities__utilityStyles.textPrimary xtvj055"><p>Last month I added one line to my blog repo. It is the whole <code>.npmrc</code> file.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="txt"><code><span class="line"><span>min-release-age=1</span></span></code></pre>
+<p>I added it because of September 2025. On September 8, an attacker phished the npm account behind chalk and debug and published malicious versions of 18 packages. Together those packages get billions of downloads a week. The bad chalk versions were live for about two hours. A week later the Shai-Hulud worm started stealing npm tokens and publishing compromised versions with them. CISA counted more than 500 affected packages.</p>
+<p>Both attacks needed someone to install a version in its first few hours. I do not want to be that someone. So I tell npm to wait.</p>
+<p>Then I noticed I could not explain exactly what that line does. So I read the npm docs, the pull request, and the changelog, and I tested it on a throwaway project with npm 11.21.1. This is what I found.</p>
+<h2 id="what-the-setting-is">What the setting is</h2>
+<p><code>min-release-age</code> shipped in npm 11.10.0 on February 11, 2026. The value is a number of days. With <code>min-release-age=1</code>, npm only installs versions that were published more than one day ago.</p>
+<p>A day here is a rolling 24 hours. I ran an install at 9:48 AM and the error said “with a date before 10/24/2026, 9:48:29 AM”. That is the same clock time on the previous day.</p>
+<p>npm already had a <code>before</code> setting. It takes an exact date and makes npm act as if nothing newer exists. <code>min-release-age</code> is the relative version of the same filter. In the pull request that added it, the maintainer shows npm turning <code>--min-release-age=30</code> into a <code>before</code> date 30 days back. If both are set in the same config file, <code>before</code> wins.</p>
+<h2 id="what-it-filters">What it filters</h2>
+<p>The filter runs when npm picks a version for a range. Versions inside the window are invisible to the resolver. That includes transitive dependencies. The maintainer confirmed in the pull request thread that the filter applies when npm fetches each package’s metadata, so every package in the tree goes through it.</p>
+<p>I checked that too. I generated a lockfile for <code>express@4.21.2</code> with <code>--min-release-age=300</code>. All 69 packages in that tree were published before the cutoff. Without the flag, 5 of them were newer.</p>
+<h2 id="what-happens-when-nothing-is-old-enough">What happens when nothing is old enough</h2>
+<p>It depends on how you ask.</p>
+<p>With a dist-tag, npm falls back. <code>typescript@next</code> pointed to a nightly published about 20 hours earlier. <code>npm i typescript@next</code> installed <code>7.0.2</code> instead.</p>
+<p>With an exact version, or a range that only too-new versions satisfy, npm stops with an error.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="txt"><code><span class="line"><span>$ npm i typescript@7.1.0-dev.20261024.1</span></span>
+<span class="line"><span>npm error code ETARGET</span></span>
+<span class="line"><span>npm error notarget No matching version found for typescript@7.1.0-dev.20261024.1 with a date before 10/24/2026, 9:48:29 AM.</span></span></code></pre>
+<p>I like that. A failed install tells me something happened. A silent downgrade would not.</p>
+<h2 id="what-it-does-not-do">What it does not do</h2>
+<p>This is the part I had wrong. The setting does not check what is already in <code>package-lock.json</code>.</p>
+<p>I installed that fresh TypeScript nightly without the setting. Then I added <code>min-release-age=1</code> and ran <code>npm ci</code>. npm installed the 20 hour old version without a word. <code>npm install</code> did the same. Only <code>npm update</code> failed, because it had to resolve the range again. The maintainer says the same in the pull request thread: an existing lockfile entry skips the “find a version that matches this range” step.</p>
+<p>It also needs npm 11.10 or newer. My blog CI runs <code>npm ci</code> on Node 22, and Node 22 ships with npm 10.9. I ran npm 10.9.9 with the same <code>.npmrc</code>. It installed the too-new version and printed no warning.</p>
+<p>So the line protects one moment: when a new version enters the lockfile. For me that happens on my laptop, when I run <code>npm install</code> or <code>npm update</code>. CI only replays the lockfile. That works as long as my local npm is new enough, so <code>npm -v</code> is now part of the habit.</p>
+<h2 id="when-i-need-a-fresh-version">When I need a fresh version</h2>
+<p>Sometimes the fix I need was published yesterday. If the window blocks <code>npm audit fix</code>, npm keeps the vulnerable version, warns, and exits with a non-zero code.</p>
+<p>For a one-off, a command line flag beats the project <code>.npmrc</code>. <code>npm i some-pkg --min-release-age=0</code> installed the 20 hour old nightly in my test.</p>
+<p>For packages I publish myself, npm 11.17.0 added <code>min-release-age-exclude</code>. It takes package names or globs. For my blog that would be my own design system.</p>
+<pre class="astro-code dracula" style="background-color:#282A36;color:#F8F8F2; overflow-x: auto;" tabindex="0" data-language="txt"><code><span class="line"><span>min-release-age=1</span></span>
+<span class="line"><span>min-release-age-exclude[]=@capper-ui/*</span></span></code></pre>
+<p>Only the matching packages skip the wait. Their dependencies still go through it.</p>
+<h2 id="other-package-managers">Other package managers</h2>
+<p>pnpm has had <code>minimumReleaseAge</code> since 10.16. It is in minutes, and since pnpm 11 the default is 1440, which is one day. Yarn has <code>npmMinimalAgeGate</code>, and its docs say the default is <code>1d</code>. Bun has <code>minimumReleaseAge</code> in <code>bunfig.toml</code>, in seconds, and it is off by default. Bun’s docs also say existing <code>bun.lock</code> entries stay unchanged, the same as npm.</p>
+<p>npm leaves it off by default too. That is why the line has to be in <code>.npmrc</code>.</p>
+<h2 id="the-takeaway">The takeaway</h2>
+<p><code>min-release-age=1</code> makes npm skip any version younger than 24 hours when it resolves a dependency. It covers the whole tree. It errors when nothing older fits an exact version or range. It does not re-check the lockfile, and npm 10 ignores it.</p>
+<p>The bad chalk versions were live for about two hours. With a one-day wait, my next install would have picked an older version.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://docs.npmjs.com/cli/v11/using-npm/config">npm docs: config, <code>min-release-age</code>, <code>before</code>, <code>min-release-age-exclude</code></a></li>
+<li><a href="https://github.com/npm/cli/pull/8965">npm/cli PR #8965: feat: add min-release-age</a></li>
+<li><a href="https://github.com/npm/cli/releases/tag/v11.10.0">npm v11.10.0 release notes</a></li>
+<li><a href="https://github.com/npm/cli/releases/tag/v11.17.0">npm v11.17.0 release notes (min-release-age-exclude)</a></li>
+<li><a href="https://www.aikido.dev/blog/npm-debug-and-chalk-packages-compromised">Aikido: npm debug and chalk packages compromised</a></li>
+<li><a href="https://github.com/chalk/chalk/issues/656">chalk issue #656: 5.6.1 compromised</a></li>
+<li><a href="https://github.com/debug-js/debug/security/advisories/GHSA-4x49-vf9v-38px">debug advisory GHSA-4x49-vf9v-38px</a></li>
+<li><a href="https://www.cisa.gov/news-events/alerts/2025/09/23/widespread-supply-chain-compromise-impacting-npm-ecosystem">CISA: Widespread supply chain compromise impacting npm ecosystem</a></li>
+<li><a href="https://pnpm.io/settings/dependency-resolution">pnpm docs: minimumReleaseAge</a></li>
+<li><a href="https://yarnpkg.com/features/security">Yarn docs: security, age gate</a></li>
+<li><a href="https://bun.com/docs/pm/cli/install">Bun docs: minimum release age</a></li>
+</ul></div><div class="post-end-actions"><div class="post-share"><p class="post-share-label">Share</p><div class="post-share-actions"><button type="button" class="post-share-btn" data-copy-url="https://chetanraj.dev/blog/posts/how-i-make-npm-wait-a-day-before-installing/" aria-label="Copy link"><span class="post-share-icon post-share-icon--copy"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></span><span class="post-share-icon post-share-icon--check"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg></span></button><a class="post-share-btn" href="https://x.com/intent/post?url=https%3A%2F%2Fchetanraj.dev%2Fblog%2Fposts%2Fhow-i-make-npm-wait-a-day-before-installing%2F&amp;text=How%20I%20make%20npm%20wait%20a%20day%20before%20installing" rel="noopener noreferrer" target="_blank" aria-label="Share on X"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.822L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></a><a class="post-share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fchetanraj.dev%2Fblog%2Fposts%2Fhow-i-make-npm-wait-a-day-before-installing%2F" rel="noopener noreferrer" target="_blank" aria-label="Share on LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a></div></div><script>
+  (function () {
+    function bindShareCopy() {
+      document.querySelectorAll('[data-copy-url]').forEach(function (button) {
+        if (button.dataset.copyBound === 'true') return;
+        button.dataset.copyBound = 'true';
+        button.addEventListener('click', function () {
+          var url = button.getAttribute('data-copy-url');
+          if (!url) return;
+          navigator.clipboard.writeText(url).then(function () {
+            button.classList.add('is-copied');
+            button.setAttribute('aria-label', 'Link copied');
+            window.setTimeout(function () {
+              button.classList.remove('is-copied');
+              button.setAttribute('aria-label', 'Copy link');
+            }, 1600);
+          });
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindShareCopy);
+    } else {
+      bindShareCopy();
+    }
+    document.addEventListener('astro:page-load', bindShareCopy);
+  })();
+</script><div class="emoji-reaction" data-reaction-id="how-i-make-npm-wait-a-day-before-installing"><button type="button" class="emoji-reaction-trigger" aria-expanded="false" aria-label="React"><span class="emoji-reaction-face" data-reaction-face>+</span></button><div class="emoji-reaction-bar" hidden role="listbox" aria-label="Reactions"><button type="button" class="emoji-reaction-pick" role="option" data-emoji="🔥" aria-label="Fire"><span class="emoji-reaction-glyph">🔥</span><span class="emoji-reaction-count" data-count-for="🔥" hidden>0</span></button><button type="button" class="emoji-reaction-pick" role="option" data-emoji="💡" aria-label="Idea"><span class="emoji-reaction-glyph">💡</span><span class="emoji-reaction-count" data-count-for="💡" hidden>0</span></button><button type="button" class="emoji-reaction-pick" role="option" data-emoji="🧠" aria-label="Learned"><span class="emoji-reaction-glyph">🧠</span><span class="emoji-reaction-count" data-count-for="🧠" hidden>0</span></button><button type="button" class="emoji-reaction-pick" role="option" data-emoji="✨" aria-label="Nice"><span class="emoji-reaction-glyph">✨</span><span class="emoji-reaction-count" data-count-for="✨" hidden>0</span></button><button type="button" class="emoji-reaction-pick" role="option" data-emoji="🙌" aria-label="Thanks"><span class="emoji-reaction-glyph">🙌</span><span class="emoji-reaction-count" data-count-for="🙌" hidden>0</span></button></div></div><script>
+  (function () {
+    function storageKey(id) {
+      return 'blog-react:' + id;
+    }
+
+    function loadState(id) {
+      try {
+        return JSON.parse(window.localStorage.getItem(storageKey(id)) || '{}');
+      } catch (err) {
+        return {};
+      }
+    }
+
+    function saveState(id, state) {
+      window.localStorage.setItem(storageKey(id), JSON.stringify(state));
+    }
+
+    function burst(emoji, origin) {
+      var rect = origin.getBoundingClientRect();
+      var startX = rect.left + rect.width / 2;
+      var startY = rect.top + rect.height / 2;
+      for (var i = 0; i < 5; i += 1) {
+        var fly = document.createElement('span');
+        fly.className = 'emoji-fly';
+        fly.textContent = emoji;
+        fly.style.left = startX + 'px';
+        fly.style.top = startY + 'px';
+        fly.style.setProperty('--dx', (Math.random() - 0.5) * 96 + 'px');
+        fly.style.setProperty('--delay', i * 40 + 'ms');
+        document.body.appendChild(fly);
+        fly.addEventListener('animationend', function () {
+          fly.remove();
+        });
+      }
+    }
+
+    function placeBar(root) {
+      var bar = root.querySelector('.emoji-reaction-bar');
+      var trigger = root.querySelector('.emoji-reaction-trigger');
+      if (!bar || !trigger) return;
+      bar.classList.remove('is-below');
+      var triggerRect = trigger.getBoundingClientRect();
+      var barRect = bar.getBoundingClientRect();
+      if (triggerRect.top - barRect.height < 12) {
+        bar.classList.add('is-below');
+      }
+    }
+
+    function bind(root) {
+      if (root.dataset.bound === 'true') return;
+      root.dataset.bound = 'true';
+      var id = root.getAttribute('data-reaction-id') || 'blog';
+      var trigger = root.querySelector('.emoji-reaction-trigger');
+      var face = root.querySelector('[data-reaction-face]');
+      var bar = root.querySelector('.emoji-reaction-bar');
+      var alwaysOpen = root.classList.contains('emoji-reaction--bar');
+      var state = loadState(id);
+      state.counts = state.counts || {};
+      var holdTimer = null;
+
+      function isOpen() {
+        if (alwaysOpen) return true;
+        return trigger && trigger.getAttribute('aria-expanded') === 'true';
+      }
+
+      function renderCounts() {
+        root.querySelectorAll('[data-count-for]').forEach(function (el) {
+          var glyph = el.getAttribute('data-count-for');
+          var n = state.counts[glyph] || 0;
+          el.textContent = String(n);
+          if (n > 0) el.removeAttribute('hidden');
+          else el.setAttribute('hidden', '');
+        });
+        if (face && !isOpen()) {
+          face.textContent = state.last || '+';
+        }
+      }
+
+      function setOpen(open) {
+        if (alwaysOpen || !trigger) return;
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        trigger.classList.toggle('is-open', open);
+        if (open) {
+          bar.removeAttribute('hidden');
+          placeBar(root);
+          if (face) face.textContent = '×';
+          trigger.setAttribute('aria-label', 'Close reactions');
+        } else {
+          bar.setAttribute('hidden', '');
+          if (face) face.textContent = state.last || '+';
+          trigger.setAttribute('aria-label', 'React');
+        }
+      }
+
+      function react(emoji, origin) {
+        state.last = emoji;
+        state.counts[emoji] = (state.counts[emoji] || 0) + 1;
+        saveState(id, state);
+        renderCounts();
+        burst(emoji, origin);
+      }
+
+      if (trigger) {
+        trigger.addEventListener('click', function (event) {
+          event.stopPropagation();
+          setOpen(!isOpen());
+        });
+      }
+
+      root.querySelectorAll('.emoji-reaction-pick').forEach(function (pick) {
+        pick.addEventListener('click', function (event) {
+          event.stopPropagation();
+          react(pick.getAttribute('data-emoji'), pick);
+        });
+        pick.addEventListener('mousedown', function (event) {
+          if (event.button !== 0) return;
+          holdTimer = window.setInterval(function () {
+            react(pick.getAttribute('data-emoji'), pick);
+          }, 140);
+        });
+        pick.addEventListener('mouseup', function () {
+          window.clearInterval(holdTimer);
+        });
+        pick.addEventListener('mouseleave', function () {
+          window.clearInterval(holdTimer);
+        });
+      });
+
+      document.addEventListener('click', function (event) {
+        if (!root.contains(event.target)) setOpen(false);
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (!isOpen()) return;
+        if (event.key === 'Escape' || event.key === 'Esc') {
+          event.preventDefault();
+          setOpen(false);
+          if (trigger) trigger.focus();
+          return;
+        }
+        var picks = Array.prototype.slice.call(root.querySelectorAll('.emoji-reaction-pick'));
+        var index = picks.indexOf(document.activeElement);
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          picks[Math.min(index < 0 ? 0 : index + 1, picks.length - 1)].focus();
+        } else if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          picks[Math.max(index - 1, 0)].focus();
+        }
+      });
+
+      renderCounts();
+    }
+
+    function init() {
+      document.querySelectorAll('.emoji-reaction').forEach(bind);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+    document.addEventListener('astro:page-load', init);
+  })();
+</script></div><nav class="post-pager" aria-label="Previous and next posts"><a href="/blog/posts/class-memorization-myth/" class="post-pager-link post-pager-prev" aria-label="Previous: The Class-Memorization Myth: Why Tailwind's Real Problem Isn't Tailwind"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg><span class="post-pager-title">The Class-Memorization Myth: Why Tailwind&#39;s Real Problem Isn&#39;t Tailwind</span></a><span class="post-pager-spacer"></span></nav></div></div></div></article><script>
+  (function () {
+    var clipboardSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+    var checkSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+
+    function sourceOf(pre) {
+      var codeEl = pre.querySelector('code');
+      return ((codeEl && codeEl.textContent) || pre.textContent || '').trim();
+    }
+
+    function toPreviewHtml(source) {
+      var jsx = source;
+      var returned = source.match(/return\s*\(\s*([\s\S]*?)\s*\)\s*;/);
+      if (returned) jsx = returned[1];
+      var html = jsx
+        .replace(/\bclassName=/g, 'class=')
+        .replace(/\s+[\w:-]+=\{[\s\S]*?\}/g, '')
+        .replace(/\{\.\.\.props\}/g, '')
+        .replace(/\{`([\s\S]*?)`\}/g, '$1')
+        .replace(/\{[^}]+\}/g, '');
+      return html.replace(
+        /<ChoiceRow\b([^>]*)>([\s\S]*?)<\/ChoiceRow>/g,
+        function (_, attrs, children) {
+          var state = 'idle';
+          var match = attrs.match(/state=["']([^"']+)["']/);
+          if (match) state = match[1];
+          var extra = '';
+          if (state === 'selected') extra = ' aria-pressed="true"';
+          if (state === 'disabled') extra = ' disabled';
+          return (
+            '<button type="button" class="choice-demo-row is-' +
+            state +
+            '"' +
+            extra +
+            '>' +
+            children.trim() +
+            '</button>'
+          );
+        }
+      );
+    }
+
+    function jsonType(value) {
+      if (value === null) return 'null';
+      return typeof value;
+    }
+
+    function renderJson(value, name, depth) {
+      var isObject = value !== null && typeof value === 'object';
+      var isArray = Array.isArray(value);
+      if (!isObject) {
+        var leaf = document.createElement('div');
+        leaf.className = 'json-leaf';
+        if (name !== undefined) {
+          leaf.innerHTML =
+            '<span class="json-key"></span><span class="json-punct">: </span><span class="json-value"></span>';
+          leaf.querySelector('.json-key').textContent = name;
+          var val = leaf.querySelector('.json-value');
+          val.classList.add('json-value--' + jsonType(value));
+          val.textContent = JSON.stringify(value);
+        }
+        return leaf;
+      }
+
+      var keys = isArray ? value.map(function (_, i) { return String(i); }) : Object.keys(value);
+      var details = document.createElement('details');
+      details.className = 'json-node';
+      details.open = true;
+      var summary = document.createElement('summary');
+      summary.className = 'json-summary';
+      var openBracket = isArray ? '[' : '{';
+      var closeBracket = isArray ? ']' : '}';
+      var label = name !== undefined ? '<span class="json-key"></span><span class="json-punct">: </span>' : '';
+      summary.innerHTML =
+        label +
+        '<span class="json-punct">' +
+        openBracket +
+        '</span><span class="json-preview"></span><span class="json-punct json-preview-close">' +
+        closeBracket +
+        '</span>';
+      if (name !== undefined) summary.querySelector('.json-key').textContent = name;
+      summary.querySelector('.json-preview').textContent =
+        keys.length + (keys.length === 1 ? ' item' : ' items');
+      details.appendChild(summary);
+
+      var children = document.createElement('div');
+      children.className = 'json-children';
+      keys.forEach(function (key) {
+        var childValue = isArray ? value[Number(key)] : value[key];
+        children.appendChild(renderJson(childValue, key, depth + 1));
+      });
+      var close = document.createElement('div');
+      close.className = 'json-close';
+      close.innerHTML = '<span class="json-punct"></span>';
+      close.querySelector('.json-punct').textContent = closeBracket;
+      children.appendChild(close);
+      details.appendChild(children);
+      return details;
+    }
+
+    var folderSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>';
+    var fileSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>';
+
+    function parseAsciiTree(text) {
+      var lines = text.split('\n').filter(function (line) {
+        return line.trim();
+      });
+      var root = { name: 'root', children: [] };
+      var stack = [{ depth: -1, node: root }];
+
+      lines.forEach(function (line) {
+        var cleaned = line.replace(/\s+$/, '');
+        var name = cleaned.replace(/^(?:[│ ]*)(?:├── |└── )?/, '');
+        if (!name) return;
+        var prefixLen = cleaned.length - name.length;
+        var depth = Math.round(prefixLen / 4);
+        var node = { name: name, children: [] };
+        while (stack.length && stack[stack.length - 1].depth >= depth) stack.pop();
+        stack[stack.length - 1].node.children.push(node);
+        stack.push({ depth: depth, node: node });
+      });
+
+      return root.children.length === 1 ? root.children[0] : root;
+    }
+
+    function isFolderNode(node) {
+      return node.children.length > 0 || node.name.indexOf('.') === -1;
+    }
+
+    function renderFileTree(node) {
+      if (!isFolderNode(node) || node.children.length === 0) {
+        var leaf = document.createElement('div');
+        leaf.className = isFolderNode(node) ? 'file-tree-file is-folder' : 'file-tree-file';
+        leaf.innerHTML =
+          (isFolderNode(node) ? folderSvg : fileSvg) + '<span class="file-tree-name"></span>';
+        leaf.querySelector('.file-tree-name').textContent = node.name;
+        return leaf;
+      }
+
+      var details = document.createElement('details');
+      details.className = 'file-tree-node';
+      details.open = true;
+      var summary = document.createElement('summary');
+      summary.className = 'file-tree-summary';
+      summary.innerHTML = folderSvg + '<span class="file-tree-name"></span>';
+      summary.querySelector('.file-tree-name').textContent = node.name;
+      details.appendChild(summary);
+
+      if (node.children.length) {
+        var kids = document.createElement('div');
+        kids.className = 'file-tree-children';
+        node.children.forEach(function (child) {
+          kids.appendChild(renderFileTree(child));
+        });
+        details.appendChild(kids);
+      }
+
+      return details;
+    }
+
+    function addCopyButton(wrap, getText) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'code-copy-btn';
+      button.setAttribute('aria-label', 'Copy code');
+      button.innerHTML = clipboardSvg;
+      button.addEventListener('click', function () {
+        navigator.clipboard.writeText(getText()).then(function () {
+          button.classList.add('is-copied');
+          button.innerHTML = checkSvg;
+          button.setAttribute('aria-label', 'Copied');
+          window.setTimeout(function () {
+            button.classList.remove('is-copied');
+            button.innerHTML = clipboardSvg;
+            button.setAttribute('aria-label', 'Copy code');
+          }, 1600);
+        });
+      });
+      wrap.appendChild(button);
+    }
+
+    function enhanceCodeBlocks() {
+      document.querySelectorAll('.blog-post-body pre').forEach(function (pre) {
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block-wrap')) {
+          return;
+        }
+
+        var source = sourceOf(pre);
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block-wrap';
+        if (pre.parentNode) pre.parentNode.insertBefore(wrap, pre);
+
+        wrap.appendChild(pre);
+
+        if (pre.getAttribute('data-preview') === 'true') {
+          wrap.classList.add('has-preview');
+          var stage = document.createElement('div');
+          stage.className = 'code-preview-stage';
+          stage.setAttribute('aria-label', 'Preview');
+          stage.innerHTML = toPreviewHtml(source);
+          wrap.appendChild(stage);
+        }
+
+        if (pre.getAttribute('data-collapse') === 'true') {
+          try {
+            var parsed = JSON.parse(source);
+            wrap.classList.add('has-json');
+            var tree = document.createElement('div');
+            tree.className = 'json-tree-body';
+            tree.appendChild(renderJson(parsed, undefined, 1));
+            wrap.appendChild(tree);
+            pre.hidden = true;
+          } catch (err) {
+            /* leave the highlighted block */
+          }
+        }
+
+        if (pre.getAttribute('data-tree') === 'true') {
+          wrap.classList.add('has-tree');
+          var fileTree = document.createElement('div');
+          fileTree.className = 'file-tree-body';
+          fileTree.appendChild(renderFileTree(parseAsciiTree(source)));
+          wrap.appendChild(fileTree);
+          pre.hidden = true;
+        }
+
+        addCopyButton(wrap, function () {
+          return source;
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', enhanceCodeBlocks);
+    } else {
+      enhanceCodeBlocks();
+    }
+    document.addEventListener('astro:page-load', enhanceCodeBlocks);
+  })();
+</script></main></div><footer class="site-footer site-chrome footer__footerStyles.root xh8yej3 xlbkikk"><div class="site-footer-inner"><p class="site-footer-copy">&copy; 2016-present <a href="https://chetanraj.dev" class="site-footer-brand-inline">Chetan Raj</a>. All Rights Reserved.</p><div class="site-footer-social-links"><a class="site-footer-icon-link" href="https://x.com/chetan_raj" aria-label="X"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.822L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></a><a class="site-footer-icon-link" href="https://github.com/chetanraj" aria-label="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a class="site-footer-icon-link" href="https://www.instagram.com/thecjstream/" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a></div></div></footer><div class="scroll-progress" aria-hidden="true"><svg class="scroll-progress-svg" viewBox="0 0 36 36"><circle class="scroll-progress-track" cx="18" cy="18" r="15.5"></circle><circle class="scroll-progress-bar" cx="18" cy="18" r="15.5"></circle></svg></div><script type="module">var e=document.querySelector(`.scroll-progress`),t=document.querySelector(`.scroll-progress-bar`),n=document.querySelector(`.site-footer`);if(e&&t){let r=2*Math.PI*15.5;t.style.strokeDasharray=`${r}`,t.style.strokeDashoffset=`${r}`;let i=()=>{if(!n)return!1;let t=n.getBoundingClientRect(),r=e.getBoundingClientRect();return r.top+r.height/2>=t.top},a=()=>{let n=document.documentElement.scrollHeight-window.innerHeight;if(n<=0){e.classList.remove(`is-visible`,`is-over-footer`);return}let a=window.scrollY/n;t.style.strokeDashoffset=`${r*(1-a)}`,e.classList.toggle(`is-visible`,window.scrollY>24),e.classList.toggle(`is-over-footer`,i())};a(),window.addEventListener(`scroll`,a,{passive:!0}),window.addEventListener(`resize`,a)}</script></body></html>
