@@ -86,7 +86,6 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .blog-post-content p,.blog-post-content>ul,.blog-post-content>ol { font-family:inherit; font-size:1.12rem; line-height:1.8; }
 .blog-post-content h2,.blog-post-content h3 { font-weight:600; letter-spacing:-.01em; }
 .blog-post-content .post-meta { font-family:inherit; font-size:.8rem; padding-bottom:1.5rem; border-bottom:1px solid var(--trend-border); }
-.post-toc-aside { font-size:.8rem; }
 .static-page { min-height:22rem; }
 .tag-cloud { gap:.8rem!important; margin:2rem 0!important; }
 .tag-pill-link { display:inline-block; padding:.6rem .2rem; }
