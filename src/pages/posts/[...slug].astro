@@ -60,14 +60,6 @@ const showUpdated =
 >
   <article class="blog-post-container">
     <div class="post-layout">
-      {
-        showToc && (
-          <aside class="post-toc-aside" aria-label="Table of contents sidebar">
-            <TableOfContents headings={headings} maxDepth={tocDepth} variant="sticky" />
-          </aside>
-        )
-      }
-
       <div class="post-layout-main">
         <div class="blog-post-content">
           <Inline gap="md" wrap align="center" className="post-meta">
@@ -104,9 +96,7 @@ const showUpdated =
 
           {
             showToc && (
-              <div class="post-toc-mobile">
-                <TableOfContents headings={headings} maxDepth={tocDepth} variant="inline" />
-              </div>
+              <TableOfContents headings={headings} maxDepth={tocDepth} />
             )
           }
 

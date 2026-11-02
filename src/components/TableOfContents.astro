@@ -1,50 +1,107 @@
 ---
 import { Link } from '@capper-ui/react';
 import { BlogIcon } from './icons/BlogIcon';
-import { ChevronDown } from '../icons';
+import { ChevronDown, ChevronUp, Eye, EyeOff } from '../icons';
 
-export interface TocHeading {
-  depth: number;
-  slug: string;
-  text: string;
-}
-
-interface Props {
-  headings: TocHeading[];
-  maxDepth?: number;
-  variant?: 'inline' | 'sticky';
-}
-
-const { headings, maxDepth = 2, variant = 'inline' } = Astro.props;
-
-const items = headings.filter(
-  (heading) => heading.depth >= 2 && heading.depth <= maxDepth
-);
+export interface TocHeading { depth: number; slug: string; text: string; }
+interface Props { headings: TocHeading[]; maxDepth?: number; }
+const { headings, maxDepth = 2 } = Astro.props;
+const items = headings.filter(heading => heading.depth >= 2 && heading.depth <= maxDepth);
+const listId = 'article-section-list';
 ---
 
-{
-  items.length > 0 && (
-    <nav
-      class:list={['post-toc', variant === 'sticky' && 'post-toc--sticky']}
-      aria-label="Table of contents"
-    >
-      <details class="post-toc-details" open>
-        <summary class="post-toc-summary">
-          <span class="post-toc-title">On this page</span>
-          <span class="post-toc-toggle" aria-hidden="true">
-            <BlogIcon icon={ChevronDown} size="sm" />
+{items.length > 0 && (
+  <div class="section-nav-dock" data-section-navigation>
+    <button type="button" class="section-nav-show" data-nav-show hidden>
+      <BlogIcon icon={Eye} size="sm" /> Show contents
+    </button>
+    <nav class="section-nav" data-nav-panel aria-label="In this article">
+      <div class="section-nav-top">
+        <span class="section-nav-kicker">In this article</span>
+        <button type="button" class="section-nav-hide" data-nav-hide hidden aria-label="Hide contents">
+          <BlogIcon icon={EyeOff} size="sm" /> <span>Hide</span>
+        </button>
+      </div>
+      <div class="focus-controls" data-focus-controls hidden>
+        <button type="button" class="section-nav-arrow" data-nav-prev aria-label="Previous section">
+          <BlogIcon icon={ChevronUp} />
+        </button>
+        <button type="button" class="focus-lens" data-nav-toggle aria-controls={listId} aria-expanded="false" aria-label="Expand article sections">
+          <span class="focus-ruler" aria-hidden="true"></span>
+          <span class="focus-marker" aria-hidden="true"></span>
+          <span class="focus-window" aria-hidden="true">
+            <span class="focus-track" data-focus-track>
+              {items.map((heading, index) => <span class:list={['focus-label', { 'is-active': index === 0 }]} data-focus-label>{heading.text}</span>)}
+            </span>
           </span>
+          <span class="focus-position" data-nav-position aria-hidden="true">01 / {String(items.length).padStart(2, '0')}</span>
+        </button>
+        <button type="button" class="section-nav-arrow" data-nav-next aria-label="Next section">
+          <BlogIcon icon={ChevronDown} />
+        </button>
+      </div>
+      <details class="section-nav-details" data-nav-details open>
+        <summary class="section-nav-summary">
+          <span data-nav-disclosure-label>Article sections</span>
+          <span class="section-nav-chevron"><BlogIcon icon={ChevronDown} size="sm" /></span>
         </summary>
-        <ol class="post-toc-list">
-          {items.map((heading) => (
-            <li class={`post-toc-item post-toc-item--depth-${heading.depth}`}>
-              <Link href={`#${heading.slug}`} size="sm" className="post-toc-link">
-                {heading.text}
+        <ol class="section-nav-list" id={listId}>
+          {items.map((heading, index) => (
+            <li class:list={[`section-depth-${heading.depth}`]}>
+              <Link href={`#${heading.slug}`} className="section-nav-link" size="sm" data-section-link>
+                <span class="section-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                <span>{heading.text}</span>
               </Link>
             </li>
           ))}
         </ol>
       </details>
     </nav>
-  )
-}
+  </div>
+)}
+
+<script>
+  import { initSectionNavigation } from '../utils/section-navigation';
+  document.querySelectorAll<HTMLElement>('[data-section-navigation]').forEach(initSectionNavigation);
+</script>
+
+<style>
+  /* Opaque space above and below the control prevents article text showing through. */
+  .section-nav-dock { background:var(--bg-color); padding: .75rem 0 1rem; margin:0 0 1.5rem; width:100%; min-width:0; }
+  .section-nav-dock[data-enhanced] { position:sticky; top:0; z-index:20; }
+  .section-nav { background:var(--bg-color); color:var(--color-content); border:1px solid var(--trend-border); border-radius:.75rem; padding:.65rem .85rem; min-width:0; }
+  .section-nav-top { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+  .section-nav-kicker { font-family:var(--studio-tag-font); font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; }
+  .section-nav-hide,.section-nav-show,.section-nav-arrow,.focus-lens { font:inherit; color:inherit; cursor:pointer; }
+  .section-nav-hide,.section-nav-show { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:44px; padding:.5rem .65rem; font-size:.75rem; border:1px solid transparent; border-radius:.4rem; background:var(--bg-color); }
+  .section-nav-show { border-color:var(--trend-border); }
+  .section-nav-hide:hover,.section-nav-show:hover,.section-nav-arrow:hover:not(:disabled) { border-color:var(--color-accent); }
+  .focus-controls { display:flex; gap:.25rem; align-items:center; min-width:0; }
+  .section-nav-arrow { display:grid; place-items:center; flex:0 0 44px; width:44px; height:44px; border:1px solid var(--trend-border); border-radius:.4rem; background:var(--bg-color); }
+  .section-nav-arrow:disabled { opacity:.3; cursor:default; }
+  .focus-lens { position:relative; display:flex; align-items:center; gap:.45rem; padding:0 0 0 1.5rem; border:0; background:none; text-align:left; min-width:0; flex:1; height:88px; }
+  .focus-ruler { position:absolute; left:.2rem; top:8px; width:.65rem; height:72px; background:repeating-linear-gradient(to bottom,var(--color-secondary) 0 1px,transparent 1px 8px); opacity:.4; }
+  .focus-marker { position:absolute; left:.1rem; top:43px; width:1rem; height:2px; background:var(--color-accent); }
+  .focus-window { display:block; flex:1; min-width:0; height:88px; overflow:hidden; mask-image:linear-gradient(transparent,#000 27%,#000 73%,transparent); }
+  .focus-track { display:block; transform:translateY(28px); transition:transform .45s cubic-bezier(.2,.7,.2,1); }
+  .focus-label { display:block; height:32px; line-height:32px; font-size:.875rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; opacity:.4; filter:blur(.7px); transition:filter .45s,opacity .45s; }
+  .focus-label.is-active { opacity:1; filter:none; font-weight:650; }
+  .focus-position { flex:none; font: .65rem var(--studio-tag-font); white-space:nowrap; color:var(--color-secondary); }
+  .section-nav-summary { min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:1rem; cursor:pointer; list-style:none; font-size:.75rem; }
+  .section-nav-summary::-webkit-details-marker { display:none; }
+  .section-nav-summary::marker { content:''; }
+  .section-nav-summary:focus-visible { outline:3px solid var(--color-accent); outline-offset:3px; }
+  .section-nav-chevron { display:flex; transition:transform .2s; }
+  .section-nav-details[open] .section-nav-chevron { transform:rotate(180deg); }
+  .section-nav-list { padding:.5rem 0 0; margin:0; border-top:1px solid var(--trend-border); max-height:30vh; overflow:auto; overscroll-behavior:contain; }
+  .section-nav .section-nav-list li { list-style:none; margin:0; padding:0; }
+  .section-nav :global(.section-nav-link) { display:flex; align-items:baseline; gap:.75rem; padding:.65rem .5rem; min-height:44px; color:var(--color-content); text-decoration:none; border-left:2px solid transparent; line-height:1.45; font-size:.8125rem; }
+  .section-nav :global(.section-nav-link[aria-current='location']) { border-left-color:var(--color-accent); color:var(--color-accent); font-weight:650; }
+  .section-nav :global(.section-nav-link:hover) { background:var(--trend-surface); }
+  .section-nav :global(.section-number) { font: .65rem var(--studio-tag-font); color:var(--color-secondary); flex:none; }
+  .section-nav .section-depth-3 { padding-left:.75rem!important; }
+  .section-nav .section-depth-4 { padding-left:1.5rem!important; }
+  .section-nav-dock [hidden] { display:none!important; }
+  @media(max-width:520px) { .section-nav { padding:.35rem .4rem; } .focus-lens { padding-left:1.25rem; } .focus-label { font-size:.75rem; } .focus-position { font-size:.6rem; } .section-nav-dock { padding:.5rem 0 .75rem; } }
+  @media(prefers-reduced-motion:reduce) { .focus-track,.focus-label,.section-nav-chevron { transition:none; } .focus-label { filter:none; } }
+</style>
