@@ -10,6 +10,7 @@ import { SITE } from '../site.config';
 interface Props {
   title?: string;
   headerTitle?: string;
+  postCoverId?: string;
   description?: string;
   path?: string;
   image?: string;
@@ -22,6 +23,7 @@ interface Props {
 const {
   title = `Hi 👋 | ${SITE.title}`,
   headerTitle,
+  postCoverId,
   description = SITE.description,
   path = '/',
   image,
@@ -78,7 +80,7 @@ const {
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <SiteHeader title={headerTitle} />
+    <SiteHeader title={headerTitle} postCoverId={postCoverId} />
     <div class="site-content">
       <main id="main" class="h-sc">
         <slot />

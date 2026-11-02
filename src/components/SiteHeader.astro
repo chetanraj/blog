@@ -4,11 +4,12 @@ import { Monitor, Moon, Sun } from '../icons';
 import * as stylex from '@stylexjs/stylex';
 import { headerStyles } from '../styles/header.stylex';
 import OrbitalArt from './OrbitalArt.astro';
-const { title } = Astro.props;
+import PostCover from './PostCover.astro';
+const { title, postCoverId } = Astro.props;
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 const currentPath = Astro.url.pathname;
 ---
-<header class:list={['studio-header', stylex.props(headerStyles.root).className, { 'studio-header--home': !title }]} id="top">
+<header class:list={['studio-header', stylex.props(headerStyles.root).className, { 'studio-header--home': !title, 'studio-header--post': postCoverId }]} id="top">
   <div class="studio-shell">
     <nav class:list={["studio-nav", stylex.props(headerStyles.nav).className]} aria-label="Main navigation">
       <a class="studio-brand" href={base}><span class="brand-mark">cr.</span><span>Chetan Raj</span></a>
@@ -19,6 +20,7 @@ const currentPath = Astro.url.pathname;
         <div id="themeToggle" class="studio-theme-wrap"><button class="studio-theme" type="button" id="themeButton" aria-label="Toggle theme"><span data-theme-icon="light" hidden><BlogIcon icon={Moon} /></span><span data-theme-icon="dark" hidden><BlogIcon icon={Sun} /></span><span data-theme-icon="system" hidden><BlogIcon icon={Monitor} /></span></button></div></div>
       </div>
     </nav>
+    {postCoverId && <PostCover postId={postCoverId} />}
     <div class:list={["studio-hero", stylex.props(headerStyles.hero).className]}>
       <div class="studio-intro">
         {title && <p class="eyebrow">THE NOTEBOOK / CHETAN RAJ</p>}
@@ -26,7 +28,7 @@ const currentPath = Astro.url.pathname;
         {!title && <p class:list={["studio-description", stylex.props(headerStyles.tagline).className]}>I’m Chetan. I build for the web, question the defaults, and write about what I figure out.</p>}
         {title && <a class="hero-back" href={base}>← All notes</a>}
       </div>
-      <OrbitalArt />
+      {!postCoverId && <OrbitalArt />}
     </div>
   </div>
 </header>
