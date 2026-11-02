@@ -303,6 +303,10 @@ body.has-section-navigation {
   text-align: inherit;
 }
 
+.site-footer-signoff {
+  margin-bottom: 0.5rem;
+}
+
 .site-footer-brand-inline,
 .site-footer-brand-inline:link,
 .site-footer-brand-inline:visited {
