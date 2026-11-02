@@ -14,6 +14,7 @@ export {
   Monitor,
   Play,
   Pause,
+  Shuffle,
   Moon,
   Sun,
   Twitter as X,
