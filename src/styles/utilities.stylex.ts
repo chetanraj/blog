@@ -8,7 +8,4 @@ export const utilityStyles = stylex.create({
   textSecondary: {
     color: colors.secondary,
   },
-  searchBack: {
-    marginTop: '1.5rem',
-  },
 });

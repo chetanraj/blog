@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets';
+import cover01 from '../assets/post-covers/super-visuals-01.webp';
+import cover02 from '../assets/post-covers/super-visuals-02.webp';
+import cover03 from '../assets/post-covers/super-visuals-03.webp';
+import cover04 from '../assets/post-covers/super-visuals-04.webp';
+import cover05 from '../assets/post-covers/super-visuals-05.webp';
+import cover06 from '../assets/post-covers/super-visuals-06.webp';
+import cover07 from '../assets/post-covers/super-visuals-07.webp';
+import cover08 from '../assets/post-covers/super-visuals-08.webp';
+import cover09 from '../assets/post-covers/super-visuals-09.webp';
+import cover10 from '../assets/post-covers/super-visuals-10.webp';
+import { getPostCoverName } from '../utils/post-cover';
+
+interface Props {
+  postId: string;
+}
+const { postId } = Astro.props;
+const covers = {
+  'super-visuals-01': cover01,
+  'super-visuals-02': cover02,
+  'super-visuals-03': cover03,
+  'super-visuals-04': cover04,
+  'super-visuals-05': cover05,
+  'super-visuals-06': cover06,
+  'super-visuals-07': cover07,
+  'super-visuals-08': cover08,
+  'super-visuals-09': cover09,
+  'super-visuals-10': cover10,
+};
+const cover = covers[getPostCoverName(postId) as keyof typeof covers];
+---
+
+<div class="post-cover" aria-hidden="true">
+  <Image
+    src={cover}
+    alt=""
+    widths={[480, 800, 1200, 1600]}
+    sizes="(max-width: 640px) calc(100vw - 2.5rem), (max-width: 1152px) 90vw, 1056px"
+    format="webp"
+    quality={80}
+    loading="eager"
+    decoding="async"
+  />
+</div>
+
+<style>
+  .post-cover {
+    margin-top: clamp(1.25rem, 3vw, 2rem);
+    width: 100%;
+    aspect-ratio: 4 / 1;
+    min-height: 9rem;
+    max-height: 16rem;
+    overflow: hidden;
+    border-radius: .5rem;
+    background: var(--trend-surface);
+  }
+  .post-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+</style>

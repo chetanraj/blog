@@ -1,6 +1,6 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
-import { Check, Clipboard, Linkedin, X } from '../icons';
+import { Check, Clipboard, Linkedin, Share2, X } from '../icons';
 
 interface Props {
   title: string;
@@ -12,10 +12,13 @@ const encodedUrl = encodeURIComponent(url);
 const encodedTitle = encodeURIComponent(title);
 ---
 
-<div class="post-share">
+<div class="post-share" data-post-share data-share-title={title}>
   <p class="post-share-label">Share</p>
   <div class="post-share-actions">
-    <button type="button" class="post-share-btn" data-copy-url={url} aria-label="Copy link">
+    <button type="button" class="post-share-btn" data-native-share hidden aria-label="Share using your device" title="Share using your device">
+      <BlogIcon icon={Share2} size="md" />
+    </button>
+    <button type="button" class="post-share-btn" data-copy-url={url} hidden aria-label="Copy link" title="Copy link">
       <span class="post-share-icon post-share-icon--copy">
         <BlogIcon icon={Clipboard} size="md" />
       </span>
@@ -28,7 +31,7 @@ const encodedTitle = encodeURIComponent(title);
       href={`https://x.com/intent/post?url=${encodedUrl}&text=${encodedTitle}`}
       rel="noopener noreferrer"
       target="_blank"
-      aria-label="Share on X"
+      aria-label="Share on X (opens website)" title="Share on X (opens website)"
     >
       <BlogIcon icon={X} size="md" />
     </a>
@@ -37,39 +40,33 @@ const encodedTitle = encodeURIComponent(title);
       href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
       rel="noopener noreferrer"
       target="_blank"
-      aria-label="Share on LinkedIn"
+      aria-label="Share on LinkedIn (opens website)" title="Share on LinkedIn (opens website)"
     >
       <BlogIcon icon={Linkedin} size="md" />
     </a>
   </div>
+  <p class="post-share-status" data-share-status role="status" aria-live="polite" aria-atomic="true"></p>
+  <label class="post-share-manual" data-manual-copy hidden>
+    Article link
+    <input type="text" readonly value={url} aria-label="Article link to copy" />
+  </label>
 </div>
 
-<script is:inline>
-  (function () {
-    function bindShareCopy() {
-      document.querySelectorAll('[data-copy-url]').forEach(function (button) {
-        if (button.dataset.copyBound === 'true') return;
-        button.dataset.copyBound = 'true';
-        button.addEventListener('click', function () {
-          var url = button.getAttribute('data-copy-url');
-          if (!url) return;
-          navigator.clipboard.writeText(url).then(function () {
-            button.classList.add('is-copied');
-            button.setAttribute('aria-label', 'Link copied');
-            window.setTimeout(function () {
-              button.classList.remove('is-copied');
-              button.setAttribute('aria-label', 'Copy link');
-            }, 1600);
-          });
-        });
-      });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', bindShareCopy);
-    } else {
-      bindShareCopy();
-    }
-    document.addEventListener('astro:page-load', bindShareCopy);
-  })();
+<script>
+  import { initPostShare } from '../utils/post-share';
+  const bind = () => document.querySelectorAll<HTMLElement>('[data-post-share]').forEach(initPostShare);
+  bind();
+  document.addEventListener('astro:page-load', bind);
 </script>
+
+<style>
+  .post-share { flex-wrap:wrap; min-width:0; }
+  .post-share :is(button, a).post-share-btn { color:var(--color-content); background:var(--bg-color); width:44px; height:44px; text-decoration:none; }
+  .post-share :is(button, a).post-share-btn:is(:hover, :focus-visible) { color:var(--color-accent); border-color:var(--color-accent); }
+  .post-share :is(button, a).post-share-btn:focus-visible { outline:2px solid var(--color-accent); outline-offset:3px; }
+  .post-share [hidden] { display:none!important; }
+  .post-share-status { flex-basis:100%; margin:0; font-size:.8125rem; line-height:1.5; }
+  .post-share-status:empty { display:none; }
+  .post-share-manual { display:block; flex-basis:100%; min-width:0; font-size:.8125rem; }
+  .post-share-manual input { display:block; width:100%; min-width:0; box-sizing:border-box; margin-top:.5rem; padding:.65rem; font:inherit; color:var(--color-content); background:var(--bg-color); border:1px solid var(--trend-border); border-radius:.4rem; }
+</style>

@@ -1,32 +1,31 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { Badge, Inline, Link, Stack, Text } from '@capper-ui/react';
-import { getCollection } from 'astro:content';
-import { getAllTags, tagToSlug } from '../../utils/tags';
+import { Badge, Inline, Link, Text } from '@capper-ui/react';
+import { categories } from '../../utils/categories';
+import { tagToSlug } from '../../utils/tags';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
 
-const posts = (await getCollection('posts')).filter((post) => post.data.published !== false);
-const tags = getAllTags(posts);
+const tags = categories;
 ---
 
 <BaseLayout
-  title="Tags | Blog by Chetan Raj"
-  headerTitle="Tags"
-  description="Browse posts by topic — JavaScript, React, CSS, Node.js, and more."
+  title="Categories | Blog by Chetan Raj"
+  headerTitle="Categories"
+  description="Browse JavaScript, React, CSS & Styling, Tools & Workflow, and Deployment."
   path="/tags/"
 >
   <div class="blog-post-container">
     <div class="blog-post-content static-page">
-      <Text as="p" color="muted">Browse posts by topic.</Text>
+      <Text as="p" color="muted">Five categories. Find what you want to build.</Text>
       <Inline as="ul" gap="sm" wrap className="tag-cloud">
         {
           tags.map((tag) => (
             <li>
               <Link href={`${base}tags/${tagToSlug(tag)}/`} className="tag-pill-link">
-                <Badge variant="accent" size="sm">
+                <Badge variant="accent" size="sm" className="topic-label">
                   {tag}
                 </Badge>
               </Link>

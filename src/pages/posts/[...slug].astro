@@ -1,16 +1,15 @@
 ---
+import AsciiOcean from '../../components/AsciiOcean.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import PostShare from '../../components/PostShare.astro';
-import EmojiReaction from '../../components/EmojiReaction.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import CodeCopyButtons from '../../components/CodeCopyButtons.astro';
-import { BlogIcon } from '../../components/icons/BlogIcon';
 import { Badge, Inline, Link } from '@capper-ui/react';
-import { Calendar, Clock } from '../../icons';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { absoluteUrl } from '../../site.config';
 import { getAdjacentPosts } from '../../utils/posts';
+import { getPostCategory } from '../../utils/categories';
 import { tagToSlug } from '../../utils/tags';
 import { formatDate } from '../../utils/date';
 import * as stylex from '@stylexjs/stylex';
@@ -52,6 +51,7 @@ const showUpdated =
 <BaseLayout
   title={post.data.title}
   headerTitle={post.data.title}
+  postCoverId={post.id}
   description={post.data.description}
   path={`/posts/${post.id}/`}
   type="article"
@@ -61,19 +61,10 @@ const showUpdated =
 >
   <article class="blog-post-container">
     <div class="post-layout">
-      {
-        showToc && (
-          <aside class="post-toc-aside" aria-label="Table of contents sidebar">
-            <TableOfContents headings={headings} maxDepth={tocDepth} variant="sticky" />
-          </aside>
-        )
-      }
-
       <div class="post-layout-main">
         <div class="blog-post-content">
           <Inline gap="md" wrap align="center" className="post-meta">
             <time datetime={publishedTime} class="post-meta-item">
-              <BlogIcon icon={Calendar} size="md" className="post-meta-icon" />
               {formatDate(post.data.date)}
             </time>
 
@@ -86,16 +77,15 @@ const showUpdated =
             }
 
             <span class="post-meta-item">
-              <BlogIcon icon={Clock} size="md" className="post-meta-icon" />
               {remarkPluginFrontmatter.minutesRead}
             </span>
 
             {
-              post.data.tags && post.data.tags.length > 0 && (
+              getPostCategory(post) && (
                 <Inline gap="sm" wrap className="post-meta-item post-meta-tags">
-                  {post.data.tags.map((tag) => (
+                  {[getPostCategory(post)].map((tag) => (
                     <Link href={`${base}tags/${tagToSlug(tag)}/`} className="post-tag-link">
-                      <Badge variant="accent" size="sm">
+                      <Badge variant="accent" size="sm" className="topic-label">
                         {tag}
                       </Badge>
                     </Link>
@@ -107,9 +97,7 @@ const showUpdated =
 
           {
             showToc && (
-              <div class="post-toc-mobile">
-                <TableOfContents headings={headings} maxDepth={tocDepth} variant="inline" />
-              </div>
+              <TableOfContents headings={headings} maxDepth={tocDepth} />
             )
           }
 
@@ -119,12 +107,14 @@ const showUpdated =
 
           <div class="post-end-actions">
             <PostShare title={post.data.title} url={postUrl} />
-            <EmojiReaction id={post.id} />
           </div>
           <RelatedPosts previous={previousPost} next={nextPost} base={base} />
         </div>
       </div>
     </div>
   </article>
+  <div class="post-layout">
+    <AsciiOcean />
+  </div>
   <CodeCopyButtons />
 </BaseLayout>

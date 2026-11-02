@@ -2,24 +2,21 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Link, Stack, Text } from '@capper-ui/react';
 import { getCollection } from 'astro:content';
-import { findTagBySlug, getPostsByTag, tagToSlug } from '../../utils/tags';
+import { categories, categoryForTag, getPostCategory } from '../../utils/categories';
+import { tagToSlug } from '../../utils/tags';
 import { formatDate } from '../../utils/date';
 
 export const prerender = true;
 
 export async function getStaticPaths() {
   const posts = (await getCollection('posts')).filter((post) => post.data.published !== false);
-  const tagSet = new Set<string>();
-  for (const post of posts) {
-    for (const tag of post.data.tags ?? []) {
-      tagSet.add(tag);
-    }
+  const routes = new Map(categories.map(category => [tagToSlug(category), category]));
+  // Keep every old inbound tag URL; normalize duplicates such as React/react.
+  for (const post of posts) for (const tag of post.data.tags ?? []) {
+    const slug = tagToSlug(tag);
+    if (!routes.has(slug)) routes.set(slug, categoryForTag(tag) ?? getPostCategory(post));
   }
-
-  return [...tagSet].map((tag) => ({
-    params: { tag: tagToSlug(tag) },
-    props: { tag },
-  }));
+  return [...routes].map(([slug, tag]) => ({ params: { tag: slug }, props: { tag } }));
 }
 
 const { tag } = Astro.props;
@@ -28,14 +25,14 @@ const base = import.meta.env.BASE_URL.endsWith('/')
   : `${import.meta.env.BASE_URL}/`;
 
 const allPosts = (await getCollection('posts')).filter((post) => post.data.published !== false);
-const resolvedTag = findTagBySlug(allPosts, Astro.params.tag!) ?? tag;
-const posts = getPostsByTag(allPosts, resolvedTag);
+const resolvedTag = tag;
+const posts = allPosts.filter(post => getPostCategory(post) === resolvedTag).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <BaseLayout
   title={`${resolvedTag} | Blog by Chetan Raj`}
   headerTitle={resolvedTag}
-  description={`Posts tagged with ${resolvedTag}.`}
+  description={`Posts about ${resolvedTag}.`}
   path={`/tags/${Astro.params.tag}/`}
 >
   <div class="blog-post-container">
@@ -62,7 +59,7 @@ const posts = getPostsByTag(allPosts, resolvedTag);
         }
       </Stack>
       <Text as="p">
-        <Link href={`${base}tags/`}>← All tags</Link>
+        <Link href={`${base}tags/`}>← All categories</Link>
       </Text>
     </div>
   </div>

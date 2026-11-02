@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Inline, Link, Stack, Text } from '@capper-ui/react';
+import { Link, Stack, Text } from '@capper-ui/react';
 import { SITE } from '../site.config';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
@@ -21,13 +21,7 @@ const base = import.meta.env.BASE_URL.endsWith('/')
           Page not found
         </Text>
         <Text as="p">This page doesn’t exist, or it may have moved.</Text>
-        <Inline gap="sm" align="center">
-          <Link href={base}>Back to the blog</Link>
-          <Text as="span" color="muted">
-            ·
-          </Text>
-          <Link href={`${base}search/`}>Search posts</Link>
-        </Inline>
+        <Link href={base}>Back to the blog</Link>
       </Stack>
     </div>
   </div>
