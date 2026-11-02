@@ -41,3 +41,12 @@ export function sharkContains(x: number, y: number, phase: number, kind: SharkKi
 export function isWhaleSpot(x: number, y: number) {
   return Math.cos(x*48) * Math.cos(y*48) > .55;
 }
+
+/** Cool bioluminescent ink, darker at the edges with restrained icy highlights. */
+export function oceanInk(shade: number, alpha: number, distant = false) {
+  const light = Math.max(0, Math.min(1, shade));
+  const edge = distant ? [99, 104, 155] : [58, 126, 139];
+  const center = distant ? [169, 169, 202] : [156, 211, 219];
+  const rgb = edge.map((channel, i) => Math.round(channel + (center[i] - channel) * light));
+  return `rgba(${rgb.join(', ')}, ${Math.max(0, Math.min(1, alpha)) * (.35 + light * .6)})`;
+}
