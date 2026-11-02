@@ -26,7 +26,7 @@ import { Play, Pause, Shuffle } from '../icons';
   .ocean-credit { width: 100%; max-width: var(--studio-container); padding-inline: var(--studio-gutter); margin: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; font: 12px/1.8 ui-monospace, monospace; }
   .ocean-random-group { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 12px; }
   .ocean-status { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  .ocean-credit a { color: #8fa5b7; text-underline-offset: 4px; }
+  .ocean-credit a { max-width:100%; overflow-wrap:anywhere; color: #8fa5b7; text-underline-offset: 4px; }
   @media (max-width: 600px) { .ocean-canvas { height: 190px; } .ocean-credit { align-items: flex-start; flex-direction: column; gap: 12px; } }
 </style>
 

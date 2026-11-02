@@ -6,6 +6,9 @@ test('ocean is rendered once after individual articles, not in shared page chrom
   const post = readFileSync('src/pages/posts/[...slug].astro', 'utf8');
   assert.equal((post.match(/<AsciiOcean\s*\/>/g) || []).length, 1);
   assert.ok(post.indexOf('<AsciiOcean />') > post.indexOf('</article>'));
+  assert.match(post, /<div class="post-layout">\s*<AsciiOcean \/>\s*<\/div>/);
+  assert.match(readFileSync('src/styles/global.css', 'utf8'), /\.post-layout \{[^}]*max-width: 52rem;[^}]*margin: 0 auto;/);
+  assert.match(readFileSync('src/components/AsciiOcean.astro', 'utf8'), /overflow-wrap:anywhere/);
   for (const path of ['src/components/SiteFooter.astro', 'src/layouts/BaseLayout.astro', 'src/pages/index.astro', 'src/pages/about.astro']) {
     assert.doesNotMatch(readFileSync(path, 'utf8'), /AsciiOcean/);
   }
