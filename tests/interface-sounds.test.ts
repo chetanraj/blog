@@ -56,5 +56,8 @@ test('sound wiring is explicit-click only; shared controls are accessible and hi
   assert.doesNotMatch(source, /addEventListener\('(scroll|hashchange|load|change)'/);
   const button = readFileSync(new URL('../src/components/SoundToggle.astro', import.meta.url), 'utf8');
   assert.match(button, /aria-pressed="false"/); assert.match(button, /data-sound-toggle[^>]* hidden/);
-  assert.match(button, /Sound off/);
+  assert.doesNotMatch(button, /data-sound-label|>Sound (on|off)</);
+  assert.match(button, /title="Turn interface sounds on"/);
+  assert.match(button, /width:44px; height:44px/);
+  assert.match(source, /button\.title = sounds\.isEnabled\(\)/);
 });

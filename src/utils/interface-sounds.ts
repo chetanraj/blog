@@ -60,8 +60,7 @@ export function initInterfaceSounds() {
       button.hidden = false;
       button.setAttribute('aria-pressed', String(sounds.isEnabled()));
       button.setAttribute('aria-label', sounds.isEnabled() ? 'Turn interface sounds off' : 'Turn interface sounds on');
-      const label = button.querySelector('[data-sound-label]');
-      if (label) label.textContent = sounds.isEnabled() ? 'Sound on' : 'Sound off';
+      button.title = sounds.isEnabled() ? 'Turn interface sounds off' : 'Turn interface sounds on';
       button.querySelectorAll<HTMLElement>('[data-sound-icon]').forEach(icon => { icon.hidden = icon.dataset.soundIcon !== (sounds.isEnabled() ? 'on' : 'off'); });
     });
   }
