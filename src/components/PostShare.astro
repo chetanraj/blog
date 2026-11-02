@@ -61,6 +61,9 @@ const encodedTitle = encodeURIComponent(title);
 
 <style>
   .post-share { flex-wrap:wrap; min-width:0; }
+  .post-share :is(button, a).post-share-btn { color:var(--color-content); background:var(--bg-color); width:44px; height:44px; text-decoration:none; }
+  .post-share :is(button, a).post-share-btn:is(:hover, :focus-visible) { color:var(--color-accent); border-color:var(--color-accent); }
+  .post-share :is(button, a).post-share-btn:focus-visible { outline:2px solid var(--color-accent); outline-offset:3px; }
   .post-share [hidden] { display:none!important; }
   .post-share-status { flex-basis:100%; margin:0; font-size:.8125rem; line-height:1.5; }
   .post-share-status:empty { display:none; }

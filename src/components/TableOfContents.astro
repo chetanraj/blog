@@ -50,7 +50,8 @@ const detailsId = 'article-section-details';
             <BlogIcon icon={ChevronDown} />
           </button>
         </div>
-        <ol class="section-nav-list" id={listId}>
+        <!-- Native links remain available without JavaScript; enhanced navigation uses only the focus ring. -->
+        <ol class="section-nav-list" id={listId} data-nav-fallback>
           {items.map((heading, index) => (
             <li class:list={[`section-depth-${heading.depth}`]}>
               <Link href={`#${heading.slug}`} className="section-nav-link" size="sm" data-section-link>
@@ -82,6 +83,7 @@ const detailsId = 'article-section-details';
   .section-nav-current .section-nav-chevron { flex:none; }
   .section-nav-current[aria-expanded='true'] .section-nav-chevron { transform:rotate(180deg); }
   .section-nav-dock[data-enhanced] .section-nav-summary { display:none; }
+  .section-nav-dock[data-enhanced] [data-nav-fallback] { display:none; }
   .section-nav-hide,.section-nav-show,.section-nav-arrow { font:inherit; color:inherit; cursor:pointer; }
   .section-nav-hide,.section-nav-show { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:44px; padding:.5rem .65rem; font-size:.75rem; border:1px solid transparent; border-radius:.4rem; background:var(--bg-color); }
   .section-nav-show { border-color:var(--trend-border); }

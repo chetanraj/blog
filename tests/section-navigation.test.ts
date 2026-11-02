@@ -55,7 +55,7 @@ test('compact row is the only collapsed UI; camera and stepping controls belong 
   assert.match(component, /data-nav-toggle aria-controls=\{detailsId\}/);
   assert.match(component, /class="compact-title" data-nav-current/);
   const details = component.slice(component.indexOf('<details '), component.indexOf('</details>'));
-  for (const control of ['data-focus-controls', 'data-nav-prev', 'data-nav-next', 'data-focus-track', 'data-section-link']) {
+  for (const control of ['data-focus-controls', 'data-nav-prev', 'data-nav-next', 'data-focus-track']) {
     assert.ok(details.includes(control), `${control} must be hidden by collapsed native details`);
   }
   assert.doesNotMatch(details, /data-nav-toggle/);
@@ -66,4 +66,19 @@ test('compact row is the only collapsed UI; camera and stepping controls belong 
   assert.match(behavior, /jump\(state.active - 1, true, true, false\)/);
   assert.match(behavior, /jump\(state.active \+ 1, true, true, false\)/);
   assert.match(behavior, /event.persisted/);
+});
+
+
+test('enhanced expansion shows only the focus ring; native fallback links remain available without JS', () => {
+  const component = readFileSync(new URL('../src/components/TableOfContents.astro', import.meta.url), 'utf8');
+  const behavior = readFileSync(new URL('../src/utils/section-navigation.ts', import.meta.url), 'utf8');
+  assert.match(component, /<ol class="section-nav-list" id=\{listId\} data-nav-fallback>/);
+  assert.match(component, /<Link href=\{`#\$\{heading.slug\}`\}[^>]*data-section-link/);
+  assert.match(component, /\[data-enhanced\] \[data-nav-fallback\] \{ display:none;/);
+  assert.match(behavior, /\[data-nav-fallback\].*hidden = true/);
+  assert.doesNotMatch(behavior, /link.addEventListener/);
+  assert.doesNotMatch(behavior, /link.setAttribute\('aria-current'/);
+  assert.match(behavior, /window.history.pushState/);
+  assert.match(behavior, /hashchange/);
+  assert.match(behavior, /heading.scrollIntoView/);
 });

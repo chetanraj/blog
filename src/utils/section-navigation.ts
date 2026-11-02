@@ -32,6 +32,7 @@ export function initSectionNavigation(root: HTMLElement): void {
   const next = root.querySelector<HTMLButtonElement>('[data-nav-next]')!;
   const track = root.querySelector<HTMLElement>('[data-focus-track]')!;
   const labels = [...root.querySelectorAll<HTMLElement>('[data-focus-label]')];
+  // Read static fallback anchors as section metadata; they are not interactive after enhancement.
   const links = [...root.querySelectorAll<HTMLAnchorElement>('[data-section-link]')];
   const headings = links.map(link => document.getElementById(decodeURIComponent(link.hash.slice(1))));
   const body = root.closest('.blog-post-content')?.querySelector<HTMLElement>('.blog-post-body');
@@ -55,10 +56,6 @@ export function initSectionNavigation(root: HTMLElement): void {
     root.querySelector<HTMLElement>('[data-nav-position]')!.textContent = `${String(state.active + 1).padStart(2, '0')}/${String(links.length).padStart(2, '0')}`;
     track.style.transform = `translateY(${28 - state.active * 32}px)`;
     labels.forEach((label, index) => label.classList.toggle('is-active', index === state.active));
-    links.forEach((link, index) => {
-      if (index === state.active) link.setAttribute('aria-current', 'location');
-      else link.removeAttribute('aria-current');
-    });
     previous.disabled = state.active === 0;
     next.disabled = state.active === links.length - 1;
     measure();
@@ -68,7 +65,7 @@ export function initSectionNavigation(root: HTMLElement): void {
     render();
   }
   function jump(index: number, updateHistory = true, animate = true, collapse = true) {
-    // List selection collapses before anchor measurement; stepping keeps the camera visible.
+    // Hash navigation collapses before anchor measurement; stepping keeps the camera visible.
     dispatch({ type: collapse ? 'select' : 'active', index });
     const heading = sections[state.active];
     if (updateHistory && window.location.hash !== links[state.active].hash) {
@@ -113,11 +110,8 @@ export function initSectionNavigation(root: HTMLElement): void {
       event.preventDefault(); dispatch({ type: 'collapse' }); toggle.focus();
     }
   });
-  links.forEach((link, index) => link.addEventListener('click', event => {
-    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault(); jump(index);
-  }));
   document.body.classList.add('has-section-navigation');
+  root.querySelector<HTMLElement>('[data-nav-fallback]')!.hidden = true;
   root.dataset.enhanced = 'true';
   root.querySelector<HTMLElement>('[data-nav-compact]')!.hidden = false;
   root.querySelector<HTMLElement>('[data-focus-controls]')!.hidden = false;

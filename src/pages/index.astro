@@ -25,6 +25,13 @@ const topics = categories;
     <Stack as="ul" gap="none" className="notebook-list">{others.map(post => <li data-note data-topics={JSON.stringify([getPostCategory(post)])}><article class="notebook-row"><div class="notebook-meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time><span>{getPostCategory(post)}</span></div><Text as="h3" weight="bold"><Link href={`${base}posts/${post.id}/`}>{post.data.title}<span aria-hidden="true">↗</span></Link></Text></article></li>)}</Stack>
     <p class="filter-empty" hidden>No notes match this category. Choose All to reset.</p>
     </div>
+    <nav class="notebook-ending" aria-label="Explore more">
+      <p class="ending-label">Keep exploring</p>
+      <div class="ending-links">
+        <a href={`${base}tags/`}><span>Browse categories</span><small>Five ways into the archive</small><span aria-hidden="true">↗</span></a>
+        <a href={`${base}about/`}><span>About Chetan</span><small>The person behind the notes</small><span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
   </section>
 </BaseLayout>
 <script>
@@ -32,3 +39,19 @@ const topics = categories;
   const writing = document.querySelector<HTMLElement>('#writing');
   if (writing) initTopicFilters(writing, { single: true });
 </script>
+
+
+<style>
+  :global(#main:has(.studio-writing)) { min-height:0; }
+  .studio-writing { padding-bottom:1.25rem; }
+  .notebook-ending { margin-top:1.75rem; padding-top:1.25rem; border-top:1px solid var(--trend-border); color:var(--color-content); }
+  .ending-label { margin:0 0 .65rem; font: .65rem var(--studio-tag-font); text-transform:uppercase; letter-spacing:.1em; color:var(--color-secondary); }
+  .ending-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+  .ending-links a { display:grid; grid-template-columns:1fr auto; align-items:center; gap:.2rem .75rem; padding:.75rem 0; min-height:44px; color:var(--color-content); text-decoration:none; }
+  .ending-links a>span:first-child { font-weight:600; }
+  .ending-links small { grid-column:1; font-size:.8rem; color:var(--color-secondary); }
+  .ending-links a>span:last-child { grid-column:2; grid-row:1/3; color:var(--color-accent); }
+  .ending-links a:hover>span:first-child { text-decoration:underline; text-underline-offset:.2em; }
+  .ending-links a:focus-visible { outline:2px solid var(--color-accent); outline-offset:4px; border-radius:.25rem; }
+  @media(max-width:480px) { .ending-links { grid-template-columns:1fr; gap:.25rem; } }
+</style>

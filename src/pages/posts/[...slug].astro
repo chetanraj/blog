@@ -3,7 +3,6 @@ import AsciiOcean from '../../components/AsciiOcean.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import PostShare from '../../components/PostShare.astro';
-import EmojiReaction from '../../components/EmojiReaction.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import CodeCopyButtons from '../../components/CodeCopyButtons.astro';
 import { Badge, Inline, Link } from '@capper-ui/react';
@@ -108,7 +107,6 @@ const showUpdated =
 
           <div class="post-end-actions">
             <PostShare title={post.data.title} url={postUrl} />
-            <EmojiReaction id={post.id} />
           </div>
           <RelatedPosts previous={previousPost} next={nextPost} base={base} />
         </div>
