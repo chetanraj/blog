@@ -18,4 +18,6 @@ export {
   Moon,
   Sun,
   Twitter as X,
+  Volume2,
+  VolumeX,
 } from 'react-feather';
