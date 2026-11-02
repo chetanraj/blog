@@ -1,3 +1,4 @@
+import { getPostCategory } from '../utils/categories';
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import { SITE, absoluteUrl } from '../site.config';
@@ -20,7 +21,7 @@ export async function GET(context: { site: string | URL }) {
       pubDate: post.data.date,
       description: post.data.description ?? '',
       link: absoluteUrl(`/posts/${post.id}/`),
-      categories: post.data.tags,
+      categories: [getPostCategory(post)],
     })),
   });
 }

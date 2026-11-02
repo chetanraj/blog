@@ -34,7 +34,7 @@ class Element {
   addEventListener(name: string, handler: () => void) { this.listeners[name] = handler; }
   click() { this.listeners.click?.(); }
 }
-function fixture(encodedTopics: string[] = tags.map(topics => JSON.stringify(topics))) {
+function fixture(encodedTopics: string[] = tags.map(topics => JSON.stringify(topics)), single = false) {
   const topics = [...new Set(tags.flat())];
   const buttons = topics.map(topic => Object.assign(new Element(), { dataset: { topic } }));
   const notes = encodedTopics.map(topics => Object.assign(new Element(), { dataset: { topics } }));
@@ -43,7 +43,7 @@ function fixture(encodedTopics: string[] = tags.map(topics => JSON.stringify(top
     querySelectorAll: (selector: string) => selector === '[data-topic]' ? buttons : notes,
     querySelector: (selector: string) => ({ '[data-topic-reset]': reset, '.filter-results': results, '.filter-empty': empty })[selector],
   };
-  initTopicFilters(root as unknown as HTMLElement);
+  initTopicFilters(root as unknown as HTMLElement, { single });
   return { buttons: Object.fromEntries(buttons.map(button => [button.dataset.topic, button])), notes, reset, results, empty };
 }
 test('selection, disabled combinations, deselection, repeated clicks and reset update the UI', () => {
@@ -82,4 +82,20 @@ test('malformed or non-array topic data does not disable the other notes', () =>
   assert.equal(results.textContent, '1 note tagged react');
   reset.click();
   assert.ok(notes.every(note => !note.hidden));
+});
+
+
+test('single category switches directly without impossible AND combinations', () => {
+  const { buttons, notes, reset, results } = fixture(undefined, true);
+  buttons.react.click();
+  assert.equal(buttons.css.disabled, false);
+  buttons.css.click();
+  assert.equal(buttons.react.attrs['aria-pressed'], 'false');
+  assert.equal(buttons.css.attrs['aria-pressed'], 'true');
+  assert.deepEqual(notes.map(note => note.hidden), [true, true, false, true]);
+  assert.equal(results.textContent, '1 note in css');
+  buttons.css.click();
+  assert.ok(notes.every(note => !note.hidden));
+  buttons.react.click(); reset.click();
+  assert.equal(results.textContent, '4 notes');
 });

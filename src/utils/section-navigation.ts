@@ -51,8 +51,8 @@ export function initSectionNavigation(root: HTMLElement): void {
     toggle.setAttribute('aria-expanded', String(state.expanded));
     const current = labels[state.active].textContent || '';
     toggle.setAttribute('aria-label', `${current}, section ${state.active + 1} of ${links.length}. ${state.expanded ? 'Collapse' : 'Expand'} sections`);
-    root.querySelector<HTMLElement>('[data-nav-disclosure-label]')!.textContent = state.expanded ? 'Collapse sections' : 'Expand sections';
-    root.querySelector<HTMLElement>('[data-nav-position]')!.textContent = `${String(state.active + 1).padStart(2, '0')} / ${String(links.length).padStart(2, '0')}`;
+    root.querySelector<HTMLElement>('[data-nav-current]')!.textContent = current;
+    root.querySelector<HTMLElement>('[data-nav-position]')!.textContent = `${String(state.active + 1).padStart(2, '0')}/${String(links.length).padStart(2, '0')}`;
     track.style.transform = `translateY(${28 - state.active * 32}px)`;
     labels.forEach((label, index) => label.classList.toggle('is-active', index === state.active));
     links.forEach((link, index) => {
@@ -67,14 +67,22 @@ export function initSectionNavigation(root: HTMLElement): void {
     state = transitionSectionNavigation(state, action, links.length);
     render();
   }
-  function jump(index: number, updateHistory = true, animate = true) {
-    dispatch({ type: 'select', index }); // Collapse before measuring anchor clearance.
+  function jump(index: number, updateHistory = true, animate = true, collapse = true) {
+    // List selection collapses before anchor measurement; stepping keeps the camera visible.
+    dispatch({ type: collapse ? 'select' : 'active', index });
     const heading = sections[state.active];
     if (updateHistory && window.location.hash !== links[state.active].hash) {
       window.history.pushState(null, '', links[state.active].hash);
     }
-    heading.setAttribute('tabindex', '-1');
-    heading.focus({ preventScroll: true });
+    if (collapse) {
+      heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    } else {
+      // Keep keyboard focus in the expanded control so stepping and Escape remain available.
+      const focused = document.activeElement;
+      if (focused === previous && previous.disabled) next.focus({ preventScroll: true });
+      if (focused === next && next.disabled) previous.focus({ preventScroll: true });
+    }
     heading.scrollIntoView({ behavior: animate && !reducedMotion.matches ? 'smooth' : 'instant', block: 'start' });
   }
   function syncActive() {
@@ -98,8 +106,8 @@ export function initSectionNavigation(root: HTMLElement): void {
   });
   hide.addEventListener('click', () => { dispatch({ type: 'hide' }); show.focus(); });
   show.addEventListener('click', () => { dispatch({ type: 'show' }); toggle.focus(); });
-  previous.addEventListener('click', () => jump(state.active - 1));
-  next.addEventListener('click', () => jump(state.active + 1));
+  previous.addEventListener('click', () => jump(state.active - 1, true, true, false));
+  next.addEventListener('click', () => jump(state.active + 1, true, true, false));
   root.addEventListener('keydown', event => {
     if (event.key === 'Escape' && state.expanded) {
       event.preventDefault(); dispatch({ type: 'collapse' }); toggle.focus();
@@ -111,6 +119,7 @@ export function initSectionNavigation(root: HTMLElement): void {
   }));
   document.body.classList.add('has-section-navigation');
   root.dataset.enhanced = 'true';
+  root.querySelector<HTMLElement>('[data-nav-compact]')!.hidden = false;
   root.querySelector<HTMLElement>('[data-focus-controls]')!.hidden = false;
   hide.hidden = false;
   render();

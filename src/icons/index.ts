@@ -17,7 +17,9 @@ export {
   Shuffle,
   Moon,
   Sun,
-  Twitter as X,
+  Share2,
   Volume2,
   VolumeX,
 } from 'react-feather';
+
+export { X } from './X';

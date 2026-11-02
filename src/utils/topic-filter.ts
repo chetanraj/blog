@@ -15,7 +15,7 @@ function parseTopics(value: string | undefined): string[] {
   }
 }
 
-export function initTopicFilters(writing: HTMLElement) {
+export function initTopicFilters(writing: HTMLElement, { single = false } = {}) {
   const buttons = [...writing.querySelectorAll<HTMLButtonElement>('[data-topic]')];
   const reset = writing.querySelector<HTMLButtonElement>('[data-topic-reset]');
   const notes = [...writing.querySelectorAll<HTMLElement>('[data-note]')];
@@ -32,12 +32,12 @@ export function initTopicFilters(writing: HTMLElement) {
       const pressed = selected.has(topic);
       button.setAttribute('aria-pressed', String(pressed));
       // Selected topics must always be removable, even if no notes match.
-      button.disabled = !pressed && !available.has(topic);
+      button.disabled = !pressed && !(single ? tagsByNote.some(tags => tags.includes(topic)) : available.has(topic));
     });
     reset?.setAttribute('aria-pressed', String(selected.size === 0));
     if (empty) empty.hidden = count > 0;
     if (results) {
-      results.textContent = `${count} note${count === 1 ? '' : 's'}${selected.size ? ` tagged ${[...selected].join(' + ')}` : ''}`;
+      results.textContent = `${count} note${count === 1 ? '' : 's'}${selected.size ? `${single ? ' in' : ' tagged'} ${[...selected].join(' + ')}` : ''}`;
     }
   }
 
@@ -45,7 +45,7 @@ export function initTopicFilters(writing: HTMLElement) {
     if (button.disabled) return;
     const topic = button.dataset.topic!;
     if (selected.has(topic)) selected.delete(topic);
-    else selected.add(topic);
+    else { if (single) selected.clear(); selected.add(topic); }
     render();
   }));
   reset?.addEventListener('click', () => { selected.clear(); render(); });
