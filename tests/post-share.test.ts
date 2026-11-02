@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { supportsArticleShare, shareArticle, copyArticleLink } from '../src/utils/post-share.ts';
-const data = { title: 'Article', text: 'Article', url: 'https://chetanraj.in/blog/posts/example/' };
+import { supportsArticleShare, shouldUseNativeXShare, shareArticle, copyArticleLink, initPostShare } from '../src/utils/post-share.ts';
+const data = { title: 'Article', text: 'Article', url: 'https://chetanraj.dev/blog/posts/example/' };
 
 test('native share is progressive and handles unsupported or rejected capability checks', () => {
   assert.equal(supportsArticleShare({}, data), false);
@@ -44,4 +44,69 @@ test('web links are explicit, no asynchronous popup fallback, manual-copy and li
   assert.doesNotMatch(behavior, /window.open|location.assign|execCommand/);
   assert.match(behavior, /if \(native.disabled\) return/);
   assert.match(behavior, /if \(copy.disabled\) return/);
+});
+
+
+test('X uses native sharing only for a coarse pointer with a supported payload', () => {
+  const supported = { share: async () => {} };
+  assert.equal(shouldUseNativeXShare(supported, data, true), true);
+  assert.equal(shouldUseNativeXShare(supported, data, false), false);
+  assert.equal(shouldUseNativeXShare({}, data, true), false);
+  assert.equal(shouldUseNativeXShare({ ...supported, canShare: () => false }, data, true), false);
+});
+
+test('X click hands off synchronously, keeps cancellation quiet and offers an explicit web fallback on failure', async () => {
+  const originalNavigator = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
+  const originalWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  function element() {
+    const listeners: Record<string, (event: any) => Promise<void>> = {};
+    const attrs: Record<string, string> = {};
+    return { listeners, attrs, hidden: true, disabled: false, textContent: '', title: '', dataset: {},
+      setAttribute: (key: string, value: string) => { attrs[key] = value; },
+      removeAttribute: (key: string) => { delete attrs[key]; },
+      addEventListener: (key: string, fn: any) => { listeners[key] = fn; },
+      querySelector: () => element(),
+    };
+  }
+  try {
+    for (const scenario of ['success', 'cancel', 'failure', 'unsupported', 'desktop']) {
+      let called = 0;
+      const api = scenario === 'unsupported' ? {} : { share: async (payload: unknown) => {
+        called++;
+        assert.deepEqual(payload, data);
+        if (scenario === 'cancel') throw { name: 'AbortError' };
+        if (scenario === 'failure') throw { name: 'NotAllowedError' };
+      } };
+      Object.defineProperty(globalThis, 'navigator', { configurable: true, value: api });
+      Object.defineProperty(globalThis, 'window', { configurable: true, value: {
+        matchMedia: () => ({ matches: scenario !== 'desktop', addEventListener: () => {} }),
+      } });
+      const selectors = ['[data-native-share]', '[data-x-share]', '[data-x-fallback]', '[data-copy-url]', '[data-share-status]', '[data-manual-copy]'];
+      const elements = Object.fromEntries(selectors.map(selector => [selector, element()]));
+      elements['[data-copy-url]'].dataset = { copyUrl: data.url };
+      const root = { dataset: { shareTitle: data.title }, querySelector: (selector: string) => elements[selector] };
+      initPostShare(root as unknown as HTMLElement);
+      let prevented = false;
+      const event = { button: 0, preventDefault: () => { prevented = true; } };
+      const pending = elements['[data-x-share]'].listeners.click(event);
+      const usesNative = !['unsupported', 'desktop'].includes(scenario);
+      assert.equal(called, usesNative ? 1 : 0, `${scenario}: direct gesture call`);
+      assert.equal(prevented, usesNative);
+      if (usesNative) {
+        await elements['[data-x-share]'].listeners.click(event);
+        assert.equal(called, 1, 'repeat clicks while the chooser is pending are ignored');
+      }
+      await pending;
+      assert.equal(elements['[data-native-share]'].disabled, false);
+      assert.equal(elements['[data-x-fallback]'].hidden, scenario !== 'failure');
+      assert.equal(elements['[data-share-status]'].textContent !== '', scenario === 'failure');
+      assert.equal(elements['[data-x-share]'].attrs['aria-label'], usesNative
+        ? 'Share via your device (choose X)' : 'Share on X (opens website)');
+    }
+  } finally {
+    if (originalNavigator) Object.defineProperty(globalThis, 'navigator', originalNavigator);
+    else Reflect.deleteProperty(globalThis, 'navigator');
+    if (originalWindow) Object.defineProperty(globalThis, 'window', originalWindow);
+    else Reflect.deleteProperty(globalThis, 'window');
+  }
 });

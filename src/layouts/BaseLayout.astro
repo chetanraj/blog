@@ -14,6 +14,10 @@ interface Props {
   description?: string;
   path?: string;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  imageAlt?: string;
+  largeImageCard?: boolean;
   type?: 'website' | 'article';
   publishedTime?: string;
   modifiedTime?: string;
@@ -27,6 +31,10 @@ const {
   description = SITE.description,
   path = '/',
   image,
+  imageWidth,
+  imageHeight,
+  imageAlt,
+  largeImageCard = false,
   type = 'website',
   publishedTime,
   modifiedTime,
@@ -73,6 +81,10 @@ const {
       description={description}
       path={path}
       image={image}
+      imageWidth={imageWidth}
+      imageHeight={imageHeight}
+      imageAlt={imageAlt}
+      largeImageCard={largeImageCard}
       type={type}
       publishedTime={publishedTime}
       modifiedTime={modifiedTime}
