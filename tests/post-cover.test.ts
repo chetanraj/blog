@@ -1,21 +1,29 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { getPostCoverIndex } from '../src/utils/post-cover.ts';
+import { readFileSync, readdirSync } from 'node:fs';
+import { getPostCoverName, postCovers } from '../src/utils/post-cover.ts';
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
 
-test('cover assignment is deterministic, bounded and independent of post ordering', () => {
-  const ids = ['react-recoil', 'how-i-structure-react-app', 'optional-chaining', 'nifty-npm-tips', 'unicode-🌊'];
-  const assignments = new Map(ids.map(id => [id, getPostCoverIndex(id, 4)]));
+test('every current article has an explicit cover assignment from the curated set', () => {
+  const ids = readdirSync(new URL('../src/content/posts/', import.meta.url));
+  assert.equal(ids.length, 13);
+  assert.deepEqual(Object.keys(postCovers).sort(), ids.sort());
+  assert.equal(new Set(Object.values(postCovers)).size, 10);
   for (const id of [...ids].reverse()) {
-    const index = getPostCoverIndex(id, 4);
-    assert.equal(index, assignments.get(id));
-    assert.ok(index >= 0 && index < 4);
+    assert.equal(getPostCoverName(id), postCovers[id]);
+    const bytes = readFileSync(new URL(`../src/assets/post-covers/${postCovers[id]}.webp`, import.meta.url));
+    assert.equal(bytes.subarray(0, 4).toString(), 'RIFF');
+    assert.equal(bytes.subarray(8, 12).toString(), 'WEBP');
   }
-  assert.ok(new Set(assignments.values()).size > 1);
-  assert.equal(getPostCoverIndex('anything', 1), 0);
-  assert.throws(() => getPostCoverIndex('post', 0), RangeError);
+});
+
+test('future articles get a stable valid fallback without reshuffling existing covers', () => {
+  const first = getPostCoverName('future-post');
+  assert.equal(getPostCoverName('future-post'), first);
+  assert.ok(Object.values(postCovers).includes(first));
+  assert.ok(Object.values(postCovers).includes(getPostCoverName('unicode-🌊')));
+  assert.ok(Object.values(postCovers).includes(getPostCoverName('toString')));
 });
 
 test('cover is decorative, responsive and scoped to individual post headers', () => {
