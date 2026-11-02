@@ -17,12 +17,6 @@ export const SITE = {
   plausibleDomain: 'chetanraj.dev',
 } as const;
 
-/** JavaScript Essentials brand colors */
-export const BRAND = {
-  jsYellow: '#f7df1e',
-  jsBlack: '#000000',
-} as const;
-
 export function absoluteUrl(path: string): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
   return `${SITE.url}${SITE.basePath}${normalized}`.replace(/([^:]\/)\/+/g, '$1');

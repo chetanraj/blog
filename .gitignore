@@ -77,3 +77,6 @@ yarn-error.log
 
 # Netlify
 .netlify
+
+# Local code-quality scan state
+.desloppify/

@@ -34,10 +34,10 @@ class Element {
   addEventListener(name: string, handler: () => void) { this.listeners[name] = handler; }
   click() { this.listeners.click?.(); }
 }
-function fixture() {
+function fixture(encodedTopics: string[] = tags.map(topics => JSON.stringify(topics))) {
   const topics = [...new Set(tags.flat())];
   const buttons = topics.map(topic => Object.assign(new Element(), { dataset: { topic } }));
-  const notes = tags.map(topics => Object.assign(new Element(), { dataset: { topics: JSON.stringify(topics) } }));
+  const notes = encodedTopics.map(topics => Object.assign(new Element(), { dataset: { topics } }));
   const reset = new Element(), results = new Element(), empty = new Element();
   const root = {
     querySelectorAll: (selector: string) => selector === '[data-topic]' ? buttons : notes,
@@ -71,5 +71,15 @@ test('selection, disabled combinations, deselection, repeated clicks and reset u
   assert.equal(results.textContent, '4 notes');
   assert.equal(empty.hidden, true);
   assert.ok(Object.values(b).every(button => !button.disabled && button.attrs['aria-pressed'] === 'false'));
+  assert.ok(notes.every(note => !note.hidden));
+});
+
+test('malformed or non-array topic data does not disable the other notes', () => {
+  const { buttons, notes, reset, results } = fixture(['{broken', 'null', '{"react":true}', '["react", 3, null]']);
+  assert.equal(results.textContent, '4 notes');
+  buttons.react.click();
+  assert.deepEqual(notes.map(note => note.hidden), [true, true, true, false]);
+  assert.equal(results.textContent, '1 note tagged react');
+  reset.click();
   assert.ok(notes.every(note => !note.hidden));
 });
