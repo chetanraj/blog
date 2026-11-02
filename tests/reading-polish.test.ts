@@ -11,6 +11,13 @@ test('article share actions use one theme palette without prose-link overrides',
 test('landing has a compact unfiltered ending and articles retain sharing without reactions', () => {
   const home = readFileSync('src/pages/index.astro', 'utf8');
   assert.match(home, /class="notebook-ending" aria-label="Explore more"/);
+  const endingRule = home.match(/\.notebook-ending \{([^}]+)\}/)?.[1] || '';
+  assert.doesNotMatch(endingRule, /border-top/);
+  assert.match(home, /display:flex; justify-content:space-between/);
+  assert.match(home, /flex:0 1 auto; min-width:0; max-width:calc\(50% - 1rem\)/);
+  assert.match(home, /@media\(max-width:640px\) and \(orientation:portrait\)/);
+  assert.match(home, /flex-direction:column/);
+  assert.match(home, /gap:\.5rem 1rem/);
   assert.match(home, /href=\{`\$\{base\}about\/`\}/);
   assert.match(home, /#main:has\(\.studio-writing\)\) \{ min-height:0/);
   const post = readFileSync('src/pages/posts/[...slug].astro', 'utf8');

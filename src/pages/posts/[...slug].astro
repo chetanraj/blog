@@ -7,6 +7,9 @@ import RelatedPosts from '../../components/RelatedPosts.astro';
 import CodeCopyButtons from '../../components/CodeCopyButtons.astro';
 import { Badge, Inline, Link } from '@capper-ui/react';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
+import { getPostCover } from '../../utils/post-cover-assets';
+import { SITE } from '../../site.config';
 import { absoluteUrl } from '../../site.config';
 import { getAdjacentPosts } from '../../utils/posts';
 import { getPostCategory } from '../../utils/categories';
@@ -42,6 +45,8 @@ const { previous: previousPost, next: nextPost } = getAdjacentPosts(
   allPublished
 );
 const postUrl = absoluteUrl(`/posts/${post.id}/`);
+const socialCover = await getImage({ src: getPostCover(post.id), width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 85 });
+const socialImage = new URL(socialCover.src, SITE.url).href;
 const modifiedTime = post.data.updated?.toISOString();
 const publishedTime = post.data.date.toISOString();
 const showUpdated =
@@ -55,6 +60,11 @@ const showUpdated =
   description={post.data.description}
   path={`/posts/${post.id}/`}
   type="article"
+  image={socialImage}
+  imageWidth={1200}
+  imageHeight={630}
+  imageAlt={`Abstract cover artwork for ${post.data.title}`}
+  largeImageCard
   publishedTime={publishedTime}
   modifiedTime={modifiedTime}
   showScrollProgress

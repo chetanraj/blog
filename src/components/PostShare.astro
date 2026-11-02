@@ -28,6 +28,7 @@ const encodedTitle = encodeURIComponent(title);
     </button>
     <a
       class="post-share-btn"
+      data-x-share
       href={`https://x.com/intent/post?url=${encodedUrl}&text=${encodedTitle}`}
       rel="noopener noreferrer"
       target="_blank"
@@ -46,6 +47,9 @@ const encodedTitle = encodeURIComponent(title);
     </a>
   </div>
   <p class="post-share-status" data-share-status role="status" aria-live="polite" aria-atomic="true"></p>
+  <p class="post-share-fallback" data-x-fallback hidden>
+    <a href={`https://x.com/intent/post?url=${encodedUrl}&text=${encodedTitle}`} target="_blank" rel="noopener noreferrer">Open X website instead</a>
+  </p>
   <label class="post-share-manual" data-manual-copy hidden>
     Article link
     <input type="text" readonly value={url} aria-label="Article link to copy" />
@@ -66,6 +70,7 @@ const encodedTitle = encodeURIComponent(title);
   .post-share :is(button, a).post-share-btn:focus-visible { outline:2px solid var(--color-accent); outline-offset:3px; }
   .post-share [hidden] { display:none!important; }
   .post-share-status { flex-basis:100%; margin:0; font-size:.8125rem; line-height:1.5; }
+  .post-share-fallback { flex-basis:100%; margin:0; font-size:.8125rem; line-height:1.5; }
   .post-share-status:empty { display:none; }
   .post-share-manual { display:block; flex-basis:100%; min-width:0; font-size:.8125rem; }
   .post-share-manual input { display:block; width:100%; min-width:0; box-sizing:border-box; margin-top:.5rem; padding:.65rem; font:inherit; color:var(--color-content); background:var(--bg-color); border:1px solid var(--trend-border); border-radius:.4rem; }
