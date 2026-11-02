@@ -1,44 +1,95 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
-import { Github, Instagram, X } from '../icons';
-import * as stylex from '@stylexjs/stylex';
-import { footerStyles } from '../styles/footer.stylex';
+import { Github, Instagram, X, Play, Pause } from '../icons';
+import MediterraneanScene from './MediterraneanScene.astro';
+const base = import.meta.env.BASE_URL;
 ---
-
-<footer class:list={['site-footer', 'site-chrome', stylex.props(footerStyles.root).className]}>
-  <div class="site-footer-inner">
-    <div>
+<footer class="site-footer site-chrome" data-scene-running="false">
+  <div class="terrace-heading">
+    <div class="terrace-intro">
+      <p class="terrace-kicker">A GOOD PLACE TO PAUSE</p>
+      <h2>Until the next idea.</h2>
       <p class="site-footer-copy site-footer-signoff">Built with curiosity. Written from experience.</p>
-      <p class="site-footer-copy">
-        &copy; 2016-present{' '}
-        <a href="https://chetanraj.dev" class="site-footer-brand-inline">
-          Chetan Raj
-        </a>
-        . All Rights Reserved.
-      </p>
     </div>
+    <nav class="terrace-links" aria-label="Footer">
+      <a href={base}>Writing</a>
+      <a href={`${base}about/`}>About</a>
+      <a href={`${base}rss.xml`}>RSS feed</a>
+    </nav>
     <div class="site-footer-social-links">
-      <a
-        class="site-footer-icon-link"
-        href="https://x.com/chetan_raj"
-        aria-label="X"
-      >
-        <BlogIcon icon={X} />
-      </a>
-      <a
-        class="site-footer-icon-link"
-        href="https://github.com/chetanraj"
-        aria-label="GitHub"
-      >
-        <BlogIcon icon={Github} />
-      </a>
-      <a
-        class="site-footer-icon-link"
-        href="https://www.instagram.com/thecjstream/"
-        aria-label="Instagram"
-      >
-        <BlogIcon icon={Instagram} />
-      </a>
+      <a class="site-footer-icon-link" href="https://x.com/chetan_raj" aria-label="X"><BlogIcon icon={X} /></a>
+      <a class="site-footer-icon-link" href="https://github.com/chetanraj" aria-label="GitHub"><BlogIcon icon={Github} /></a>
+      <a class="site-footer-icon-link" href="https://www.instagram.com/thecjstream/" aria-label="Instagram"><BlogIcon icon={Instagram} /></a>
     </div>
   </div>
+  <div class="terrace-artwork">
+    <MediterraneanScene />
+    <button class="terrace-toggle" type="button" aria-label="Pause seaside animation" title="Pause seaside animation" aria-pressed="false" hidden>
+      <span data-scene-play hidden><BlogIcon icon={Play} size="sm" /></span>
+      <span data-scene-pause><BlogIcon icon={Pause} size="sm" /></span>
+    </button>
+  </div>
+  <div class="terrace-colophon">
+    <p class="site-footer-copy">&copy; 2016-present <a href="https://chetanraj.dev" class="site-footer-brand-inline">Chetan Raj</a>. All Rights Reserved.</p>
+    <span class="terrace-location">Somewhere between code &amp; the coast.</span>
+  </div>
 </footer>
+<style>
+  .site-footer { background:var(--color-bg)!important; color:var(--color-content)!important; border-top:1px solid var(--trend-border); }
+  .terrace-heading,.terrace-colophon { width:100%; max-width:var(--studio-container); margin-inline:auto; padding-inline:var(--studio-gutter); }
+  .terrace-heading { display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:start; gap:3.5rem; padding-top:3.5rem; padding-bottom:1rem; }
+  .terrace-kicker { font-family:var(--studio-tag-font); font-size:.65rem; letter-spacing:.12em; color:var(--color-secondary); margin:0 0 1rem; }
+  h2 { font-family:var(--studio-title-font); font-size:clamp(2rem,3.8vw,3.25rem); font-weight:400; font-synthesis:none; line-height:1.2; margin:0 0 1rem; letter-spacing:-.025em; }
+  .site-footer-copy { font-size:.75rem; line-height:1.7; color:var(--color-secondary); opacity:1; }
+  .terrace-links { display:flex; flex-direction:column; align-items:flex-start; margin-top:.25rem; }
+  .site-footer a:link,.site-footer a:visited { color:inherit; }
+  .terrace-links a { font-size:.8125rem; min-height:36px; display:flex; align-items:center; text-decoration:none; }
+  .terrace-links a:hover { text-decoration:underline; text-underline-offset:5px; }
+  .site-footer-social-links { display:flex; gap:4px; margin-top:.2rem; }
+  .site-footer-icon-link { color:var(--color-content); }
+  .site-footer a:focus-visible,.terrace-toggle:focus-visible { outline:2px solid var(--color-accent); outline-offset:4px; }
+  .terrace-artwork { position:relative; margin-top:1rem; }
+  .terrace-toggle { position:absolute; right:max(var(--studio-gutter),calc((100% - var(--studio-container))/2 + var(--studio-gutter))); top:1rem; display:grid; place-items:center; width:44px; height:44px; padding:0; border:1px solid var(--trend-border); border-radius:50%; background:var(--color-bg); color:var(--color-content); cursor:pointer; }
+  .terrace-toggle:hover { border-color:var(--color-accent); }
+  .terrace-toggle[hidden],.terrace-toggle [hidden] { display:none; }
+  .terrace-colophon { display:flex; justify-content:space-between; gap:1rem; padding-block:1.5rem; border-top:1px solid var(--trend-border); }
+  .terrace-location { color:var(--color-secondary); font: .65rem/1.8 var(--studio-tag-font); }
+  @media(max-width:700px) {
+    .terrace-heading { grid-template-columns:1fr auto; gap:1.5rem; padding-top:2.5rem; }
+    .terrace-intro { grid-column:1/-1; }
+    .terrace-links { flex-direction:row; gap:1.25rem; }
+    .terrace-links a { min-height:44px; }
+    .site-footer-social-links { gap:0; }
+    .terrace-artwork { margin-top:0; }
+    .terrace-colophon { flex-direction:column; gap:.5rem; }
+  }
+  @media(max-width:370px) { .terrace-heading { grid-template-columns:1fr; gap:.5rem; } .terrace-links { gap:1.25rem; } }
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>('.site-footer').forEach(footer => {
+    const toggle = footer.querySelector<HTMLButtonElement>('.terrace-toggle');
+    if (!toggle) return;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let paused = false;
+    let visible = false;
+    const sync = () => {
+      footer.dataset.sceneRunning = String(visible && !paused && !reduced.matches && !document.hidden);
+      toggle.hidden = reduced.matches;
+      const action = paused ? 'Play seaside animation' : 'Pause seaside animation';
+      toggle.setAttribute('aria-label', action);
+      toggle.title = action;
+      toggle.setAttribute('aria-pressed', String(paused));
+      toggle.querySelector<HTMLElement>('[data-scene-play]')!.hidden = !paused;
+      toggle.querySelector<HTMLElement>('[data-scene-pause]')!.hidden = paused;
+    };
+    toggle.addEventListener('click', () => { paused = !paused; sync(); });
+    reduced.addEventListener('change', sync);
+    document.addEventListener('visibilitychange', sync);
+    const observer = new IntersectionObserver(entries => {
+      visible = entries.some(entry => entry.isIntersecting);
+      sync();
+    });
+    observer.observe(footer.querySelector('.terrace-artwork')!);
+    sync();
+  });
+</script>

@@ -15,7 +15,6 @@ export {
   Monitor,
   Play,
   Pause,
-  Shuffle,
   Moon,
   Sun,
   Share2,

@@ -19,7 +19,7 @@ npm run build
 npm run preview
 ```
 
-The tests cover topic filters, typography, article covers, section navigation and ocean controls. The build renders the static routes and validates content imports. `npm run deploy` publishes the built site with GitHub Pages; use it only when a production deployment is intended.
+The tests cover topic filters, typography, article covers, section navigation and footer artwork. The build renders the static routes and validates content imports. `npm run deploy` publishes the built site with GitHub Pages; use it only when a production deployment is intended.
 
 ## Content and assets
 

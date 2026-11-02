@@ -93,11 +93,6 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid #49
 .notebook-filters button,.note-topics,.notebook-meta>span,
 .post-tag-link,.tag-pill-link,.topic-label { font-family:var(--studio-tag-font); font-weight:400; }
 .archive-link { border-bottom:1px solid var(--trend-border); padding:1.2rem 0; }
-.site-footer { background:#101d32!important; color:#b2c2cf!important; border-top:1px solid #2a374b; }
-.site-footer a:link,.site-footer a:visited { color:#c8dadf; }
-/* Copyright must inherit footer contrast, not body.dark header tokens. */
-.site-footer .site-footer-copy { color:inherit; opacity:1; }
-.site-footer-inner { max-width:var(--studio-container); font-size:.8125rem; padding-inline:var(--studio-gutter); }
 .site-footer-icon-link { display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; }
 @media(min-width:1000px) { .post-layout { gap:3rem; } }
 @media(max-width:640px) {
