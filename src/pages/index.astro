@@ -1,4 +1,6 @@
 ---
+import { BlogIcon } from '../components/icons/BlogIcon';
+import { ArrowUpRight } from '../icons';
 import { Inline, Link, Stack, Text } from '@capper-ui/react';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
@@ -12,7 +14,7 @@ const topics = categories;
 ---
 <BaseLayout title={`Notes from the build | ${SITE.title}`} description={SITE.description} path="/">
   <section id="writing" class="studio-writing" aria-label="Writing">
-    <div class="notebook-heading"><Text as="h2" weight="bold">The notebook</Text><Link href={`${base}tags/`}>Browse categories ↗</Link></div>
+    <div class="notebook-heading"><Text as="h2" weight="bold">The notebook</Text><Link href={`${base}tags/`}>Browse categories <span class="inline-arrow"><BlogIcon icon={ArrowUpRight} size="sm" /></span></Link></div>
     <div class="notebook-filters" role="group" aria-label="Filter notes by category"><button type="button" data-topic-reset aria-pressed="true" aria-controls="note-results">All</button>{topics.map(topic => <button type="button" data-topic={topic} aria-pressed="false" aria-controls="note-results">{topic}</button>)}</div>
     <p class="filter-results" role="status" aria-live="polite" aria-atomic="true">{posts.length} note{posts.length === 1 ? '' : 's'}</p>
     <div id="note-results">
@@ -20,16 +22,16 @@ const topics = categories;
       <Inline gap="md" align="center" className="note-topline"><span class="eyebrow latest-note-label">01 • Latest</span><time datetime={latest.data.date.toISOString()}>{formatDate(latest.data.date)}</time></Inline>
       <Text as="h2" weight="bold"><Link href={`${base}posts/${latest.id}/`}>{latest.data.title}</Link></Text>
       {latest.data.description && <p class="featured-description">{latest.data.description}</p>}
-      <div class="note-bottomline"><span class="note-topics">{getPostCategory(latest)}</span><Link href={`${base}posts/${latest.id}/`}>Read the note ↗</Link></div>
+      <div class="note-bottomline"><span class="note-topics">{getPostCategory(latest)}</span><Link href={`${base}posts/${latest.id}/`}>Read the note <span class="inline-arrow"><BlogIcon icon={ArrowUpRight} size="sm" /></span></Link></div>
     </article>}
-    <Stack as="ul" gap="none" className="notebook-list">{others.map(post => <li data-note data-topics={JSON.stringify([getPostCategory(post)])}><article class="notebook-row"><div class="notebook-meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time><span>{getPostCategory(post)}</span></div><Text as="h3" weight="bold"><Link href={`${base}posts/${post.id}/`}>{post.data.title}<span aria-hidden="true">↗</span></Link></Text></article></li>)}</Stack>
+    <Stack as="ul" gap="none" className="notebook-list">{others.map(post => <li data-note data-topics={JSON.stringify([getPostCategory(post)])}><article class="notebook-row"><div class="notebook-meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time><span>{getPostCategory(post)}</span></div><Text as="h3" weight="bold"><Link href={`${base}posts/${post.id}/`}>{post.data.title}<span class="link-arrow" aria-hidden="true"><BlogIcon icon={ArrowUpRight} size="md" /></span></Link></Text></article></li>)}</Stack>
     <p class="filter-empty" hidden>No notes match this category. Choose All to reset.</p>
     </div>
     <nav class="notebook-ending" aria-label="Explore more">
       <p class="ending-label">Keep exploring</p>
       <div class="ending-links">
-        <a href={`${base}tags/`}><span>Browse categories</span><small>Five ways into the archive</small><span aria-hidden="true">↗</span></a>
-        <a href={`${base}about/`}><span>About Chetan</span><small>The person behind the notes</small><span aria-hidden="true">↗</span></a>
+        <a href={`${base}tags/`}><span>Browse categories</span><small>Five ways into the archive</small><span class="link-arrow" aria-hidden="true"><BlogIcon icon={ArrowUpRight} size="md" /></span></a>
+        <a href={`${base}about/`}><span>About Chetan</span><small>The person behind the notes</small><span class="link-arrow" aria-hidden="true"><BlogIcon icon={ArrowUpRight} size="md" /></span></a>
       </div>
     </nav>
   </section>
@@ -42,6 +44,8 @@ const topics = categories;
 
 
 <style>
+  .link-arrow { display:flex; flex-shrink:0; align-self:center; }
+  .inline-arrow { display:inline-flex; vertical-align:-.15em; margin-left:.15em; }
   :global(#main:has(.studio-writing)) { min-height:0; }
   .studio-writing { padding-bottom:1.25rem; }
   .notebook-ending { margin-top:1.75rem; padding-top:1.25rem; border-top:1px solid var(--trend-border); color:var(--color-content); }

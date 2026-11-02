@@ -2,6 +2,7 @@
 export {
   ArrowLeft,
   ArrowRight,
+  ArrowUpRight,
   ChevronDown,
   ChevronUp,
   Eye,
