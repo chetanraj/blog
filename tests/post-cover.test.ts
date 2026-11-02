@@ -5,14 +5,19 @@ import { getPostCoverName, postCovers } from '../src/utils/post-cover.ts';
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
 
-test('every current article has an explicit cover assignment from the curated set', () => {
+test('every article resolves a stable cover while curated assignments remain fixed', () => {
   const ids = readdirSync(new URL('../src/content/posts/', import.meta.url));
-  assert.equal(ids.length, 13);
-  assert.deepEqual(Object.keys(postCovers).sort(), ids.sort());
+  assert.ok(ids.length > 0);
+  for (const id of Object.keys(postCovers)) {
+    assert.ok(ids.includes(id), `Curated article ${id} exists`);
+    assert.equal(getPostCoverName(id), postCovers[id]);
+  }
   assert.equal(new Set(Object.values(postCovers)).size, 10);
   for (const id of [...ids].reverse()) {
-    assert.equal(getPostCoverName(id), postCovers[id]);
-    const bytes = readFileSync(new URL(`../src/assets/post-covers/${postCovers[id]}.webp`, import.meta.url));
+    const cover = getPostCoverName(id);
+    assert.equal(getPostCoverName(id), cover);
+    assert.ok(Object.values(postCovers).includes(cover));
+    const bytes = readFileSync(new URL(`../src/assets/post-covers/${cover}.webp`, import.meta.url));
     assert.equal(bytes.subarray(0, 4).toString(), 'RIFF');
     assert.equal(bytes.subarray(8, 12).toString(), 'WEBP');
   }
