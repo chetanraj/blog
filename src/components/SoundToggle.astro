@@ -1,0 +1,20 @@
+---
+import { BlogIcon } from './icons/BlogIcon';
+import { Volume2, VolumeX } from '../icons';
+---
+<button type="button" class="interface-sound-toggle" data-sound-toggle aria-pressed="false" aria-label="Turn interface sounds on" hidden>
+  <span data-sound-icon="off"><BlogIcon icon={VolumeX} size="sm" /></span>
+  <span data-sound-icon="on" hidden><BlogIcon icon={Volume2} size="sm" /></span>
+  <span data-sound-label>Sound off</span>
+</button>
+<script>
+  import { initInterfaceSounds } from '../utils/interface-sounds';
+  initInterfaceSounds();
+</script>
+<style>
+  .interface-sound-toggle { display:inline-flex; align-items:center; justify-content:center; gap:.35rem; min-height:44px; padding:.4rem .5rem; border:1px solid currentColor; border-radius:.4rem; background:transparent; color:inherit; font: .65rem var(--studio-tag-font); white-space:nowrap; cursor:pointer; }
+  .interface-sound-toggle:hover { color:var(--color-accent); }
+  .interface-sound-toggle:focus-visible { outline:3px solid var(--color-accent); outline-offset:3px; }
+  .interface-sound-toggle [data-sound-icon] { display:flex; }
+  .interface-sound-toggle[hidden],.interface-sound-toggle [hidden] { display:none!important; }
+</style>

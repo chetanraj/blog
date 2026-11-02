@@ -5,6 +5,7 @@ import * as stylex from '@stylexjs/stylex';
 import { headerStyles } from '../styles/header.stylex';
 import OrbitalArt from './OrbitalArt.astro';
 import PostCover from './PostCover.astro';
+import SoundToggle from './SoundToggle.astro';
 const { title, postCoverId } = Astro.props;
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 const currentPath = Astro.url.pathname;
@@ -17,6 +18,7 @@ const currentPath = Astro.url.pathname;
         <div class="studio-page-links"><a href={base} aria-current={currentPath === base ? 'page' : undefined}>Writing</a><span aria-hidden="true">|</span>
         <a href={`${base}about/`} aria-current={currentPath.includes('/about') ? 'page' : undefined}>About</a></div><div class="studio-utilities">
         <a href={`${base}rss.xml`} class="nav-rss">RSS ↗</a>
+        <SoundToggle />
         <div id="themeToggle" class="studio-theme-wrap"><button class="studio-theme" type="button" id="themeButton" aria-label="Toggle theme"><span data-theme-icon="light" hidden><BlogIcon icon={Moon} /></span><span data-theme-icon="dark" hidden><BlogIcon icon={Sun} /></span><span data-theme-icon="system" hidden><BlogIcon icon={Monitor} /></span></button></div></div>
       </div>
     </nav>

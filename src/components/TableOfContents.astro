@@ -1,5 +1,6 @@
 ---
 import { Link } from '@capper-ui/react';
+import SoundToggle from './SoundToggle.astro';
 import { BlogIcon } from './icons/BlogIcon';
 import { ChevronDown, ChevronUp, Eye, EyeOff } from '../icons';
 
@@ -18,9 +19,10 @@ const listId = 'article-section-list';
     <nav class="section-nav" data-nav-panel aria-label="In this article">
       <div class="section-nav-top">
         <span class="section-nav-kicker">In this article</span>
+        <div class="section-nav-actions"><SoundToggle />
         <button type="button" class="section-nav-hide" data-nav-hide hidden aria-label="Hide contents">
           <BlogIcon icon={EyeOff} size="sm" /> <span>Hide</span>
-        </button>
+        </button></div>
       </div>
       <div class="focus-controls" data-focus-controls hidden>
         <button type="button" class="section-nav-arrow" data-nav-prev aria-label="Previous section">
@@ -71,6 +73,7 @@ const listId = 'article-section-list';
   .section-nav-dock[data-enhanced] { position:sticky; top:0; z-index:20; }
   .section-nav { background:var(--bg-color); color:var(--color-content); border:1px solid var(--trend-border); border-radius:.75rem; padding:.65rem .85rem; min-width:0; }
   .section-nav-top { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+  .section-nav-actions { display:flex; align-items:center; gap:.25rem; }
   .section-nav-kicker { font-family:var(--studio-tag-font); font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; }
   .section-nav-hide,.section-nav-show,.section-nav-arrow,.focus-lens { font:inherit; color:inherit; cursor:pointer; }
   .section-nav-hide,.section-nav-show { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:44px; padding:.5rem .65rem; font-size:.75rem; border:1px solid transparent; border-radius:.4rem; background:var(--bg-color); }
