@@ -18,9 +18,9 @@ test('ocean play/pause icons keep accessible action names, target size and motio
 });
 
 
-test('random control is an accessible shuffle icon without changing composition behavior', () => {
+test('random control is an accessible random icon without changing composition behavior', () => {
   const source = readFileSync('src/components/AsciiOcean.astro', 'utf8');
-  assert.match(source, /aria-label="Randomize shark composition" title="Randomize shark composition"><BlogIcon icon=\{Shuffle\}/);
+  assert.match(source, /aria-label="Randomize shark composition" title="Randomize shark composition"><BlogIcon icon=\{Dice\}/);
   assert.match(source, /\.ocean-toggle, \.ocean-random \{ display: inline-flex/);
   assert.match(source, /composition = nextComposition\(composition\)/);
   assert.match(source, /announcement.textContent =/);

@@ -1,7 +1,7 @@
 ---
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Copy, Check, Folder, File } from 'react-feather';
+import { Copy, Check, Folder, File } from '../icons';
 
 const iconProps = { strokeWidth: 2, 'aria-hidden': true as const };
 const clipboardSvg = renderToStaticMarkup(createElement(Copy, { ...iconProps, size: 16 }));
