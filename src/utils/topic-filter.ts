@@ -5,11 +5,21 @@ export function getTopicFilterState(tagsByNote: string[][], selected: Set<string
   return { matches, available, count: matches.filter(Boolean).length };
 }
 
+function parseTopics(value: string | undefined): string[] {
+  try {
+    const topics: unknown = JSON.parse(value || '[]');
+    return Array.isArray(topics) ? topics.filter((topic): topic is string => typeof topic === 'string') : [];
+  } catch {
+    // A malformed note must not disable filtering for the rest of the page.
+    return [];
+  }
+}
+
 export function initTopicFilters(writing: HTMLElement) {
   const buttons = [...writing.querySelectorAll<HTMLButtonElement>('[data-topic]')];
   const reset = writing.querySelector<HTMLButtonElement>('[data-topic-reset]');
   const notes = [...writing.querySelectorAll<HTMLElement>('[data-note]')];
-  const tagsByNote: string[][] = notes.map(note => JSON.parse(note.dataset.topics || '[]'));
+  const tagsByNote = notes.map(note => parseTopics(note.dataset.topics));
   const results = writing.querySelector<HTMLElement>('.filter-results');
   const empty = writing.querySelector<HTMLElement>('.filter-empty');
   const selected = new Set<string>();
