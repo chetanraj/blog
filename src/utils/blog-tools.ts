@@ -91,17 +91,28 @@ export function createBlogTools(data: BlogData): BlogTool[] {
 
 /** Structural boundary keeps the experimental API optional without global browser patches. */
 export type ToolRegistry = { registerTool: (tool: BlogTool, options: { signal: AbortSignal }) => Promise<void> };
-export function registerBlogTools(registry: ToolRegistry | undefined, tools: BlogTool[]): () => void {
+export type ToolStatus = 'unsupported' | 'registering' | 'ready' | 'unavailable';
+export function registerBlogTools(registry: ToolRegistry | undefined, tools: BlogTool[], onStatus: (status: ToolStatus) => void = () => {}): () => void {
   const controller = new AbortController();
-  if (typeof registry?.registerTool === 'function') {
-    try {
-      for (const tool of tools) {
-        Promise.resolve(registry.registerTool(tool, { signal: controller.signal }))
-          .catch(() => controller.abort());
-      }
-    } catch {
+  if (typeof registry?.registerTool !== 'function') {
+    onStatus('unsupported');
+    return () => controller.abort();
+  }
+  onStatus('registering');
+  const fail = () => {
+    if (!controller.signal.aborted) {
       controller.abort();
+      onStatus('unavailable');
     }
+  };
+  try {
+    const pending = tools.map(tool =>
+      Promise.resolve(registry.registerTool(tool, { signal: controller.signal })).catch(fail));
+    Promise.all(pending).then(() => {
+      if (!controller.signal.aborted) onStatus('ready');
+    }).catch(fail);
+  } catch {
+    fail();
   }
   return () => controller.abort();
 }

@@ -1,6 +1,6 @@
 ---
 import { BlogIcon } from './icons/BlogIcon';
-import { Monitor, Moon, Sun } from '../icons';
+import { Flask, Monitor, Moon, Sun } from '../icons';
 import * as stylex from '@stylexjs/stylex';
 import { headerStyles } from '../styles/header.stylex';
 import OrbitalArt from './OrbitalArt.astro';
@@ -16,7 +16,8 @@ const currentPath = Astro.url.pathname;
       <a class="studio-brand" href={base}><span class="brand-mark">cr.</span><span>Chetan Raj</span></a>
       <div class="studio-links">
         <div class="studio-page-links"><a href={base} aria-current={currentPath === base ? 'page' : undefined}>Writing</a><span aria-hidden="true">|</span>
-        <a href={`${base}about/`} aria-current={currentPath.includes('/about') ? 'page' : undefined}>About</a></div><div class="studio-utilities">
+        <a href={`${base}about/`} aria-current={currentPath.includes('/about') ? 'page' : undefined}>About</a>
+        <a class="nav-webmcp" href={`${base}webmcp/`} aria-current={currentPath.includes('/webmcp') ? 'page' : undefined} title="Experimental tools enabled on this site; browser support varies"><BlogIcon icon={Flask} size="sm" /><span>WebMCP enabled</span></a></div><div class="studio-utilities">
         <a href={`${base}rss.xml`} class="nav-rss">RSS ↗</a>
         <SoundToggle />
         <div id="themeToggle" class="studio-theme-wrap"><button class="studio-theme" type="button" id="themeButton" aria-label="Toggle theme"><span data-theme-icon="light" hidden><BlogIcon icon={Moon} /></span><span data-theme-icon="dark" hidden><BlogIcon icon={Sun} /></span><span data-theme-icon="system" hidden><BlogIcon icon={Monitor} /></span></button></div></div>
@@ -100,3 +101,8 @@ const currentPath = Astro.url.pathname;
     }
   });
 </script>
+
+<style>
+  .studio-links .nav-webmcp { display:none; gap:.4rem; white-space:nowrap; }
+  @media(min-width:1024px) { .studio-links .nav-webmcp { display:inline-flex; margin-left:.35rem; } }
+</style>

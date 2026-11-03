@@ -101,3 +101,30 @@ test('configured author pick matches the published React structure article', () 
   assert.equal(result.post.url, 'https://chetanraj.dev/blog/posts/how-i-structure-react-app/');
   assert.equal(result.selection, 'author_pick');
 });
+
+test('actual registered callbacks serialize all five tags and the complete author object', async () => {
+  const registered = new Map<string, BlogTool>();
+  registerBlogTools({ registerTool: async tool => { registered.set(tool.name, tool); } }, tools);
+  const execute = (name: string) => JSON.parse(JSON.stringify(registered.get(name)!.execute({})));
+  assert.equal(execute('getAllTags').tags.length, 5);
+  assert.deepEqual(execute('getAllTags').tags.map((tag: any) => tag.name), ['JavaScript', 'React', 'CSS & Styling', 'Tools & Workflow', 'Deployment']);
+  const author = execute('aboutTheAuthor').author;
+  assert.deepEqual(Object.keys(author).sort(), ['name', 'bio', 'url', 'aboutUrl', 'instagramUrl', 'githubUrl', 'xUrl'].sort());
+  assert.ok(author.bio.includes('Web Designer & Developer'));
+});
+
+test('status says ready only after every registration succeeds, never on failure or cancellation', async () => {
+  const unsupported: string[] = [];
+  registerBlogTools(undefined, tools, status => unsupported.push(status));
+  assert.deepEqual(unsupported, ['unsupported']);
+  for (const outcome of ['success', 'failure', 'cancel']) {
+    const states: string[] = [];
+    const pending: Array<{ resolve: () => void; reject: (error: Error) => void }> = [];
+    const cleanup = registerBlogTools({ registerTool: () => new Promise<void>((resolve, reject) => pending.push({ resolve, reject })) }, tools, status => states.push(status));
+    assert.deepEqual(states, ['registering']);
+    if (outcome === 'cancel') cleanup();
+    pending.forEach((promise, index) => outcome === 'failure' && index === 0 ? promise.reject(new Error('denied')) : promise.resolve());
+    await new Promise(resolve => setImmediate(resolve));
+    assert.deepEqual(states, outcome === 'cancel' ? ['registering'] : ['registering', outcome === 'success' ? 'ready' : 'unavailable']);
+  }
+});

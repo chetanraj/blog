@@ -24,3 +24,5 @@ export {
 } from 'react-feather';
 
 export { X } from './X';
+
+export { Flask } from './Flask';
