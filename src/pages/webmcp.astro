@@ -1,4 +1,5 @@
 ---
+import { runReactPostsDemo } from '../utils/webmcp-demo.js';
 import CodePresenter from '../components/CodePresenter.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../site.config';
@@ -16,19 +17,10 @@ const outputs: Record<string, string> = {
   getPostsByTag: '{ category, posts: Post[] }',
 };
 const example = `const context = document.modelContext;
-if (!context) {
-  console.log('WebMCP is not available in this browser.');
-} else {
-  const tools = await context.getTools();
-  console.table(tools.map(({ name, description }) => ({ name, description })));
-  const tool = tools.find(({ name }) => name === 'getPostsByTag');
-  if (tool) {
-    const result = await context.executeTool(tool, { tag: 'React' });
-    console.log(JSON.stringify(JSON.parse(result), null, 2));
-  } else {
-    console.log('Blog tools are not registered. Check the status above.');
-  }
-}`;
+
+${runReactPostsDemo.toString()}
+
+console.log(JSON.stringify(await runReactPostsDemo(context), null, 2));`;
 ---
 <BaseLayout title={`WebMCP | ${SITE.title}`} headerTitle="A small experiment." description="Five read-only WebMCP tools for exploring this blog, with browser support and testing instructions." path="/webmcp/">
   <article class="blog-post-container">
@@ -62,16 +54,17 @@ if (!context) {
         <li>Use a recent Chrome build with the experimental WebMCP API. Chrome’s <a href="https://developer.chrome.com/docs/ai/webmcp">current setup guide</a> describes the testing flag: open <code>chrome://flags/#enable-webmcp-testing</code>, enable it if available, and relaunch. Browser availability and flags can change.</li>
         <li>Open this page over HTTPS (or localhost for development). Wait for the status above to confirm that all five tools registered. If it reports unsupported or unavailable, ordinary blog navigation still works.</li>
         <li>In <a href="https://developer.chrome.com/docs/devtools/application/webmcp">DevTools → Application → WebMCP</a>, select a tool and choose Run tool. Expand <code>tags</code> or <code>author</code> in Output: a compact preview with <code>…</code> hides the remaining values. Each tag’s <code>count</code> is its post count, not the number of tags returned.</li>
-        <li>For a raw JSON check, open DevTools → Console on this page. The example below uses the current <code>document.modelContext</code> API and object inputs supported in Chrome 155+. It lists the registered tools and retrieves React posts.</li>
+        <li>For a raw JSON check, open DevTools → Console on this page. The example below uses the current <code>document.modelContext</code> API and object inputs supported in Chrome 155+. It retrieves React posts through the registered tool. You can also use Run below without opening DevTools.</li>
       </ol>
-      <CodePresenter code={example} lang="js" label="Console example" />
-      <p>To try another tool, change the selected name and pass <code>{'{}'}</code> for its input. The native execution result is a JSON string; the example formats it as text so nested values are not hidden in a compact preview. You do not need an AI model or API key for this console test.</p>
+      <CodePresenter code={example} lang="js" label="WebMCP React posts example" webmcpDemo />
+      <p>Run invokes the fixed React-posts example shown above and displays its actual result. It never evaluates editable code. To try another tool in your own console, change the selected name and pass <code>{'{}'}</code> for its input. The native execution result is a JSON string; the example formats it as text so nested values are not hidden in a compact preview. You do not need an AI model or API key for this console test.</p>
       <p>For other browser versions, consult the <a href="https://developer.chrome.com/docs/modern-web-guidance/guides/webmcp/agentic-javascript-tools">current JavaScript API guide</a>. WebMCP is still evolving; see the <a href="https://webmachinelearning.github.io/webmcp/">draft specification</a> for its status and API definitions.</p>
     </div>
   </article>
 </BaseLayout>
 <style>
-  .webmcp-page { overflow-wrap:anywhere; }
+  .webmcp-page { overflow-wrap:anywhere; padding-bottom:clamp(2rem,4vw,3rem); }
+  .webmcp-page > p:last-child { margin-bottom:0; }
   .webmcp-page h2 { font-family:var(--studio-title-font); font-weight:400; }
   .support-status { padding:1rem 1.25rem; border:1px solid var(--trend-border); border-radius:.5rem; background:var(--trend-surface); color:var(--color-content); }
   .support-status[data-state='ready'] { border-color:var(--trend-border-accent); }

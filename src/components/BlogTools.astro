@@ -18,6 +18,8 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
     unavailable: 'WebMCP registration is unavailable in this browser session.',
   };
   function showStatus(status: ToolStatus) {
+    document.documentElement.dataset.webmcpStatus = status;
+    document.dispatchEvent(new Event('blog:webmcp-status'));
     const indicator = document.getElementById('webmcp-status');
     if (indicator) { indicator.textContent = messages[status]; indicator.dataset.state = status; }
   }
