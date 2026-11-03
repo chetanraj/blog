@@ -23,7 +23,7 @@ if (!context) {
   const tool = tools.find(({ name }) => name === 'getPostsByTag');
   if (tool) {
     const result = await context.executeTool(tool, { tag: 'React' });
-    console.log(JSON.parse(result));
+    console.log(JSON.stringify(JSON.parse(result), null, 2));
   } else {
     console.log('Blog tools are not registered. Check the status above.');
   }
@@ -64,7 +64,7 @@ if (!context) {
         <li>For a raw JSON check, open DevTools → Console on this page. The example below uses the current <code>document.modelContext</code> API and object inputs supported in Chrome 155+. It lists the registered tools and retrieves React posts.</li>
       </ol>
       <pre tabindex="0" aria-label="WebMCP console example"><code>{example}</code></pre>
-      <p>To try another tool, change the selected name and pass <code>{'{}'}</code> for its input. The native execution result is a JSON string; the example parses it for inspection. You do not need an AI model or API key for this console test.</p>
+      <p>To try another tool, change the selected name and pass <code>{'{}'}</code> for its input. The native execution result is a JSON string; the example formats it as text so nested values are not hidden in a compact preview. You do not need an AI model or API key for this console test.</p>
       <p>For other browser versions, consult the <a href="https://developer.chrome.com/docs/modern-web-guidance/guides/webmcp/agentic-javascript-tools">current JavaScript API guide</a>. WebMCP is still evolving; see the <a href="https://webmachinelearning.github.io/webmcp/">draft specification</a> for its status and API definitions.</p>
     </div>
   </article>
