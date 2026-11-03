@@ -1,0 +1,82 @@
+---
+import { runReactPostsDemo } from '../utils/webmcp-demo.js';
+import CodePresenter from '../components/CodePresenter.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
+import { createBlogTools, publicBlogData } from '../utils/blog-tools';
+import { getCollection } from 'astro:content';
+
+const data = publicBlogData(await getCollection('posts'), SITE.featuredPostId);
+const tools = createBlogTools(data);
+const featured = data.posts.find(post => post.id === data.featuredPostId);
+const outputs: Record<string, string> = {
+  getLatestPost: '{ post: Post | null }',
+  getAllTags: '{ tags: [{ name, url, count }] }',
+  getBestPost: '{ post: Post, selection: "author_pick" }',
+  aboutTheAuthor: '{ author: { name, bio, url, aboutUrl, instagramUrl, githubUrl, xUrl } }',
+  getPostsByTag: '{ category, posts: Post[] }',
+};
+const example = `const context = document.modelContext;
+
+${runReactPostsDemo.toString()}
+
+console.log(JSON.stringify(await runReactPostsDemo(context), null, 2));`;
+---
+<BaseLayout title={`WebMCP | ${SITE.title}`} headerTitle="A small experiment." description="Five read-only WebMCP tools for exploring this blog, with browser support and testing instructions." path="/webmcp/">
+  <article class="blog-post-container">
+    <div class="blog-post-content static-page webmcp-page">
+      <p class="eyebrow">WEBMCP / EXPERIMENTAL</p>
+      <h2>Same blog. A structured way in.</h2>
+      <p>WebMCP lets a compatible browser agent ask this page for posts, categories and author information. Five tools are enabled on this site. Whether they can run depends on your browser.</p>
+      <p id="webmcp-status" class="support-status" role="status" aria-live="polite" aria-atomic="true">Browser support has not been checked. JavaScript is needed to register these tools.</p>
+      <p>Everything here is read-only. Results contain published post summaries and public author information. No account, API key or analytics access is needed. These are browser-side tools, not REST endpoints or a remote MCP server URL.</p>
+
+      <h2 id="tools">The five tools</h2>
+      <p>Each <code>Post</code> contains <code>id</code>, <code>title</code>, <code>description</code>, an ISO <code>date</code>, <code>category</code> and an absolute <code>url</code>. Full article bodies and unpublished posts are excluded.</p>
+      <ol class="tool-list">
+        {tools.map(tool => <li>
+          <h3><code>{tool.name}</code></h3>
+          <p>{tool.description}</p>
+          <dl>
+            <dt>Input</dt><dd><code>{tool.name === 'getPostsByTag' ? '{ "tag": "React" }' : '{}'}</code></dd>
+            <dt>Output</dt><dd><code>{outputs[tool.name]}</code></dd>
+          </dl>
+          {tool.name === 'getLatestPost' && <p>Newest publication date first. An empty archive returns <code>{'{ post: null }'}</code>.</p>}
+          {tool.name === 'getAllTags' && <p>JavaScript, React, CSS &amp; Styling, Tools &amp; Workflow, and Deployment. Counts include published posts only.</p>}
+          {tool.name === 'getBestPost' && <p>{featured ? <>The author’s pick is <a href={featured.url}>{featured.title}</a>.</> : <>No author pick is currently configured.</>} If the pick is removed or unpublished, the response has <code>post: null</code> and <code>status: "not_configured"</code>. This is not a live view-count ranking.</p>}
+          {tool.name === 'getPostsByTag' && <p>Pass one nonblank string of up to 100 characters. Category names are case-insensitive; category URL slugs and legacy tags such as <code>npm</code> resolve to the current category. Unknown tags return <code>unknown_tag</code> with <code>availableTags</code>. A known category with no posts returns an empty list.</p>}
+        </li>)}
+      </ol>
+      <p>Extra or malformed arguments return a structured <code>invalid_input</code> error with a message. No tool changes the page, stores preferences or sends a message.</p>
+
+      <h2 id="testing">Try it in your browser</h2>
+      <ol class="testing-steps">
+        <li>Use a recent Chrome build with the experimental WebMCP API. Chrome’s <a href="https://developer.chrome.com/docs/ai/webmcp">current setup guide</a> describes the testing flag: open <code>chrome://flags/#enable-webmcp-testing</code>, enable it if available, and relaunch. Browser availability and flags can change.</li>
+        <li>Open this page over HTTPS (or localhost for development). Wait for the status above to confirm that all five tools registered. If it reports unsupported or unavailable, ordinary blog navigation still works.</li>
+        <li>In <a href="https://developer.chrome.com/docs/devtools/application/webmcp">DevTools → Application → WebMCP</a>, select a tool and choose Run tool. Expand <code>tags</code> or <code>author</code> in Output: a compact preview with <code>…</code> hides the remaining values. Each tag’s <code>count</code> is its post count, not the number of tags returned.</li>
+        <li>For a raw JSON check, open DevTools → Console on this page. The example below uses the current <code>document.modelContext</code> API and object inputs supported in Chrome 155+. It retrieves React posts through the registered tool. You can also use Run below without opening DevTools.</li>
+      </ol>
+      <CodePresenter code={example} lang="js" label="WebMCP React posts example" webmcpDemo />
+      <p>Hover, focus or tap the dot for browser status. Run errors also appear below. Run invokes the fixed React-posts example shown above and displays its actual result. It never evaluates editable code. To try another tool in your own console, change the selected name and pass <code>{'{}'}</code> for its input. The native execution result is a JSON string; the example formats it as text so nested values are not hidden in a compact preview. You do not need an AI model or API key for this console test.</p>
+      <p>For other browser versions, consult the <a href="https://developer.chrome.com/docs/modern-web-guidance/guides/webmcp/agentic-javascript-tools">current JavaScript API guide</a>. WebMCP is still evolving; see the <a href="https://webmachinelearning.github.io/webmcp/">draft specification</a> for its status and API definitions.</p>
+    </div>
+  </article>
+</BaseLayout>
+<style>
+  .webmcp-page { overflow-wrap:anywhere; padding-bottom:clamp(2rem,4vw,3rem); }
+  .webmcp-page > p:last-child { margin-bottom:0; }
+  .webmcp-page h2 { font-family:var(--studio-title-font); font-weight:400; }
+  .support-status { padding:1rem 1.25rem; border:1px solid var(--trend-border); border-radius:.5rem; background:var(--trend-surface); color:var(--color-content); }
+  .support-status[data-state='ready'] { border-color:var(--trend-border-accent); }
+  .tool-list { padding-left:1.4rem; }
+  .tool-list>li { list-style-type:decimal; padding:.5rem 0 1.25rem .4rem; border-bottom:1px solid var(--trend-border); }
+  .tool-list h3 { margin-bottom:.5rem; }
+  .tool-list h3 code { color:var(--color-content); font-size:.95em; }
+  .tool-list dl { margin:1rem 0; }
+  .tool-list dt { font-weight:600; margin-top:.6rem; }
+  .tool-list dd { margin:.2rem 0 0; }
+  .tool-list dd code { white-space:normal; }
+  .testing-steps { padding-left:1.4rem; }
+  .testing-steps li { list-style-type:decimal; padding-left:.4rem; margin-bottom:1rem; }
+  .webmcp-page :global(:not(pre) > code) { font-family:var(--studio-tag-font); font-size:.85em; font-weight:400; }
+</style>

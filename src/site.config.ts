@@ -13,6 +13,8 @@ export const SITE = {
     github: 'chetanraj',
     instagram: 'javascriptessentials',
   },
+  /** Set a published post ID for the author-picked WebMCP recommendation. */
+  featuredPostId: 'how-i-structure-react-app' as string | null,
   /** Set to your Plausible domain, or leave empty to disable analytics */
   plausibleDomain: 'chetanraj.dev',
 } as const;
