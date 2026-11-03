@@ -1,0 +1,50 @@
+---
+import { Code } from 'astro:components';
+import { BlogIcon } from './icons/BlogIcon';
+import { Clipboard, Check } from '../icons';
+
+interface Props { code: string; lang?: 'js' | 'json'; label?: string; }
+const { code, lang = 'js', label = 'Example' } = Astro.props;
+const language = lang === 'json' ? 'JSON' : 'JavaScript';
+const source = JSON.stringify(code).replace(/</g, '\\u003c');
+---
+<figure class="code-presenter" data-code-presenter>
+  <figcaption class="code-presenter-header">
+    <span class="code-presenter-title"><span class="code-language">{language}</span><span>{label}</span></span>
+    <span class="code-copy-status" data-code-status role="status" aria-live="polite"></span>
+    <button class="presenter-copy" data-code-copy type="button" aria-label={`Copy ${language} code`} title="Copy code" hidden>
+      <span class="copy-mark"><BlogIcon icon={Clipboard} size="sm" /></span>
+      <span class="copied-mark"><BlogIcon icon={Check} size="sm" /></span>
+    </button>
+  </figcaption>
+  <Code code={code} lang={lang} themes={{ light: 'github-light', dark: 'github-dark' }} defaultColor={false} tabindex="0" aria-label={`${language}: ${label}`} />
+  <script type="application/json" data-code-source set:html={source} />
+</figure>
+<script>
+  import { initCodePresenters } from '../utils/code-presenter';
+  initCodePresenters(document);
+</script>
+<style>
+  .code-presenter { min-width:0; max-width:100%; margin:1.5rem 0; overflow:hidden; border:1px solid var(--trend-border); border-radius:.65rem; background:#fff; }
+  .code-presenter-header { display:flex; align-items:center; gap:.5rem; min-height:3.5rem; padding:.25rem .5rem .25rem 1.25rem; border-bottom:1px solid var(--trend-border); background:var(--trend-surface); color:var(--color-content); font:400 .8125rem/1.5 var(--c-font-body); }
+  .code-presenter-title { display:flex; flex-wrap:wrap; align-items:center; gap:.35rem .8rem; min-width:0; margin-right:auto; }
+  .code-language { font:400 .75rem/1.5 var(--studio-tag-font); color:var(--color-accent); }
+  .code-copy-status { font-size:.75rem; line-height:1.4; max-width:14rem; }
+  .presenter-copy { display:grid; place-items:center; flex:0 0 44px; width:44px; height:44px; border:1px solid transparent; border-radius:.4rem; background:transparent; color:var(--color-content); cursor:pointer; }
+  .presenter-copy[hidden] { display:none; }
+  .presenter-copy:hover { border-color:var(--trend-border-accent); }
+  .presenter-copy:focus-visible { outline:2px solid var(--color-accent); outline-offset:-3px; }
+  .presenter-copy:disabled { cursor:wait; }
+  .copied-mark, .presenter-copy[data-copied='true'] .copy-mark { display:none; }
+  .presenter-copy[data-copied='true'] .copied-mark { display:block; }
+  .code-presenter :global(pre.astro-code) { box-sizing:border-box; width:100%; max-width:100%; margin:0; padding:1.25rem; border:0; border-radius:0; box-shadow:none; overflow-x:auto; white-space:pre; tab-size:2; background:var(--shiki-light-bg); color:var(--shiki-light); }
+  .code-presenter :global(pre.astro-code), .code-presenter :global(pre.astro-code code), .code-presenter :global(pre.astro-code span) { font-family:var(--studio-tag-font); font-size:14px; font-weight:400; font-style:normal; line-height:1.65; letter-spacing:0; }
+  .code-presenter :global(pre.astro-code:focus-visible) { outline:2px solid var(--color-accent); outline-offset:-3px; }
+  .code-presenter :global(pre.astro-code code) { display:block; width:max-content; min-width:100%; background:none; padding:0; border:0; color:inherit; }
+  .code-presenter :global(pre.astro-code span) { color:var(--shiki-light); }
+  :global(html[data-color-mode='dark']) .code-presenter { background:#24292e; }
+  :global(html[data-color-mode='dark']) .code-presenter :global(pre.astro-code) { background:var(--shiki-dark-bg); color:var(--shiki-dark); }
+  :global(html[data-color-mode='dark']) .code-presenter :global(pre.astro-code span) { color:var(--shiki-dark); }
+  @media(min-width:768px) { .code-presenter :global(pre.astro-code), .code-presenter :global(pre.astro-code code), .code-presenter :global(pre.astro-code span) { font-size:15px; } }
+  @media(max-width:480px) { .code-presenter-header { padding-left:1rem; } .code-presenter :global(pre.astro-code) { padding:1rem; } .code-copy-status { max-width:8rem; } }
+</style>

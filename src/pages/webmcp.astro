@@ -1,4 +1,5 @@
 ---
+import CodePresenter from '../components/CodePresenter.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../site.config';
 import { createBlogTools, publicBlogData } from '../utils/blog-tools';
@@ -63,7 +64,7 @@ if (!context) {
         <li>In <a href="https://developer.chrome.com/docs/devtools/application/webmcp">DevTools → Application → WebMCP</a>, select a tool and choose Run tool. Expand <code>tags</code> or <code>author</code> in Output: a compact preview with <code>…</code> hides the remaining values. Each tag’s <code>count</code> is its post count, not the number of tags returned.</li>
         <li>For a raw JSON check, open DevTools → Console on this page. The example below uses the current <code>document.modelContext</code> API and object inputs supported in Chrome 155+. It lists the registered tools and retrieves React posts.</li>
       </ol>
-      <pre tabindex="0" aria-label="WebMCP console example"><code>{example}</code></pre>
+      <CodePresenter code={example} lang="js" label="Console example" />
       <p>To try another tool, change the selected name and pass <code>{'{}'}</code> for its input. The native execution result is a JSON string; the example formats it as text so nested values are not hidden in a compact preview. You do not need an AI model or API key for this console test.</p>
       <p>For other browser versions, consult the <a href="https://developer.chrome.com/docs/modern-web-guidance/guides/webmcp/agentic-javascript-tools">current JavaScript API guide</a>. WebMCP is still evolving; see the <a href="https://webmachinelearning.github.io/webmcp/">draft specification</a> for its status and API definitions.</p>
     </div>
@@ -84,5 +85,5 @@ if (!context) {
   .tool-list dd code { white-space:normal; }
   .testing-steps { padding-left:1.4rem; }
   .testing-steps li { list-style-type:decimal; padding-left:.4rem; margin-bottom:1rem; }
-  pre { max-width:100%; overflow-x:auto; }
+  .webmcp-page :global(:not(pre) > code) { font-family:var(--studio-tag-font); font-size:.85em; font-weight:400; }
 </style>
