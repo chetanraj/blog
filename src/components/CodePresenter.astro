@@ -61,6 +61,7 @@ const source = JSON.stringify(code).replace(/</g, '\\u003c');
   .demo-output pre { max-width:100%; max-height:30rem; overflow:auto; margin:0; padding:1rem; background:var(--bg-color); color:var(--color-content); font:400 14px/1.65 var(--studio-tag-font); white-space:pre; }
   .code-presenter-title { display:flex; flex-wrap:wrap; align-items:center; gap:.35rem .8rem; min-width:0; margin-right:auto; }
   .code-language { font:400 .75rem/1.5 var(--studio-tag-font); color:var(--color-accent); }
+  .code-copy-status:not([data-error='true']) { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
   .code-copy-status { font-size:.75rem; line-height:1.4; max-width:14rem; }
   .presenter-copy { display:grid; place-items:center; flex:0 0 44px; width:44px; height:44px; border:1px solid transparent; border-radius:.4rem; background:transparent; color:var(--color-content); cursor:pointer; }
   .presenter-copy[hidden] { display:none; }

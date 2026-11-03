@@ -20,7 +20,7 @@ test('copy control initializes once, handles pending clicks, failure and retry w
   let fail = false;
   const handlers: Array<() => Promise<void>> = [];
   const button = { hidden: true, disabled: false, dataset: {} as Record<string, string>, addEventListener: (_event: string, handler: () => Promise<void>) => handlers.push(handler) };
-  const status = { textContent: '' };
+  const status = { textContent: '', dataset: {} as Record<string, string> };
   const elements = { '[data-code-copy]': button, '[data-code-status]': status, '[data-code-source]': { textContent: JSON.stringify(source) } };
   const panel = { dataset: {} as Record<string, string>, querySelector: (selector: keyof typeof elements) => elements[selector] };
   const root = { querySelectorAll: () => [panel] } as unknown as ParentNode;
@@ -40,14 +40,19 @@ test('copy control initializes once, handles pending clicks, failure and retry w
     finish!(); await first;
     assert.equal(button.disabled, false);
     assert.equal(status.textContent, 'Copied');
+    assert.equal(status.dataset.error, 'false');
     assert.equal(button.dataset.copied, 'true');
     fail = true; await handlers[0]();
     assert.equal(button.disabled, false);
     assert.equal(button.dataset.copied, 'false');
     assert.match(status.textContent, /Select the code/);
+    assert.equal(status.dataset.error, 'true');
     fail = false;
-    const retry = handlers[0](); finish!(); await retry;
+    const retry = handlers[0]();
+    assert.equal(status.dataset.error, undefined);
+    finish!(); await retry;
     assert.equal(status.textContent, 'Copied');
+    assert.equal(status.dataset.error, 'false');
   } finally {
     if (original) Object.defineProperty(globalThis, 'navigator', original);
     else Reflect.deleteProperty(globalThis, 'navigator');

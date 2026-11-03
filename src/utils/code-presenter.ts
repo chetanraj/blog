@@ -26,9 +26,11 @@ export function initCodePresenters(root: ParentNode): void {
       button.disabled = true;
       delete button.dataset.copied;
       status.textContent = '';
+      delete status.dataset.error;
       const copied = await copyCodeSource(source as string, navigator.clipboard);
       button.disabled = false;
       button.dataset.copied = String(copied);
+      status.dataset.error = String(!copied);
       status.textContent = copied ? 'Copied' : 'Copy unavailable. Select the code to copy it.';
     });
   });
