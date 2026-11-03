@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import { SITE } from '../site.config';
+import { publicBlogData } from '../utils/blog-tools';
+
+const data = publicBlogData(await getCollection('posts'), SITE.featuredPostId);
+// Escaping '<' prevents post metadata from ending the inert JSON script element.
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+<script id="blog-tool-data" type="application/json" set:html={json} />
+<script>
+  import { createBlogTools, registerBlogTools, type ToolRegistry } from '../utils/blog-tools';
+
+  let cleanup: (() => void) | undefined;
+  function register() {
+    if (cleanup) return;
+    const registry = (document as Document & { modelContext?: ToolRegistry }).modelContext;
+    if (typeof registry?.registerTool !== 'function') return;
+    const json = document.getElementById('blog-tool-data')?.textContent;
+    if (!json) return;
+    try {
+      cleanup = registerBlogTools(registry, createBlogTools(JSON.parse(json)));
+    } catch {
+      // An unavailable experimental API must never interfere with reading the blog.
+    }
+  }
+  register();
+  window.addEventListener('pagehide', () => { cleanup?.(); cleanup = undefined; });
+  window.addEventListener('pageshow', register);
+</script>
