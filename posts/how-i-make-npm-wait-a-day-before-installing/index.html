@@ -106,7 +106,7 @@
 <h2 id="what-it-does-not-do">What it does not do</h2>
 <p>This is the part I had wrong. The setting does not check what is already in <code>package-lock.json</code>.</p>
 <p>I installed that fresh TypeScript nightly without the setting. Then I added <code>min-release-age=1</code> and ran <code>npm ci</code>. npm installed the 20 hour old version without a word. <code>npm install</code> did the same. Only <code>npm update</code> failed, because it had to resolve the range again. The maintainer says the same in the pull request thread: an existing lockfile entry skips the “find a version that matches this range” step.</p>
-<p>It also needs npm 11.10 or newer. My blog CI runs <code>npm ci</code> on Node 22, and Node 22 ships with npm 10.9. I ran npm 10.9.9 with the same <code>.npmrc</code>. It installed the too-new version and printed no warning.</p>
+<p>It also needs npm 11.10 or newer. My blog CI runs <code>npm ci</code> on Node 24 and checks for npm 11.10 or newer before installing dependencies. In a separate test, I ran npm 10.9.9 with the same <code>.npmrc</code>. It installed the too-new version and printed no warning.</p>
 <p>So the line protects one moment: when a new version enters the lockfile. For me that happens on my laptop, when I run <code>npm install</code> or <code>npm update</code>. CI only replays the lockfile. That works as long as my local npm is new enough, so <code>npm -v</code> is now part of the habit.</p>
 <h2 id="when-i-need-a-fresh-version">When I need a fresh version</h2>
 <p>Sometimes the fix I need was published yesterday. If the window blocks <code>npm audit fix</code>, npm keeps the vulnerable version, warns, and exits with a non-zero code.</p>
