@@ -57,7 +57,7 @@ This is the part I had wrong. The setting does not check what is already in `pac
 
 I installed that fresh TypeScript nightly without the setting. Then I added `min-release-age=1` and ran `npm ci`. npm installed the 20 hour old version without a word. `npm install` did the same. Only `npm update` failed, because it had to resolve the range again. The maintainer says the same in the pull request thread: an existing lockfile entry skips the "find a version that matches this range" step.
 
-It also needs npm 11.10 or newer. My blog CI runs `npm ci` on Node 22, and Node 22 ships with npm 10.9. I ran npm 10.9.9 with the same `.npmrc`. It installed the too-new version and printed no warning.
+It also needs npm 11.10 or newer. My blog CI runs `npm ci` on Node 24 and checks for npm 11.10 or newer before installing dependencies. In a separate test, I ran npm 10.9.9 with the same `.npmrc`. It installed the too-new version and printed no warning.
 
 So the line protects one moment: when a new version enters the lockfile. For me that happens on my laptop, when I run `npm install` or `npm update`. CI only replays the lockfile. That works as long as my local npm is new enough, so `npm -v` is now part of the habit.
 
