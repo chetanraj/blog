@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import { SITE } from '../site.config';
+import { publicBlogData } from '../utils/blog-tools';
+
+const data = publicBlogData(await getCollection('posts'), SITE.featuredPostId);
+// Escaping '<' prevents post metadata from ending the inert JSON script element.
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+<script id="blog-tool-data" type="application/json" set:html={json} />
+<script>
+  import { createBlogTools, registerBlogTools, type ToolStatus, type ToolRegistry } from '../utils/blog-tools';
+
+  const messages: Record<ToolStatus, string> = {
+    unsupported: 'This browser does not expose WebMCP. The blog still works normally.',
+    registering: 'WebMCP is available. Registering the five blog tools…',
+    ready: 'Ready in this browser: all five blog tools are registered.',
+    unavailable: 'WebMCP registration is unavailable in this browser session.',
+  };
+  function showStatus(status: ToolStatus) {
+    document.documentElement.dataset.webmcpStatus = status;
+    document.dispatchEvent(new Event('blog:webmcp-status'));
+    const indicator = document.getElementById('webmcp-status');
+    if (indicator) { indicator.textContent = messages[status]; indicator.dataset.state = status; }
+  }
+  let cleanup: (() => void) | undefined;
+  function register() {
+    if (cleanup) return;
+    const registry = (document as Document & { modelContext?: ToolRegistry }).modelContext;
+
+    const json = document.getElementById('blog-tool-data')?.textContent;
+    if (!json) return;
+    try {
+      cleanup = registerBlogTools(registry, createBlogTools(JSON.parse(json)), showStatus);
+    } catch {
+      showStatus('unavailable');
+    }
+  }
+  register();
+  window.addEventListener('pagehide', () => { cleanup?.(); cleanup = undefined; });
+  window.addEventListener('pageshow', register);
+</script>
